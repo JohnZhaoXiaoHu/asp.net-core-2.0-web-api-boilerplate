@@ -56,11 +56,38 @@ namespace CoreApi.Web
             {
                 c.SwaggerDoc("v1", new Info { Title = "My APIs", Version = "v1" });
             });
+
+            // Identity Server
+            services.AddMvcCore()
+                .AddAuthorization()
+                .AddJsonFormatters();
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ApiName = "api1";
+                });
+
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:8080")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, CoreContext coreContext)
         {
+            app.UseCors("default");
+
             app.UseStaticFiles();
 
             if (env.IsDevelopment())
@@ -88,6 +115,9 @@ namespace CoreApi.Web
             // Config Serilog
             app.ConfigureSerilog(Configuration);
             
+            // Identity Server
+            app.UseAuthentication();
+
             app.UseMvc();
 
         }
