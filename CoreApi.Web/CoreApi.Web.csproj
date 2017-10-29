@@ -31,6 +31,7 @@
     <ProjectReference Include="..\CoreApi.Repositories\CoreApi.Repositories.csproj" />
     <ProjectReference Include="..\CoreApi.Services\CoreApi.Services.csproj" />
     <ProjectReference Include="..\CoreApi.ViewModels\CoreApi.ViewModels.csproj" />
+    <ProjectReference Include="..\SharedSettings\SharedSettings.csproj" />
   </ItemGroup>
 
 </Project>

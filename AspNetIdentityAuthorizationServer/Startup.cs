@@ -38,7 +38,7 @@ namespace AspNetIdentityAuthorizationServer
 
             services.AddMvc();
 
-            // configure identity server with in-memory stores, keys, clients and scopes
+            // configure identity server
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddInMemoryPersistedGrants()

@@ -14,6 +14,7 @@ using CoreApi.Web.MyConfigurations;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using SharedSettings.Settings;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CoreApi.Web
@@ -54,7 +55,7 @@ namespace CoreApi.Web
             // Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My APIs", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = CoreApiSettings.CoreApiResource.DisplayName, Version = "v1" });
             });
 
             // Identity Server
@@ -65,18 +66,18 @@ namespace CoreApi.Web
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "http://localhost:5000";
+                    options.Authority = CoreApiSettings.AuthorizationServerBase;
                     options.RequireHttpsMetadata = false;
 
-                    options.ApiName = "api1";
+                    options.ApiName = CoreApiSettings.CoreApiResource.Name;
                 });
 
             services.AddCors(options =>
             {
                 // this defines a CORS policy called "default"
-                options.AddPolicy("default", policy =>
+                options.AddPolicy(CoreApiSettings.CorsPolicyName, policy =>
                 {
-                    policy.WithOrigins("http://localhost:8080")
+                    policy.WithOrigins(CoreApiSettings.CorsOrigin)
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -86,7 +87,7 @@ namespace CoreApi.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, CoreContext coreContext)
         {
-            app.UseCors("default");
+            app.UseCors(CoreApiSettings.CorsPolicyName);
 
             app.UseStaticFiles();
 
@@ -107,7 +108,7 @@ namespace CoreApi.Web
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My APIs V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core APIs V1");
             });
 
             coreContext.EnsureSeedDataForContext();

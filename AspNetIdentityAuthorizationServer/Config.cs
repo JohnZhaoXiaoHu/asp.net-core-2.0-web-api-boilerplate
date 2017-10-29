@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 using IdentityServer4;
 using IdentityServer4.Models;
-using IdentityServer4.Test;
+using SharedSettings.Settings;
 
 namespace AspNetIdentityAuthorizationServer
 {
@@ -13,7 +12,7 @@ namespace AspNetIdentityAuthorizationServer
         {
             return new List<ApiResource>
             {
-                new ApiResource("api1", "My API")
+                new ApiResource(CoreApiSettings.CoreApiResource.Name, CoreApiSettings.CoreApiResource.DisplayName)
             };
         }
 
@@ -32,7 +31,7 @@ namespace AspNetIdentityAuthorizationServer
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { CoreApiSettings.CoreApiResource.Name }
                 },
                 // resource owner password grant client
                 new Client
@@ -44,27 +43,8 @@ namespace AspNetIdentityAuthorizationServer
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { CoreApiSettings.CoreApiResource.Name }
                 },
-                // OpenID Connect implicit flow client (MVC)
-                //new Client
-                //{
-                //    ClientId = "mvc",
-                //    ClientName = "MVC Client",
-                //    AllowedGrantTypes = GrantTypes.Implicit,
-
-                //    // where to redirect to after login
-                //    RedirectUris = { "http://localhost:5002/signin-oidc" },
-
-                //    // where to redirect to after logout
-                //    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-
-                //    AllowedScopes = new List<string>
-                //    {
-                //        IdentityServerConstants.StandardScopes.OpenId,
-                //        IdentityServerConstants.StandardScopes.Profile
-                //    }
-                //},
                 new Client
                 {
                     ClientId = "mvc",
@@ -85,58 +65,27 @@ namespace AspNetIdentityAuthorizationServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        CoreApiSettings.CoreApiResource.Name
                     },
                     AllowOfflineAccess = true
                 },
                 // JavaScript Client
                 new Client
                 {
-                    ClientId = "js",
-                    ClientName = "JavaScript Client",
+                    ClientId = CoreApiSettings.Client.ClientId,
+                    ClientName = CoreApiSettings.Client.ClientName,
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris =           { "http://localhost:8080/callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:8080/index.html" },
-                    AllowedCorsOrigins =     { "http://localhost:8080" },
+                    RedirectUris =           { CoreApiSettings.Client.RedirectUris },
+                    PostLogoutRedirectUris = { CoreApiSettings.Client.PostLogoutRedirectUris },
+                    AllowedCorsOrigins =     { CoreApiSettings.Client.AllowedCorsOrigins },
 
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
-                    }
-                }
-            };
-        }
-
-        public static List<TestUser> GetUsers()
-        {
-            return new List<TestUser>
-            {
-                new TestUser
-                {
-                    SubjectId = "1",
-                    Username = "alice",
-                    Password = "password",
-
-                    Claims = new []
-                    {
-                        new Claim("name", "Alice"),
-                        new Claim("website", "https://alice.com")
-                    }
-                },
-                new TestUser
-                {
-                    SubjectId = "2",
-                    Username = "bob",
-                    Password = "password",
-
-                    Claims = new []
-                    {
-                        new Claim("name", "Bob"),
-                        new Claim("website", "https://bob.com")
+                        CoreApiSettings.CoreApiResource.Name
                     }
                 }
             };
