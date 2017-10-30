@@ -1,6 +1,7 @@
 ﻿using CoreApi.DataContext.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using CoreApi.Infrastructure.Configurations;
+using CoreApi.Models.Angular;
 using CoreApi.Models.Core;
 
 namespace CoreApi.DataContext.Core
@@ -21,5 +22,6 @@ namespace CoreApi.DataContext.Core
         }
 
         public DbSet<UploadedFile> UploadedFiles { get; set; }
+        public DbSet<Client> Clients { get; set; }
     }
 }

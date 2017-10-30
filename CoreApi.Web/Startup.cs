@@ -110,9 +110,7 @@ namespace CoreApi.Web
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core APIs V1");
             });
-
-            coreContext.EnsureSeedDataForContext();
-
+            
             // Config Serilog
             app.ConfigureSerilog(Configuration);
             

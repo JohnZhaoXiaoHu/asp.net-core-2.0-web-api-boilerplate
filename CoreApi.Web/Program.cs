@@ -1,6 +1,10 @@
 ﻿using System;
+using CoreApi.DataContext.Core;
+using CoreApi.DataContext.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace CoreApi.Web
@@ -12,6 +16,20 @@ namespace CoreApi.Web
             try
             {
                 var host = BuildWebHost(args);
+                try
+                {
+                    using (var scope = host.Services.CreateScope())
+                    {
+                        var services = scope.ServiceProvider;
+                        var context = services.GetRequiredService<CoreContext>();
+                        context.EnsureSeedDataForContext();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var logger = host.Services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred seeding the DB.");
+                }
                 host.Run();
             }
             catch (Exception ex)

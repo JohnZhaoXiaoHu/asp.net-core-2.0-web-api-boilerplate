@@ -17,6 +17,6 @@ namespace CoreApi.Infrastructure.Features.Common
             ConfigureDerived(builder);
         }
 
-        public abstract void ConfigureDerived(EntityTypeBuilder<T> builder);
+        public abstract void ConfigureDerived(EntityTypeBuilder<T> b);
     }
 }

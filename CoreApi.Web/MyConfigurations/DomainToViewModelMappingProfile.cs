@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using CoreApi.Models.Angular;
 using CoreApi.Models.Core;
+using CoreApi.ViewModels.Angular;
 using CoreApi.ViewModels.Core;
 
 namespace CoreApi.Web.MyConfigurations
@@ -11,6 +13,7 @@ namespace CoreApi.Web.MyConfigurations
         public DomainToViewModelMappingProfile()
         {
             CreateMap<UploadedFile, UploadedFileViewModel>();
+            CreateMap<Client, ClientViewModel>();
         }
     }
 }
