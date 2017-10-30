@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CoreApi.DataContext.Core;
 using CoreApi.DataContext.Extensions;
 using CoreApi.DataContext.Infrastructure;
+using CoreApi.Repositories.Angular;
 using CoreApi.Repositories.Core;
 using CoreApi.Services.Core;
 using CoreApi.Web.MyConfigurations;
@@ -45,6 +46,7 @@ namespace CoreApi.Web
             services.AddScoped<IUnitOfWork, CoreContext>();
             services.AddScoped(typeof(ICoreService<>), typeof(CoreService<>));
             services.AddScoped<IUploadedFileRepository, UploadedFileRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
 
             //FileProvider
             var physicalProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());

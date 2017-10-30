@@ -14,6 +14,7 @@ namespace CoreApi.Web.MyConfigurations
         {
             CreateMap<UploadedFile, UploadedFileViewModel>();
             CreateMap<Client, ClientViewModel>();
+            CreateMap<Client, ClientModificationViewModel>();
         }
     }
 }
