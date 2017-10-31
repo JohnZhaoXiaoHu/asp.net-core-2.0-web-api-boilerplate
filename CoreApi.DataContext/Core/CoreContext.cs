@@ -21,6 +21,7 @@ namespace CoreApi.DataContext.Core
             modelBuilder.HasDefaultSchema(AppSettings.DefaultSchema);
 
             modelBuilder.ApplyConfiguration(new UploadedFileConfiguration());
+            modelBuilder.ApplyConfiguration(new ClientConfiguration());
         }
 
         public DbSet<UploadedFile> UploadedFiles { get; set; }
