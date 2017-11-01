@@ -35,7 +35,7 @@ namespace CoreApi.Web.Controllers.Angular
         [Route("{id}", Name = "GetClient")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await _clientRepository.GetSingleAsync(id);
+             var item = await _clientRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
