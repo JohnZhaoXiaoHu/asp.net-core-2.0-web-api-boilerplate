@@ -20,6 +20,7 @@ namespace CoreApi.Web.Controllers.Angular
         public ClientController(ICoreService<ClientController> coreService,
             IClientRepository clientRepository) : base(coreService)
         {
+
             _clientRepository = clientRepository;
         }
 

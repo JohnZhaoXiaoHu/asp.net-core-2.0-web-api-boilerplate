@@ -40,8 +40,8 @@ namespace IdentityServerWithAspNetIdentity
 
             // configure identity server
             services.AddIdentityServer()
-                // .AddDeveloperSigningCredential()
-                .AddSigningCredential(new X509Certificate2(@"D:\Projects\DotnetCore\asp.net-core-2.0-web-api-boilerplate\Certificates\mlh.pfx", "Bx@steel"))
+                .AddDeveloperSigningCredential()
+                // .AddSigningCredential(new X509Certificate2(@"D:\Projects\DotnetCore\asp.net-core-2.0-web-api-boilerplate\Certificates\mlh.pfx", "Bx@steel"))
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
