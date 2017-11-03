@@ -9,14 +9,15 @@ namespace IdentityServerWithAspNetIdentity.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "用户名")]
+        public string UserName { get; set; }
 
         [Required]
+        [Display(Name = "密码")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "记住我?")]
         public bool RememberMe { get; set; }
     }
 }

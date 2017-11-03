@@ -13,13 +13,13 @@ namespace IdentityServerWithAspNetIdentity.Models.AccountViewModels
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0}的最小长度是{2}, 最大长度是{1}.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "确认密码")]
+        [Compare("Password", ErrorMessage = "密码和确认密码不一致.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

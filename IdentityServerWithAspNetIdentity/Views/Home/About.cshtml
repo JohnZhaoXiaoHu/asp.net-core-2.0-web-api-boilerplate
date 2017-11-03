@@ -1,11 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Authentication;
 @{
-    ViewData["Title"] = "About";
+    ViewData["Title"] = "关于当前用户";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<h3>User claims</h3>
+<h3>当前用户信息</h3>
 
 <dl>
     @foreach (var claim in User.Claims)
