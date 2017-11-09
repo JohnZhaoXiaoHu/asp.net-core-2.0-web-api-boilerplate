@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using CoreApi.DataContext.Infrastructure;
 using CoreApi.Services.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ namespace CoreApi.Web.Controllers.Bases
         protected readonly IUnitOfWork UnitOfWork;
         protected readonly ILogger<T> Logger;
         protected readonly IFileProvider FileProvider;
+        protected readonly IMapper Mapper;
         protected readonly ICoreService<T> CoreService;
 
         protected BaseController(ICoreService<T> coreService)
@@ -20,6 +22,7 @@ namespace CoreApi.Web.Controllers.Bases
             UnitOfWork = coreService.UnitOfWork;
             Logger = coreService.Logger;
             FileProvider = coreService.FileProvider;
+            Mapper = coreService.Mapper;
         }
 
         #region Current Information

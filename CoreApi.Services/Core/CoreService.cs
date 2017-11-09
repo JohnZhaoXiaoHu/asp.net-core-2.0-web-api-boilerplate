@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using CoreApi.DataContext.Infrastructure;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace CoreApi.Services.Core
         IUnitOfWork UnitOfWork { get; }
         ILogger<T> Logger { get; }
         IFileProvider FileProvider { get; }
+        IMapper Mapper { get; }
     }
 
     public class CoreService<T> : ICoreService<T>
@@ -17,15 +19,18 @@ namespace CoreApi.Services.Core
         public IUnitOfWork UnitOfWork { get; }
         public ILogger<T> Logger { get; }
         public IFileProvider FileProvider { get; }
+        public IMapper Mapper { get; }
 
         public CoreService(
             IUnitOfWork unitOfWork,
             ILogger<T> logger,
-            IFileProvider fileProvider)
+            IFileProvider fileProvider,
+            IMapper mapper)
         {
             UnitOfWork = unitOfWork;
             Logger = logger;
             FileProvider = fileProvider;
+            Mapper = mapper;
         }
 
         public void Dispose()
