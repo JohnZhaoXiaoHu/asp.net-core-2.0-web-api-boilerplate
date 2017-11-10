@@ -12,6 +12,7 @@ namespace AuthorizationServer.Configuration
             return new List<ApiResource>
             {
                 new ApiResource(AuthorizationServerSettings.ApiResource.Name, AuthorizationServerSettings.ApiResource.DisplayName),
+                new ApiResource(AdminClientSettings.ApiResource.Name, AdminClientSettings.ApiResource.DisplayName),
                 new ApiResource(CoreApiSettings.CoreApiResource.Name, CoreApiSettings.CoreApiResource.DisplayName),
                 new ApiResource("socialnetwork", "社交网络")
                 {
@@ -51,7 +52,7 @@ namespace AuthorizationServer.Configuration
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        AdminClientSettings.CoreApiResource.Name
+                        AdminClientSettings.ApiResource.Name
                     }
                 },
                 new Client
