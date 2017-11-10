@@ -7,8 +7,7 @@ namespace SharedSettings.Settings
     public class CoreApiSettings
     {
         #region CoreApi
-
-        public static string AuthorizationServerBase = "http://localhost:5000";
+        
         public static string CorsPolicyName = "default";
         public static string CorsOrigin = "http://localhost:4200";
         public static (string Name, string DisplayName) CoreApiResource = ("salesapi", "销售系统 APIs");

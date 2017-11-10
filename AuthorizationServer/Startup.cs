@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using AuthorizationServer.Data;
 using AuthorizationServer.Extensions;
 using AuthorizationServer.Models;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedSettings.Settings;
 
 namespace AuthorizationServer
 {
@@ -57,7 +57,13 @@ namespace AuthorizationServer
             services.AddMvc();
             
             services.AddIdentityServer()
-                .AddSigningCredential(new X509Certificate2(@"D:\Projects\test\socialnetwork.pfx", "Bx@steel"))
+#if DEBUG
+                .AddDeveloperSigningCredential()
+#else
+                .AddSigningCredential(new System.Security.Cryptography.X509Certificates.X509Certificate2(
+                    SharedSettings.Settings.AuthorizationServerSettings.Certificate.Path, 
+                    SharedSettings.Settings.AuthorizationServerSettings.Certificate.Password))
+#endif
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = builder =>
@@ -73,8 +79,22 @@ namespace AuthorizationServer
                     options.TokenCleanupInterval = 30;
                 })
                 .AddAspNetIdentity<ApplicationUser>();
+
+            // As an Identity Server Client
+            services.AddMvcCore()
+                .AddAuthorization()
+                .AddJsonFormatters();
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = AuthorizationServerSettings.AuthorizationServerBase;
+                    options.RequireHttpsMetadata = false;
+
+                    options.ApiName = AuthorizationServerSettings.ApiResource.Name;
+                });
+
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.InitializeDatabase();

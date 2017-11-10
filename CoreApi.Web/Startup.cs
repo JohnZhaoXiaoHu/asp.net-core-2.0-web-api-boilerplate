@@ -68,7 +68,7 @@ namespace CoreApi.Web
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = CoreApiSettings.AuthorizationServerBase;
+                    options.Authority = AuthorizationServerSettings.AuthorizationServerBase;
                     options.RequireHttpsMetadata = false;
 
                     options.ApiName = CoreApiSettings.CoreApiResource.Name;
@@ -103,11 +103,8 @@ namespace CoreApi.Web
             }
 
             app.UseStatusCodePages();
-
-            // Swagger
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            
             app.UseSwagger();
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core APIs V1");

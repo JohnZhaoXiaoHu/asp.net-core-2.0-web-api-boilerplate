@@ -11,6 +11,7 @@ namespace AuthorizationServer.Configuration
         {
             return new List<ApiResource>
             {
+                new ApiResource(AuthorizationServerSettings.ApiResource.Name, AuthorizationServerSettings.ApiResource.DisplayName),
                 new ApiResource(CoreApiSettings.CoreApiResource.Name, CoreApiSettings.CoreApiResource.DisplayName),
                 new ApiResource("socialnetwork", "社交网络")
                 {
@@ -18,11 +19,41 @@ namespace AuthorizationServer.Configuration
                 }
             };
         }
-        
+
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client>
             {
+                new Client
+                {
+                    ClientId = AuthorizationServerSettings.Client.ClientId,
+                    ClientSecrets = new [] { new Secret(AuthorizationServerSettings.Client.ClientSecret.Sha256()) },
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedScopes = new [] {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        AuthorizationServerSettings.ApiResource.Name
+                    }
+                },
+                // Admin JavaScript Client
+                new Client
+                {
+                    ClientId = AdminClientSettings.Client.ClientId,
+                    ClientName = AdminClientSettings.Client.ClientName,
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris =           { AdminClientSettings.Client.RedirectUris },
+                    PostLogoutRedirectUris = { AdminClientSettings.Client.PostLogoutRedirectUris },
+                    AllowedCorsOrigins =     { AdminClientSettings.Client.AllowedCorsOrigins },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        AdminClientSettings.CoreApiResource.Name
+                    }
+                },
                 new Client
                 {
                     ClientId = "socialnetwork",
@@ -53,7 +84,7 @@ namespace AuthorizationServer.Configuration
                     AllowOfflineAccess = true,
                     AllowAccessTokensViaBrowser = true
                 },
-                // JavaScript Client
+                // Core JavaScript Client
                 new Client
                 {
                     ClientId = CoreApiSettings.Client.ClientId,
