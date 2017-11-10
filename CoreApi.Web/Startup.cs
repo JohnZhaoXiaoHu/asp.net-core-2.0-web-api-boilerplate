@@ -28,8 +28,7 @@ namespace CoreApi.Web
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CoreContext>(options =>
@@ -39,28 +38,24 @@ namespace CoreApi.Web
             {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
             });
-
-            // AutoMapper Auto Scan this Assembly for Configuration Files
+            
             services.AddAutoMapper();
 
             services.AddScoped<IUnitOfWork, CoreContext>();
             services.AddScoped(typeof(ICoreService<>), typeof(CoreService<>));
             services.AddScoped<IUploadedFileRepository, UploadedFileRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
-
-            //FileProvider
+            
             var physicalProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
             var embeddedProvider = new EmbeddedFileProvider(Assembly.GetEntryAssembly());
             var compositeProvider = new CompositeFileProvider(physicalProvider, embeddedProvider);
             services.AddSingleton<IFileProvider>(compositeProvider);
-
-            // Swagger
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = CoreApiSettings.CoreApiResource.DisplayName, Version = "v1" });
             });
-
-            // Identity Server
+            
             services.AddMvcCore()
                 .AddAuthorization()
                 .AddJsonFormatters();
@@ -76,7 +71,6 @@ namespace CoreApi.Web
 
             services.AddCors(options =>
             {
-                // this defines a CORS policy called "default"
                 options.AddPolicy(CoreApiSettings.CorsPolicyName, policy =>
                 {
                     policy.WithOrigins(CoreApiSettings.CorsOrigin)
@@ -85,8 +79,7 @@ namespace CoreApi.Web
                 });
             });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, CoreContext coreContext)
         {
             app.UseCors(CoreApiSettings.CorsPolicyName);
