@@ -56,6 +56,7 @@ namespace AuthorizationServer.Controllers
             var model = new IndexViewModel
             {
                 Username = user.UserName,
+                Alias = user.Alias,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
@@ -77,7 +78,7 @@ namespace AuthorizationServer.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"无法找到用户 '{_userManager.GetUserId(User)}'.");
             }
 
             var email = user.Email;
@@ -86,7 +87,7 @@ namespace AuthorizationServer.Controllers
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
                 if (!setEmailResult.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
+                    throw new ApplicationException($"设置Email时发生错误, 用户ID为 '{user.Id}'.");
                 }
             }
 
@@ -96,11 +97,22 @@ namespace AuthorizationServer.Controllers
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
+                    throw new ApplicationException($"设置电话号码时发生错误, 用户ID为 '{user.Id}'.");
                 }
             }
 
-            StatusMessage = "Your profile has been updated";
+            var alias = user.Alias;
+            if (model.Alias != alias)
+            {
+                user.Alias = model.Alias;
+                var setAliasResult = await _userManager.UpdateAsync(user);
+                if (!setAliasResult.Succeeded)
+                {
+                    throw new ApplicationException($"设置登陆别名时发生错误, 用户ID为 '{user.Id}'.");
+                }
+            }
+
+            StatusMessage = "您的档案已经被更新";
             return RedirectToAction(nameof(Index));
         }
 

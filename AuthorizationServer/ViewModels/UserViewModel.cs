@@ -12,7 +12,7 @@ namespace AuthorizationServer.ViewModels
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
 
-        [Display(Name = "登陆别名")]
+        [Display(Name = "别名")]
         public string Alias { get; set; }
     }
 }

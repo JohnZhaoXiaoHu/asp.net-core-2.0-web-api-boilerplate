@@ -7,6 +7,9 @@ namespace AuthorizationServer.Models.ManageViewModels
         [Display(Name = "用户名")]
         public string Username { get; set; }
 
+        [Display(Name = "别名")]
+        public string Alias { get; set; }
+
         public bool IsEmailConfirmed { get; set; }
 
         [Required]
