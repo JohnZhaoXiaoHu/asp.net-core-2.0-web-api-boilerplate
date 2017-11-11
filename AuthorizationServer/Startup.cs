@@ -4,12 +4,15 @@ using AuthorizationServer.Data;
 using AuthorizationServer.Extensions;
 using AuthorizationServer.Models;
 using AuthorizationServer.Services;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedSettings.Policies;
 using SharedSettings.Settings;
 
 namespace AuthorizationServer
@@ -35,11 +38,11 @@ namespace AuthorizationServer
             {
                 // Password settings
                 options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = 4;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 2;
+                options.Password.RequiredUniqueChars = 1;
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
@@ -53,9 +56,23 @@ namespace AuthorizationServer
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "MLHAuthorizationServerCookie";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.SlidingExpiration = true;
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+            });
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddMvc();
-            
+
+            services.AddAutoMapper();
+
             services.AddIdentityServer()
 #if DEBUG
                 .AddDeveloperSigningCredential()
@@ -80,19 +97,11 @@ namespace AuthorizationServer
                 })
                 .AddAspNetIdentity<ApplicationUser>();
 
-            // As an Identity Server Client
-            services.AddMvcCore()
-                .AddAuthorization()
-                .AddJsonFormatters();
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
-                {
-                    options.Authority = AuthorizationServerSettings.AuthorizationServerBase;
-                    options.RequireHttpsMetadata = false;
-
-                    options.ApiName = AuthorizationServerSettings.ApiResource.Name;
-                });
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(CoreApiAuthorizationPolicy.PolicyName, policy =>
+                    policy.RequireClaim(CoreApiAuthorizationPolicy.ClaimName, CoreApiAuthorizationPolicy.ClaimValue));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

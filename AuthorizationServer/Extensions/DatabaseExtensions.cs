@@ -1,9 +1,12 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using AuthorizationServer.Configuration;
 using AuthorizationServer.Data;
+using AuthorizationServer.Models;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,18 +18,17 @@ namespace AuthorizationServer.Extensions
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+                var applicationDbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var persistedGrantDbContext = serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>();
                 var configurationDbContext = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-#if DEBUG
-                persistedGrantDbContext.Database.EnsureDeleted();
-                persistedGrantDbContext.Database.EnsureCreated();
-                configurationDbContext.Database.EnsureDeleted();
-                configurationDbContext.Database.EnsureCreated();
-#else
+
+                //applicationDbContext.Database.EnsureCreated();
+                //persistedGrantDbContext.Database.EnsureCreated();
+                //configurationDbContext.Database.EnsureCreated();
+
+                applicationDbContext.Database.Migrate();
                 persistedGrantDbContext.Database.Migrate();
                 configurationDbContext.Database.Migrate();
-#endif
 
                 if (!configurationDbContext.Clients.Any())
                 {
@@ -54,6 +56,21 @@ namespace AuthorizationServer.Extensions
                     }
                     configurationDbContext.SaveChanges();
                 }
+
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                Task.Run(async () =>
+                {
+                    var admin = await userManager.FindByNameAsync("admin");
+                    if (admin == null)
+                    {
+                        await userManager.CreateAsync(new ApplicationUser
+                        {
+                            UserName = "admin",
+                            Email = "emailyx@gmail.com"
+                        }, "admin");
+                    }
+                }).GetAwaiter().GetResult();
+                
             }
         }
     }

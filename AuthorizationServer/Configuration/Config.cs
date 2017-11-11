@@ -11,9 +11,8 @@ namespace AuthorizationServer.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(AuthorizationServerSettings.ApiResource.Name, AuthorizationServerSettings.ApiResource.DisplayName),
                 new ApiResource(AdminClientSettings.ApiResource.Name, AdminClientSettings.ApiResource.DisplayName),
-                new ApiResource(CoreApiSettings.CoreApiResource.Name, CoreApiSettings.CoreApiResource.DisplayName),
+                new ApiResource(CoreApiSettings.ApiResource.Name, CoreApiSettings.ApiResource.DisplayName),
                 new ApiResource("socialnetwork", "社交网络")
                 {
                     UserClaims = new [] { "email" }
@@ -25,17 +24,6 @@ namespace AuthorizationServer.Configuration
         {
             return new List<Client>
             {
-                new Client
-                {
-                    ClientId = AuthorizationServerSettings.Client.ClientId,
-                    ClientSecrets = new [] { new Secret(AuthorizationServerSettings.Client.ClientSecret.Sha256()) },
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = new [] {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        AuthorizationServerSettings.ApiResource.Name
-                    }
-                },
                 // Admin JavaScript Client
                 new Client
                 {
@@ -43,16 +31,15 @@ namespace AuthorizationServer.Configuration
                     ClientName = AdminClientSettings.Client.ClientName,
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-
                     RedirectUris =           { AdminClientSettings.Client.RedirectUris },
                     PostLogoutRedirectUris = { AdminClientSettings.Client.PostLogoutRedirectUris },
                     AllowedCorsOrigins =     { AdminClientSettings.Client.AllowedCorsOrigins },
-
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        AdminClientSettings.ApiResource.Name
+                        AdminClientSettings.ApiResource.Name,
+                        CoreApiSettings.ApiResource.Name
                     }
                 },
                 new Client
@@ -79,7 +66,7 @@ namespace AuthorizationServer.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        CoreApiSettings.CoreApiResource.Name,
+                        CoreApiSettings.ApiResource.Name,
                         "socialnetwork"
                     },
                     AllowOfflineAccess = true,
@@ -101,7 +88,7 @@ namespace AuthorizationServer.Configuration
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        CoreApiSettings.CoreApiResource.Name
+                        CoreApiSettings.ApiResource.Name
                     }
                 }
             };

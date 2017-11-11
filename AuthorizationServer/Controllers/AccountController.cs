@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AuthorizationServer.Extensions;
@@ -6,6 +8,8 @@ using AuthorizationServer.Models;
 using AuthorizationServer.Models.AccountViewModels;
 using AuthorizationServer.Quickstart.Account;
 using AuthorizationServer.Services;
+using AuthorizationServer.ViewModels;
+using AutoMapper;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
@@ -13,7 +17,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SharedSettings.Policies;
 
 namespace AuthorizationServer.Controllers
 {
@@ -26,6 +32,8 @@ namespace AuthorizationServer.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
+        private readonly IMapper _mapper;
+
         private readonly IIdentityServerInteractionService _interaction;
         private readonly AccountService _account;
 
@@ -34,6 +42,7 @@ namespace AuthorizationServer.Controllers
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
+            IMapper mapper,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IHttpContextAccessor httpContextAccessor,
@@ -44,6 +53,8 @@ namespace AuthorizationServer.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+
+            _mapper = mapper;
 
             _interaction = interaction;
             _account = new AccountService(interaction, httpContextAccessor, schemeProvider, clientStore);
@@ -224,6 +235,7 @@ namespace AuthorizationServer.Controllers
             return View();
         }
 
+        [HttpGet]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -251,6 +263,90 @@ namespace AuthorizationServer.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(CoreApiAuthorizationPolicy.PolicyName)]
+        public async Task<IActionResult> Users(string successfulMessage = null, string errorMessage = null)
+        {
+            var users = await _userManager.Users.OrderBy(x => x.UserName).ToListAsync();
+            var userVms = _mapper.Map<IEnumerable<UserViewModel>>(users);
+            ViewData["SuccessfulMessage"] = successfulMessage;
+            ViewData["ErrorMessage"] = errorMessage;
+            return View(userVms);
+        }
+
+        [HttpGet]
+        [Authorize(CoreApiAuthorizationPolicy.PolicyName)]
+        public IActionResult AddUser(string successfulMsg = null)
+        {
+            ViewData["SuccessfulMsg"] = successfulMsg;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(CoreApiAuthorizationPolicy.PolicyName)]
+        public async Task<IActionResult> AddUser(AddUserViewModel model)
+        {
+            if (string.IsNullOrEmpty(model.Password))
+            {
+                model.Password = "123456";
+            }
+            if (string.IsNullOrEmpty(model.Email))
+            {
+                model.Email = $"{model.UserName}@mlhry.com";
+            }
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("添加了一个用户, 有密码.");
+                    return RedirectToAction("AddUser", "Account", new { successfulMsg = "添加用户成功, 请继续添加或返回" });
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [Authorize(CoreApiAuthorizationPolicy.PolicyName)]
+        public async Task<IActionResult> DeleteUser(string id, bool? saveChangesError = false)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (user.UserName == "admin")
+            {
+                var msg = "删除用户失败, admin不可以删除";
+                _logger.LogError(msg);
+                ViewData["ErrorMessage"] = msg;
+
+                return RedirectToAction("Users", new { errorMessage = msg });
+            }
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                var msg = $"删除用户失败, 用户名: {user.UserName}";
+                _logger.LogError(msg);
+                ViewData["ErrorMessage"] = msg;
+
+                return RedirectToAction("Users", new { errorMessage = msg });
+            }
+            var successfulMsg = "删除成功";
+            ViewData["SuccessfulMessage"] = successfulMsg;
+            return RedirectToAction("Users", new { successfulMessage = successfulMsg });
         }
 
         [HttpGet]

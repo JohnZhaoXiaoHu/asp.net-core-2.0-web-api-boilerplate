@@ -53,7 +53,7 @@ namespace CoreApi.Web
             
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = CoreApiSettings.CoreApiResource.DisplayName, Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = CoreApiSettings.ApiResource.DisplayName, Version = "v1" });
             });
             
             services.AddMvcCore()
@@ -66,7 +66,7 @@ namespace CoreApi.Web
                     options.Authority = AuthorizationServerSettings.AuthorizationServerBase;
                     options.RequireHttpsMetadata = false;
 
-                    options.ApiName = CoreApiSettings.CoreApiResource.Name;
+                    options.ApiName = CoreApiSettings.ApiResource.Name;
                 });
 
             services.AddCors(options =>

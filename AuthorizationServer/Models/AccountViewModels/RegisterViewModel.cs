@@ -13,7 +13,7 @@ namespace AuthorizationServer.Models.AccountViewModels
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0}的最小长度是{2}, 最大长度是{1}.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0}的最小长度是{2}, 最大长度是{1}.", MinimumLength = 4)]
         [DataType(DataType.Password)]
         [Display(Name = "密码")]
         public string Password { get; set; }
