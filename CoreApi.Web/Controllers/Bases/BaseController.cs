@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoMapper;
-using CoreApi.DataContext.Infrastructure;
-using CoreApi.Services.Core;
+using Infrastructure.Features.Data;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;

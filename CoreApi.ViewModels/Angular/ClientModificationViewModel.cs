@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CoreApi.Infrastructure.Features.Common;
 
 namespace CoreApi.ViewModels.Angular
 {

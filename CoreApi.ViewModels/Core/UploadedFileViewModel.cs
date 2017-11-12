@@ -1,5 +1,5 @@
-﻿using CoreApi.Infrastructure.Features.Common;
-using CoreApi.Infrastructure.Features.File;
+﻿using Infrastructure.Features.Common;
+using Infrastructure.Features.File;
 
 namespace CoreApi.ViewModels.Core
 {
@@ -14,6 +14,5 @@ namespace CoreApi.ViewModels.Core
         public string FileName { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
-        public bool Deleted { get; set; }
     }
 }

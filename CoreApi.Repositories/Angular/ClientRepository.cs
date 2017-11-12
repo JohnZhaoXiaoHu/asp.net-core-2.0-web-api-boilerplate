@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CoreApi.DataContext.Infrastructure;
-using CoreApi.Models.Angular;
+﻿using CoreApi.Models.Angular;
+using Infrastructure.Features.Data;
 
 namespace CoreApi.Repositories.Angular
 {

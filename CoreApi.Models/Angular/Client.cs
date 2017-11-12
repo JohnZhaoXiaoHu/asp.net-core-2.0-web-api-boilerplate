@@ -1,4 +1,4 @@
-﻿using CoreApi.Infrastructure.Features.Common;
+﻿using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

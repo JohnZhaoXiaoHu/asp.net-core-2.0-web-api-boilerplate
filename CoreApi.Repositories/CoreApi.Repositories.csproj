@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreApi.DataContext\CoreApi.DataContext.csproj" />
-    <ProjectReference Include="..\CoreApi.Infrastructure\CoreApi.Infrastructure.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\CoreApi.Models\CoreApi.Models.csproj" />
   </ItemGroup>
 

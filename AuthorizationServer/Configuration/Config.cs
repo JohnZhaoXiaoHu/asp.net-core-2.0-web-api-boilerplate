@@ -11,12 +11,8 @@ namespace AuthorizationServer.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(AdminClientSettings.ApiResource.Name, AdminClientSettings.ApiResource.DisplayName),
                 new ApiResource(CoreApiSettings.ApiResource.Name, CoreApiSettings.ApiResource.DisplayName),
-                new ApiResource("socialnetwork", "社交网络")
-                {
-                    UserClaims = new [] { "email" }
-                }
+                new ApiResource(SalesApiSettings.ApiResource.Name, SalesApiSettings.ApiResource.DisplayName)
             };
         }
 
@@ -24,54 +20,6 @@ namespace AuthorizationServer.Configuration
         {
             return new List<Client>
             {
-                // Admin JavaScript Client
-                new Client
-                {
-                    ClientId = AdminClientSettings.Client.ClientId,
-                    ClientName = AdminClientSettings.Client.ClientName,
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { AdminClientSettings.Client.RedirectUris },
-                    PostLogoutRedirectUris = { AdminClientSettings.Client.PostLogoutRedirectUris },
-                    AllowedCorsOrigins =     { AdminClientSettings.Client.AllowedCorsOrigins },
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        AdminClientSettings.ApiResource.Name,
-                        CoreApiSettings.ApiResource.Name
-                    }
-                },
-                new Client
-                {
-                    ClientId = "socialnetwork",
-                    ClientSecrets = new [] { new Secret("secret".Sha256()) },
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                    AllowedScopes = new [] { "socialnetwork" }
-                },
-                new Client
-                {
-                    ClientId = "mvc_code",
-                    ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                    RequireConsent = true,
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    RedirectUris = { "http://localhost:5002/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
-                        CoreApiSettings.ApiResource.Name,
-                        "socialnetwork"
-                    },
-                    AllowOfflineAccess = true,
-                    AllowAccessTokensViaBrowser = true
-                },
                 // Core JavaScript Client
                 new Client
                 {
@@ -90,7 +38,50 @@ namespace AuthorizationServer.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         CoreApiSettings.ApiResource.Name
                     }
-                }
+                },
+                // Sales JavaScript Client
+                new Client
+                {
+                    ClientId = SalesApiSettings.Client.ClientId,
+                    ClientName = SalesApiSettings.Client.ClientName,
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris =           { SalesApiSettings.Client.RedirectUris },
+                    PostLogoutRedirectUris = { SalesApiSettings.Client.PostLogoutRedirectUris },
+                    AllowedCorsOrigins =     { SalesApiSettings.Client.AllowedCorsOrigins },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        SalesApiSettings.ApiResource.Name,
+                        CoreApiSettings.ApiResource.Name
+                    }
+                },
+                // Sample
+                //new Client
+                //{
+                //    ClientId = "mvc_code",
+                //    ClientName = "MVC Client",
+                //    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                //    RequireConsent = true,
+                //    ClientSecrets =
+                //    {
+                //        new Secret("secret".Sha256())
+                //    },
+                //    RedirectUris = { "http://localhost:5002/signin-oidc" },
+                //    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+                //    AllowedScopes =
+                //    {
+                //        IdentityServerConstants.StandardScopes.OpenId,
+                //        IdentityServerConstants.StandardScopes.Profile,
+                //        IdentityServerConstants.StandardScopes.Email,
+                //        CoreApiSettings.ApiResource.Name
+                //    },
+                //    AllowOfflineAccess = true,
+                //    AllowAccessTokensViaBrowser = true
+                //},
             };
         }
 

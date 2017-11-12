@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CoreApi.Infrastructure.Features.Common;
-using CoreApi.Infrastructure.Features.File;
-using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.Features.Common;
+using Infrastructure.Features.File;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CoreApi.Models.Core
@@ -19,7 +15,6 @@ namespace CoreApi.Models.Core
         public string FileName { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
-        public bool Deleted { get; set; }
     }
 
     public class UploadedFileConfiguration : EntityBaseConfiguration<UploadedFile>

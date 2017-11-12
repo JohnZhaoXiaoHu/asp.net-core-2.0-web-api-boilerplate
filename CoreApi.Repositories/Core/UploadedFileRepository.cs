@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CoreApi.DataContext.Infrastructure;
-using CoreApi.Models.Core;
+﻿using CoreApi.Models.Core;
+using Infrastructure.Features.Data;
 
 namespace CoreApi.Repositories.Core
 {

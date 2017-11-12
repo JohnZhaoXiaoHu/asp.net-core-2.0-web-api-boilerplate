@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CoreApi.DataContext.Infrastructure;
-using CoreApi.Services.Core;
+﻿using System.Linq;
 using CoreApi.Web.Controllers.Bases;
-using Microsoft.AspNetCore.Authorization;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 // ReSharper disable All

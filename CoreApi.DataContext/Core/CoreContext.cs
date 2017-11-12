@@ -1,7 +1,7 @@
-﻿using CoreApi.DataContext.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using CoreApi.Models.Angular;
 using CoreApi.Models.Core;
+using Infrastructure.Features.Data;
 
 namespace CoreApi.DataContext.Core
 {

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
-using CoreApi.Infrastructure.Features.Common;
 using CoreApi.Models.Angular;
 using CoreApi.Repositories.Angular;
-using CoreApi.Services.Core;
 using CoreApi.ViewModels.Angular;
 using CoreApi.Web.Controllers.Bases;
+using Infrastructure.Features.Common;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
