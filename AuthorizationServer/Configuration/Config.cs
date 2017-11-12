@@ -55,6 +55,7 @@ namespace AuthorizationServer.Configuration
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
                         SalesApiSettings.ApiResource.Name,
                         CoreApiSettings.ApiResource.Name
                     }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,8 @@ using SalesApi.Web.Controllers.Bases;
 
 namespace SalesApi.Web.Controllers.Settings
 {
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("api/sales/[controller]")]
     public class VehicleController : SalesController<VehicleController>
     {
         private readonly IVehicleRepository _vehicleRepository;
