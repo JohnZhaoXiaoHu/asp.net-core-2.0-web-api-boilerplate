@@ -21,11 +21,7 @@ namespace AuthorizationServer.Extensions
                 var applicationDbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var persistedGrantDbContext = serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>();
                 var configurationDbContext = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-
-                //applicationDbContext.Database.EnsureCreated();
-                //persistedGrantDbContext.Database.EnsureCreated();
-                //configurationDbContext.Database.EnsureCreated();
-
+                
                 applicationDbContext.Database.Migrate();
                 persistedGrantDbContext.Database.Migrate();
                 configurationDbContext.Database.Migrate();

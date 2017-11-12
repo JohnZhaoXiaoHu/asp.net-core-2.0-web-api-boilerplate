@@ -13,6 +13,9 @@ namespace AuthorizationServer.Configuration
             {
                 new ApiResource(CoreApiSettings.ApiResource.Name, CoreApiSettings.ApiResource.DisplayName),
                 new ApiResource(SalesApiSettings.ApiResource.Name, SalesApiSettings.ApiResource.DisplayName)
+                {
+                    UserClaims = new [] { "email", "name", "preferred_username" }
+                }
             };
         }
 
@@ -56,6 +59,7 @@ namespace AuthorizationServer.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
+                        "user",
                         SalesApiSettings.ApiResource.Name,
                         CoreApiSettings.ApiResource.Name
                     }
@@ -92,7 +96,8 @@ namespace AuthorizationServer.Configuration
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResources.Email()
+                new IdentityResources.Email(),
+                new IdentityResource("user", new [] {"name", "preferred_username" })
             };
         }
     }
