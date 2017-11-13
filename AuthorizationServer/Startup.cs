@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using AuthorizationServer.Configuration;
 using AuthorizationServer.Data;
 using AuthorizationServer.Extensions;
 using AuthorizationServer.Models;
@@ -80,12 +81,9 @@ namespace AuthorizationServer
                     SharedSettings.Settings.AuthorizationServerSettings.Certificate.Path, 
                     SharedSettings.Settings.AuthorizationServerSettings.Certificate.Password))
 #endif
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
-                        builder.UseSqlServer(connectionString,
-                            sql => sql.MigrationsAssembly(migrationsAssembly));
-                })
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = builder =>
