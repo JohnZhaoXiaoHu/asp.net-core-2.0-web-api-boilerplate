@@ -3,8 +3,10 @@ using System.Reflection;
 using AutoMapper;
 using Infrastructure.Features.Data;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +27,7 @@ namespace SalesApi.Web
         }
 
         public IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SalesContext>(options =>
@@ -34,6 +36,12 @@ namespace SalesApi.Web
             services.AddMvc(options =>
             {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
+
+                // set authorize on all controllers
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
             });
 
             services.AddAutoMapper();
@@ -75,7 +83,7 @@ namespace SalesApi.Web
                 });
             });
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseCors(SalesApiSettings.CorsPolicyName);
@@ -97,7 +105,7 @@ namespace SalesApi.Web
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", SalesApiSettings.Client.ClientName + " API v1");
             });
-            
+
             app.UseAuthentication();
             app.UseMvc();
         }

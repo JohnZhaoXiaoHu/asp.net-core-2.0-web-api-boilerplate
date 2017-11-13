@@ -13,7 +13,6 @@ using SalesApi.Web.Controllers.Bases;
 
 namespace SalesApi.Web.Controllers.Settings
 {
-    [Authorize]
     [Route("api/sales/[controller]")]
     public class VehicleController : SalesController<VehicleController>
     {
