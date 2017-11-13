@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using IdentityServer4;
 using IdentityServer4.Models;
+using SharedSettings;
 using SharedSettings.Settings;
 
 namespace AuthorizationServer.Configuration
@@ -11,7 +12,10 @@ namespace AuthorizationServer.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(CoreApiSettings.ApiResource.Name, CoreApiSettings.ApiResource.DisplayName),
+                new ApiResource(CoreApiSettings.ApiResource.Name, CoreApiSettings.ApiResource.DisplayName)
+                {
+                    UserClaims = new [] { "email", "name", "preferred_username" }
+                },
                 new ApiResource(SalesApiSettings.ApiResource.Name, SalesApiSettings.ApiResource.DisplayName)
                 {
                     UserClaims = new [] { "email", "name", "preferred_username" }
@@ -39,6 +43,8 @@ namespace AuthorizationServer.Configuration
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityResourceSettings.UserResourceName,
                         CoreApiSettings.ApiResource.Name
                     }
                 },
@@ -59,34 +65,11 @@ namespace AuthorizationServer.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "user",
+                        IdentityResourceSettings.UserResourceName,
                         SalesApiSettings.ApiResource.Name,
                         CoreApiSettings.ApiResource.Name
                     }
-                },
-                // Sample
-                //new Client
-                //{
-                //    ClientId = "mvc_code",
-                //    ClientName = "MVC Client",
-                //    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                //    RequireConsent = true,
-                //    ClientSecrets =
-                //    {
-                //        new Secret("secret".Sha256())
-                //    },
-                //    RedirectUris = { "http://localhost:5002/signin-oidc" },
-                //    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-                //    AllowedScopes =
-                //    {
-                //        IdentityServerConstants.StandardScopes.OpenId,
-                //        IdentityServerConstants.StandardScopes.Profile,
-                //        IdentityServerConstants.StandardScopes.Email,
-                //        CoreApiSettings.ApiResource.Name
-                //    },
-                //    AllowOfflineAccess = true,
-                //    AllowAccessTokensViaBrowser = true
-                //},
+                }
             };
         }
 
@@ -97,7 +80,7 @@ namespace AuthorizationServer.Configuration
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email(),
-                new IdentityResource("user", new [] {"name", "preferred_username" })
+                new IdentityResource(IdentityResourceSettings.UserResourceName, new [] { "name", "preferred_username" })
             };
         }
     }
