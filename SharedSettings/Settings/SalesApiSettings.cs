@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SharedSettings.Settings
+﻿namespace SharedSettings.Settings
 {
     public class SalesApiSettings
     {
-        #region CoreApi
-        
+#if DEBUG
+        public const string UriBase = "http://localhost:4200";
+#else
+        public const string UriBase = "http://localhost:4200";
+#endif
         public static string CorsPolicyName = "sales";
-        public static string CorsOrigin = "http://localhost:4200";
+        public static string CorsOrigin = UriBase;
         public static (string Name, string DisplayName) ApiResource = ("salesapi", "销售系统 APIs");
         public static (string ClientId, string ClientName, string RedirectUris, string PostLogoutRedirectUris, string AllowedCorsOrigins) Client =
-            ("sales", "销售系统", "http://localhost:4200/login-callback", "http://localhost:4200/index.html", "http://localhost:4200");
-
-        #endregion
+            ("sales", "销售系统", $"{UriBase}/login-callback", $"{UriBase}/index.html", $"{UriBase}");
     }
 }
