@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20171115083125_AddDistributionGroupAndDeliveryVehicle")]
+    partial class AddDistributionGroupAndDeliveryVehicle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

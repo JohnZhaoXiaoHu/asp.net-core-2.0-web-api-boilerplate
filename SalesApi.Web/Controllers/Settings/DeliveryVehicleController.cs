@@ -13,40 +13,40 @@ using SalesApi.Web.Controllers.Bases;
 namespace SalesApi.Web.Controllers.Settings
 {
     [Route("api/sales/[controller]")]
-    public class VehicleController : SalesController<VehicleController>
+    public class DeliveryVehicleController : SalesController<DeliveryVehicleController>
     {
-        private readonly IVehicleRepository _vehicleRepository;
-        public VehicleController(ICoreService<VehicleController> coreService,
-            IVehicleRepository vehicleRepository) : base(coreService)
+        private readonly IDeliveryVehicleRepository _deliveryVehicleRepository;
+        public DeliveryVehicleController(ICoreService<DeliveryVehicleController> coreService,
+            IDeliveryVehicleRepository deliveryVehicleRepository) : base(coreService)
         {
-            _vehicleRepository = vehicleRepository;
+            _deliveryVehicleRepository = deliveryVehicleRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _vehicleRepository.All.ToListAsync();
-            var results = Mapper.Map<IEnumerable<VehicleViewModel>>(items);
+            var items = await _deliveryVehicleRepository.All.ToListAsync();
+            var results = Mapper.Map<IEnumerable<DeliveryVehicleViewModel>>(items);
             return Ok(results);
         }
 
         [HttpGet]
-        [Route("{id}", Name = "GetVehicle")]
+        [Route("{id}", Name = "GetDeliveryVehicle")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _vehicleRepository.GetSingleAsync(id);
+             var item = await _deliveryVehicleRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
-            var result = Mapper.Map<VehicleViewModel>(item);
+            var result = Mapper.Map<DeliveryVehicleViewModel>(item);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] VehicleViewModel vehicleVm)
+        public async Task<IActionResult> Post([FromBody] DeliveryVehicleViewModel deliveryVehicleVm)
         {
-            if (vehicleVm == null)
+            if (deliveryVehicleVm == null)
             {
                 return BadRequest();
             }
@@ -56,23 +56,23 @@ namespace SalesApi.Web.Controllers.Settings
                 return BadRequest(ModelState);
             }
 
-            var newItem = Mapper.Map<Vehicle>(vehicleVm);
+            var newItem = Mapper.Map<DeliveryVehicle>(deliveryVehicleVm);
             newItem.SetCreation(UserName);
-            _vehicleRepository.Add(newItem);
+            _deliveryVehicleRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
 
-            var vm = Mapper.Map<VehicleViewModel>(newItem);
+            var vm = Mapper.Map<DeliveryVehicleViewModel>(newItem);
 
-            return CreatedAtRoute("GetVehicle", new { id = vm.Id }, vm);
+            return CreatedAtRoute("GetDeliveryVehicle", new { id = vm.Id }, vm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] VehicleViewModel vehicleVm)
+        public async Task<IActionResult> Put(int id, [FromBody] DeliveryVehicleViewModel deliveryVehicleVm)
         {
-            if (vehicleVm == null)
+            if (deliveryVehicleVm == null)
             {
                 return BadRequest();
             }
@@ -81,14 +81,14 @@ namespace SalesApi.Web.Controllers.Settings
             {
                 return BadRequest(ModelState);
             }
-            var dbItem = await _vehicleRepository.GetSingleAsync(id);
+            var dbItem = await _deliveryVehicleRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            Mapper.Map(vehicleVm, dbItem);
+            Mapper.Map(deliveryVehicleVm, dbItem);
             dbItem.SetModification(UserName);
-            _vehicleRepository.Update(dbItem);
+            _deliveryVehicleRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
@@ -98,18 +98,18 @@ namespace SalesApi.Web.Controllers.Settings
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<VehicleViewModel> patchDoc)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<DeliveryVehicleViewModel> patchDoc)
         {
             if (patchDoc == null)
             {
                 return BadRequest();
             }
-            var dbItem = await _vehicleRepository.GetSingleAsync(id);
+            var dbItem = await _deliveryVehicleRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            var toPatchVm = Mapper.Map<VehicleViewModel>(dbItem);
+            var toPatchVm = Mapper.Map<DeliveryVehicleViewModel>(dbItem);
             patchDoc.ApplyTo(toPatchVm, ModelState);
 
             TryValidateModel(toPatchVm);
@@ -131,12 +131,12 @@ namespace SalesApi.Web.Controllers.Settings
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _vehicleRepository.GetSingleAsync(id);
+            var model = await _deliveryVehicleRepository.GetSingleAsync(id);
             if (model == null)
             {
                 return NotFound();
             }
-            _vehicleRepository.Delete(model);
+            _deliveryVehicleRepository.Delete(model);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "删除时出错");

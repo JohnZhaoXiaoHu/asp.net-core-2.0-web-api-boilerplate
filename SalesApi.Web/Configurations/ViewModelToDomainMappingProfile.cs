@@ -11,6 +11,8 @@ namespace SalesApi.Web.Configurations
         public ViewModelToDomainMappingProfile()
         {
             CreateMap<VehicleViewModel, Vehicle>();
+            CreateMap<DistributionGroupViewModel, DistributionGroup>();
+            CreateMap<DeliveryVehicleViewModel, DeliveryVehicle>();
         }
     }
 }

@@ -10,14 +10,18 @@ namespace SalesApi.DataContext.Contexts
             : base(options)
         {
         }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new VehicleConfiguration());
+            modelBuilder.ApplyConfiguration(new DistributionGroupConfiguration());
+            modelBuilder.ApplyConfiguration(new DeliveryVehicleConfiguration());
         }
 
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<DistributionGroup> DistributionGroups { get; set; }
+        public DbSet<DeliveryVehicle> DeliveryVehicles { get; set; }
     }
 }

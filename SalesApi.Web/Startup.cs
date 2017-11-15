@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SalesApi.DataContext.Contexts;
 using SalesApi.Repositories.Settings;
+using SalesApi.Web.Configurations;
 using SharedSettings.Settings;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -48,7 +49,7 @@ namespace SalesApi.Web
 
             services.AddScoped<IUnitOfWork, SalesContext>();
             services.AddScoped(typeof(ICoreService<>), typeof(CoreService<>));
-            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddRepositories();
 
             var physicalProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
             var embeddedProvider = new EmbeddedFileProvider(Assembly.GetEntryAssembly());
