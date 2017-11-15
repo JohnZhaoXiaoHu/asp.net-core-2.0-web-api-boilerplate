@@ -21,6 +21,7 @@ namespace SalesApi.Models.Settings
         public override void ConfigureDerived(EntityTypeBuilder<DistributionGroup> b)
         {
             b.Property(x => x.Name).HasMaxLength(50);
+            b.HasIndex(x => x.No).IsUnique();
         }
     }
 }
