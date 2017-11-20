@@ -35,7 +35,7 @@ namespace AuthorizationServer.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris =           { CoreApiSettings.Client.RedirectUris },
+                    RedirectUris =           { CoreApiSettings.Client.RedirectUri, CoreApiSettings.Client.SilentRedirectUri },
                     PostLogoutRedirectUris = { CoreApiSettings.Client.PostLogoutRedirectUris },
                     AllowedCorsOrigins =     { CoreApiSettings.Client.AllowedCorsOrigins },
 
@@ -55,8 +55,10 @@ namespace AuthorizationServer.Configuration
                     ClientName = SalesApiSettings.Client.ClientName,
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
+                    AccessTokenLifetime = 10,
+                    AllowOfflineAccess = true,
 
-                    RedirectUris =           { SalesApiSettings.Client.RedirectUris },
+                    RedirectUris =           { SalesApiSettings.Client.RedirectUri, SalesApiSettings.Client.SilentRedirectUri },
                     PostLogoutRedirectUris = { SalesApiSettings.Client.PostLogoutRedirectUris },
                     AllowedCorsOrigins =     { SalesApiSettings.Client.AllowedCorsOrigins },
 
