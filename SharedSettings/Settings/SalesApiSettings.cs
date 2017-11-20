@@ -10,7 +10,7 @@
         public static string CorsPolicyName = "sales";
         public static string CorsOrigin = UriBase;
         public static (string Name, string DisplayName) ApiResource = ("salesapi", "销售系统 APIs");
-        public static (string ClientId, string ClientName, string RedirectUris, string PostLogoutRedirectUris, string AllowedCorsOrigins) Client =
-            ("sales", "销售系统", $"{UriBase}/login-callback", $"{UriBase}/index.html", $"{UriBase}");
+        public static (string ClientId, string ClientName, string RedirectUri, string SilentRedirectUri, string PostLogoutRedirectUris, string AllowedCorsOrigins) Client =
+            ("sales", "销售系统", $"{UriBase}/login-callback", $"{UriBase}/silent-renew.html", $"{UriBase}/index.html", $"{UriBase}");
     }
 }
