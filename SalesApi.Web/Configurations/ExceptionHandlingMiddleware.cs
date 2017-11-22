@@ -44,15 +44,8 @@ namespace SalesApi.Web.Configurations
 
         private static string GetInnerMessage(Exception ex)
         {
-            if (ex != null)
-            {
-                if (ex.InnerException != null)
-                {
-                    return GetInnerMessage(ex.InnerException);
-                }
-                return ex.Message;
-            }
-            return null;
+            if (ex == null) return null;
+            return ex.InnerException != null ? GetInnerMessage(ex.InnerException) : ex.Message;
         }
     }
 }
