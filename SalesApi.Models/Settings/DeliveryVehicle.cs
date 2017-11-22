@@ -5,7 +5,7 @@ using SharedSettings.Enums;
 
 namespace SalesApi.Models.Settings
 {
-    public class DeliveryVehicle: EntityBase
+    public class DeliveryVehicle : EntityBase
     {
         public SalesType SalesType { get; set; }
         public string LegacyAreaId { get; set; }
@@ -24,6 +24,7 @@ namespace SalesApi.Models.Settings
                 .OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.DistributionGroup).WithMany().HasForeignKey(x => x.DistributionGroupId).IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+            b.HasIndex(x => new { x.SalesType, x.VehicleId, x.DistributionGroupId }).IsUnique();
         }
     }
 }

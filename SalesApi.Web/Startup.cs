@@ -87,26 +87,14 @@ namespace SalesApi.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseExceptionHandlingMiddleware();
             app.UseCors(SalesApiSettings.CorsPolicyName);
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler();
-            }
-
-            app.UseStatusCodePages();
             app.UseStaticFiles();
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", SalesApiSettings.Client.ClientName + " API v1");
             });
-
             app.UseAuthentication();
             app.UseMvc();
         }
