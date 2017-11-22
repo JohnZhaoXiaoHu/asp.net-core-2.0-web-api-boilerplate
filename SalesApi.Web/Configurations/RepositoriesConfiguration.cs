@@ -10,6 +10,7 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IDistributionGroupRepository, DistributionGroupRepository>();
             services.AddScoped<IDeliveryVehicleRepository, DeliveryVehicleRepository>();
+            services.AddScoped<ISubAreaRepository, SubAreaRepository>();
         }
     }
 }

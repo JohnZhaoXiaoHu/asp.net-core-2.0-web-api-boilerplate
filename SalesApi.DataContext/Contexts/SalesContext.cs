@@ -18,10 +18,12 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new VehicleConfiguration());
             modelBuilder.ApplyConfiguration(new DistributionGroupConfiguration());
             modelBuilder.ApplyConfiguration(new DeliveryVehicleConfiguration());
+            modelBuilder.ApplyConfiguration(new SubAreaConfiguration());
         }
 
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<DistributionGroup> DistributionGroups { get; set; }
         public DbSet<DeliveryVehicle> DeliveryVehicles { get; set; }
+        public DbSet<SubArea> SubAreas { get; set; }
     }
 }

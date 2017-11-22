@@ -1,4 +1,5 @@
-﻿using Infrastructure.Features.Common;
+﻿using System.Collections.Generic;
+using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SharedSettings.Enums;
@@ -7,12 +8,18 @@ namespace SalesApi.Models.Settings
 {
     public class DeliveryVehicle : EntityBase
     {
+        public DeliveryVehicle()
+        {
+            SubAreas = new List<SubArea>();
+        }
         public SalesType SalesType { get; set; }
         public string LegacyAreaId { get; set; }
         public int VehicleId { get; set; }
         public int DistributionGroupId { get; set; }
         public Vehicle Vehicle { get; set; }
         public DistributionGroup DistributionGroup { get; set; }
+
+        public ICollection<SubArea> SubAreas { get; set; }
     }
 
     public class DeliveryVehicleConfiguration : EntityBaseConfiguration<DeliveryVehicle>
