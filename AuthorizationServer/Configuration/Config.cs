@@ -55,7 +55,7 @@ namespace AuthorizationServer.Configuration
                     ClientName = SalesApiSettings.Client.ClientName,
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    AccessTokenLifetime = 10,
+                    AccessTokenLifetime = 60 * 10,
                     AllowOfflineAccess = true,
 
                     RedirectUris =           { SalesApiSettings.Client.RedirectUri, SalesApiSettings.Client.SilentRedirectUri },
