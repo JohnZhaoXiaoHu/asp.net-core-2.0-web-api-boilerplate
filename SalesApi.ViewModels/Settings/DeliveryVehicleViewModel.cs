@@ -9,5 +9,7 @@ namespace SalesApi.ViewModels.Settings
         public string LegacyAreaId { get; set; }
         public int VehicleId { get; set; }
         public int DistributionGroupId { get; set; }
+
+        public string VehicleName { get; set; }
     }
 }

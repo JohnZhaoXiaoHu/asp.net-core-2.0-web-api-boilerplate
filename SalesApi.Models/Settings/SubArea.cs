@@ -21,6 +21,7 @@ namespace SalesApi.Models.Settings
             b.Property(x => x.Name).IsRequired().HasMaxLength(20);
             b.HasOne(x => x.DeliveryVehicle).WithMany(x => x.SubAreas).HasForeignKey(x => x.DeliveryVehicleId)
                 .OnDelete(DeleteBehavior.Restrict);
+            b.HasIndex(x => new {x.DeliveryVehicleId, x.Name}).IsUnique();
         }
     }
 }

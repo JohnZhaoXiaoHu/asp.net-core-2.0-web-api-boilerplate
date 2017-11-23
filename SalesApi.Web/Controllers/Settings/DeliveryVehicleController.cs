@@ -25,7 +25,7 @@ namespace SalesApi.Web.Controllers.Settings
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _deliveryVehicleRepository.All.ToListAsync();
+            var items = await _deliveryVehicleRepository.AllIncluding(x => x.Vehicle).ToListAsync();
             var results = Mapper.Map<IEnumerable<DeliveryVehicleViewModel>>(items);
             return Ok(results);
         }
@@ -34,7 +34,7 @@ namespace SalesApi.Web.Controllers.Settings
         [Route("{id}", Name = "GetDeliveryVehicle")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _deliveryVehicleRepository.GetSingleAsync(id);
+            var item = await _deliveryVehicleRepository.GetSingleAsync(x => x.Id == id, x => x.Vehicle);
             if (item == null)
             {
                 return NotFound();

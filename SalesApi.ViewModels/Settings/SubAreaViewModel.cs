@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Features.Common;
+using SharedSettings.Enums;
 
 namespace SalesApi.ViewModels.Settings
 {
@@ -8,6 +9,8 @@ namespace SalesApi.ViewModels.Settings
         public string LegacySubAreaId { get; set; }
         public string Name { get; set; }
 
-        public DeliveryVehicleViewModel DeliveryVehicle { get; set; }
+        public SalesType SalesType { get; set; }
+        public string SalesTypeName { get; set; }
+        public string VehicleName { get; set; }
     }
 }

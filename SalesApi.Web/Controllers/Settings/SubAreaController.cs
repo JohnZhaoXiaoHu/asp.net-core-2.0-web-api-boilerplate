@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
@@ -16,16 +17,21 @@ namespace SalesApi.Web.Controllers.Settings
     public class SubAreaController : SalesController<SubAreaController>
     {
         private readonly ISubAreaRepository _subAreaRepository;
+        private readonly IVehicleRepository _vehicleRepository;
+
         public SubAreaController(ICoreService<SubAreaController> coreService,
-            ISubAreaRepository subAreaRepository) : base(coreService)
+            ISubAreaRepository subAreaRepository,
+            IVehicleRepository vehicleRepository) : base(coreService)
         {
             _subAreaRepository = subAreaRepository;
+            _vehicleRepository = vehicleRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _subAreaRepository.All.ToListAsync();
+            var items = await _subAreaRepository.AllIncluding(x => x.DeliveryVehicle).ToListAsync();
+            await _vehicleRepository.All.LoadAsync();
             var results = Mapper.Map<IEnumerable<SubAreaViewModel>>(items);
             return Ok(results);
         }
@@ -34,7 +40,8 @@ namespace SalesApi.Web.Controllers.Settings
         [Route("{id}", Name = "GetSubArea")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _subAreaRepository.GetSingleAsync(id);
+            var item = await _subAreaRepository.GetSingleAsync(x => x.Id == id, x => x.DeliveryVehicle);
+            await _vehicleRepository.All.Where(x => x.Id == item.DeliveryVehicle.VehicleId).LoadAsync();
             if (item == null)
             {
                 return NotFound();
@@ -44,7 +51,7 @@ namespace SalesApi.Web.Controllers.Settings
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SubAreaViewModel subAreaVm)
+        public async Task<IActionResult> Post([FromBody] SubAreaAddViewModel subAreaVm)
         {
             if (subAreaVm == null)
             {
@@ -70,7 +77,7 @@ namespace SalesApi.Web.Controllers.Settings
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] SubAreaViewModel subAreaVm)
+        public async Task<IActionResult> Put(int id, [FromBody] SubAreaEditViewModel subAreaVm)
         {
             if (subAreaVm == null)
             {
@@ -98,7 +105,7 @@ namespace SalesApi.Web.Controllers.Settings
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<SubAreaViewModel> patchDoc)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<SubAreaEditViewModel> patchDoc)
         {
             if (patchDoc == null)
             {
@@ -109,7 +116,7 @@ namespace SalesApi.Web.Controllers.Settings
             {
                 return NotFound();
             }
-            var toPatchVm = Mapper.Map<SubAreaViewModel>(dbItem);
+            var toPatchVm = Mapper.Map<SubAreaEditViewModel>(dbItem);
             patchDoc.ApplyTo(toPatchVm, ModelState);
 
             TryValidateModel(toPatchVm);
