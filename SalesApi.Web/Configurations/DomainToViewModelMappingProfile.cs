@@ -19,6 +19,8 @@ namespace SalesApi.Web.Configurations
                 .ForMember(dest => dest.SalesTypeName, opt => opt.MapFrom(src => src.DeliveryVehicle.SalesType.ToString()))
                 .ForMember(dest => dest.VehicleName, opt => opt.MapFrom(src => src.DeliveryVehicle.Vehicle.Name));
             CreateMap<SubArea, SubAreaEditViewModel>();
+            CreateMap<Product, ProductViewModel>();
+            CreateMap<ProductPrice, ProductPriceViewModel>();
         }
     }
 }

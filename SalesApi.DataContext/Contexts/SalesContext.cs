@@ -25,5 +25,7 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<DistributionGroup> DistributionGroups { get; set; }
         public DbSet<DeliveryVehicle> DeliveryVehicles { get; set; }
         public DbSet<SubArea> SubAreas { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductPrice> ProductPrices { get; set; }
     }
 }
