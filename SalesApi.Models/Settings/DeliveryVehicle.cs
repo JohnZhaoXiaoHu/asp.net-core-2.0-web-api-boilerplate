@@ -31,7 +31,7 @@ namespace SalesApi.Models.Settings
                 .OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.DistributionGroup).WithMany().HasForeignKey(x => x.DistributionGroupId).IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-            b.HasIndex(x => new { x.SalesType, x.VehicleId, x.DistributionGroupId }).IsUnique();
+            b.HasIndex(x => new { x.SalesType, x.VehicleId }).IsUnique();
         }
     }
 }
