@@ -3,6 +3,7 @@ using IdentityServer4;
 using IdentityServer4.Models;
 using SharedSettings;
 using SharedSettings.Settings;
+using IdentityModel;
 
 namespace AuthorizationServer.Configuration
 {
@@ -12,13 +13,9 @@ namespace AuthorizationServer.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(CoreApiSettings.ApiResource.Name, CoreApiSettings.ApiResource.DisplayName)
-                {
-                    UserClaims = new [] { "email", "name", "preferred_username" }
-                },
-                new ApiResource(SalesApiSettings.ApiResource.Name, SalesApiSettings.ApiResource.DisplayName)
-                {
-                    UserClaims = new [] { "email", "name", "preferred_username" }
+                new ApiResource(CoreApiSettings.ApiResource.Name, CoreApiSettings.ApiResource.DisplayName) { },
+                new ApiResource(SalesApiSettings.ApiResource.Name, SalesApiSettings.ApiResource.DisplayName) {
+                    UserClaims = { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email }
                 }
             };
         }
@@ -44,7 +41,6 @@ namespace AuthorizationServer.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        IdentityResourceSettings.UserResourceName,
                         CoreApiSettings.ApiResource.Name
                     }
                 },
@@ -57,17 +53,15 @@ namespace AuthorizationServer.Configuration
                     AllowAccessTokensViaBrowser = true,
                     AccessTokenLifetime = 60 * 10,
                     AllowOfflineAccess = true,
-
                     RedirectUris =           { SalesApiSettings.Client.RedirectUri, SalesApiSettings.Client.SilentRedirectUri },
                     PostLogoutRedirectUris = { SalesApiSettings.Client.PostLogoutRedirectUris },
                     AllowedCorsOrigins =     { SalesApiSettings.Client.AllowedCorsOrigins },
-
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        IdentityResourceSettings.UserResourceName,
                         SalesApiSettings.ApiResource.Name,
                         CoreApiSettings.ApiResource.Name
                     }
@@ -81,8 +75,7 @@ namespace AuthorizationServer.Configuration
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResources.Email(),
-                new IdentityResource(IdentityResourceSettings.UserResourceName, new [] { "name", "preferred_username" })
+                new IdentityResources.Email()
             };
         }
     }
