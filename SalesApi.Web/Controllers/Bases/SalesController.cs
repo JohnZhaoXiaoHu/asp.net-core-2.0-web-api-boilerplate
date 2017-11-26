@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
+using Infrastructure.Features.Common;
 using Infrastructure.Features.Data;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +33,5 @@ namespace SalesApi.Web.Controllers.Bases
         protected string UserName => User.Identity.Name ?? "Anonymous";
 
         #endregion
-
     }
 }
