@@ -26,5 +26,14 @@ namespace SalesApi.Web.Controllers.Core
             var types = Enum.GetValues(typeof(SalesType)).OfType<SalesType>().Select(x => new KeyValuePair<string, SalesType>(x.ToString(), x)).ToList();
             return Ok(types);
         }
+
+        [HttpGet]
+        [Route("ProductUnit")]
+        [AllowAnonymous]
+        public IActionResult GetProductUnit()
+        {
+            var types = Enum.GetValues(typeof(ProductUnit)).OfType<ProductUnit>().Select(x => new KeyValuePair<string, ProductUnit>(x.ToString(), x)).ToList();
+            return Ok(types);
+        }
     }
 }

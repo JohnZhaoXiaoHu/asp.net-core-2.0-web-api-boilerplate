@@ -15,6 +15,7 @@ namespace SalesApi.Web.Configurations
             CreateMap<DeliveryVehicleViewModel, DeliveryVehicle>();
             CreateMap<SubAreaAddViewModel, SubArea>();
             CreateMap<SubAreaEditViewModel, SubArea>();
+            CreateMap<ProductViewModel, Product>();
         }
     }
 }
