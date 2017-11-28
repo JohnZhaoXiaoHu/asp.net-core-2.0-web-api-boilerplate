@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SalesApi.DataContext.Contexts;
-using SharedSettings.Enums;
 using System;
 
 namespace SalesApi.DataContext.Migrations

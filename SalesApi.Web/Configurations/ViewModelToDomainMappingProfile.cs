@@ -10,12 +10,22 @@ namespace SalesApi.Web.Configurations
 
         public ViewModelToDomainMappingProfile()
         {
+            #region Settings
+
             CreateMap<VehicleViewModel, Vehicle>();
             CreateMap<DistributionGroupViewModel, DistributionGroup>();
             CreateMap<DeliveryVehicleViewModel, DeliveryVehicle>();
             CreateMap<SubAreaAddViewModel, SubArea>();
             CreateMap<SubAreaEditViewModel, SubArea>();
             CreateMap<ProductViewModel, Product>();
+
+            #endregion
+
+            #region Retail
+
+            
+
+            #endregion
         }
     }
 }

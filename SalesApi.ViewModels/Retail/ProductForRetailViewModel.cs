@@ -1,9 +1,9 @@
 ﻿using Infrastructure.Features.Common;
-using SharedSettings.Enums;
+using SalesApi.Shared.Enums;
 
-namespace SalesApi.ViewModels.Settings
+namespace SalesApi.ViewModels.Retail
 {
-    public class ProductPriceViewModel: EntityBase
+    public class ProductForRetailViewModel: EntityBase
     {
         public int ProductId { get; set; }
         public SalesType SalesType { get; set; }
@@ -14,6 +14,5 @@ namespace SalesApi.ViewModels.Settings
         public bool IsOrderByBox { get; set; }
         public int MinOrderCount { get; set; }
         public int OrderDivisor { get; set; }
-        public bool IsOutOfStock { get; set; }
     }
 }

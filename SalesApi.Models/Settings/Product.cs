@@ -1,18 +1,13 @@
-﻿using System.Collections.Generic;
-using Infrastructure.Features.Common;
+﻿using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SharedSettings.Enums;
+using SalesApi.Models.Retail;
+using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Settings
 {
     public class Product : EntityBase
     {
-        public Product()
-        {
-            ProductPrices = new List<ProductPrice>();
-        }
-
         public string LegacyProductId { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
@@ -23,7 +18,7 @@ namespace SalesApi.Models.Settings
         public string Barcode { get; set; }
         public decimal TaxRate { get; set; }
 
-        public ICollection<ProductPrice> ProductPrices { get; set; }
+        public ProductForRetail ProductForRetail { get; set; }
     }
 
     public class ProductConfiguration : EntityBaseConfiguration<Product>

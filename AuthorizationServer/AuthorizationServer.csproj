@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SalesApi.Shared\SalesApi.Shared.csproj" />
     <ProjectReference Include="..\SharedSettings\SharedSettings.csproj" />
   </ItemGroup>
 

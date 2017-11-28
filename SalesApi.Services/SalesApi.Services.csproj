@@ -14,6 +14,7 @@
     <ProjectReference Include="..\SalesApi.DataContext\SalesApi.DataContext.csproj" />
     <ProjectReference Include="..\SalesApi.Models\SalesApi.Models.csproj" />
     <ProjectReference Include="..\SalesApi.Repositories\SalesApi.Repositories.csproj" />
+    <ProjectReference Include="..\SalesApi.Shared\SalesApi.Shared.csproj" />
   </ItemGroup>
 
 </Project>

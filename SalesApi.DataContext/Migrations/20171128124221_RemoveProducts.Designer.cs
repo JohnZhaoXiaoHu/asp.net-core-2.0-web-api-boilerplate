@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SalesApi.DataContext.Contexts;
+using SalesApi.Shared.Enums;
 using System;
 
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    [Migration("20171122114548_AddSubArea")]
-    partial class AddSubArea
+    [Migration("20171128124221_RemoveProducts")]
+    partial class RemoveProducts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,7 +70,7 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasIndex("VehicleId1");
 
-                    b.HasIndex("SalesType", "VehicleId", "DistributionGroupId")
+                    b.HasIndex("SalesType", "VehicleId")
                         .IsUnique();
 
                     b.ToTable("DeliveryVehicles");
@@ -149,7 +150,8 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliveryVehicleId");
+                    b.HasIndex("DeliveryVehicleId", "Name")
+                        .IsUnique();
 
                     b.ToTable("SubAreas");
                 });

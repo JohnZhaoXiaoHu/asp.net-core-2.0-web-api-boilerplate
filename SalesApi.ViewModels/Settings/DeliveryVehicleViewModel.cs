@@ -1,5 +1,5 @@
 ﻿using Infrastructure.Features.Common;
-using SharedSettings.Enums;
+using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.Settings
 {

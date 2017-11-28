@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
+using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
 
 namespace SalesApi.Web.Configurations
@@ -10,6 +12,8 @@ namespace SalesApi.Web.Configurations
 
         public DomainToViewModelMappingProfile()
         {
+            #region Settings
+
             CreateMap<Vehicle, VehicleViewModel>();
             CreateMap<DistributionGroup, DistributionGroupViewModel>();
             CreateMap<DeliveryVehicle, DeliveryVehicleViewModel>()
@@ -20,7 +24,14 @@ namespace SalesApi.Web.Configurations
                 .ForMember(dest => dest.VehicleName, opt => opt.MapFrom(src => src.DeliveryVehicle.Vehicle.Name));
             CreateMap<SubArea, SubAreaEditViewModel>();
             CreateMap<Product, ProductViewModel>();
-            CreateMap<ProductPrice, ProductPriceViewModel>();
+
+            #endregion
+
+            #region Retail
+            
+            CreateMap<ProductForRetail, ProductForRetailViewModel>();
+
+            #endregion
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using IdentityServer4;
 using IdentityServer4.Models;
-using SharedSettings;
 using SharedSettings.Settings;
 using IdentityModel;
+using SalesApi.Shared.Settings;
 
 namespace AuthorizationServer.Configuration
 {

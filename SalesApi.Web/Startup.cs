@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SalesApi.DataContext.Contexts;
-using SalesApi.Repositories.Settings;
+using SalesApi.Shared.Settings;
 using SalesApi.Web.Configurations;
 using SharedSettings.Settings;
 using Swashbuckle.AspNetCore.Swagger;

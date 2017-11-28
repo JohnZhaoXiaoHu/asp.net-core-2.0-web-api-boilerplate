@@ -2,7 +2,7 @@
 using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SharedSettings.Enums;
+using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Settings
 {

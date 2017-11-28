@@ -5,48 +5,48 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SalesApi.Models.Settings;
-using SalesApi.Repositories.Settings;
-using SalesApi.ViewModels.Settings;
+using SalesApi.Models.Retail;
+using SalesApi.Repositories.Retail;
+using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Controllers.Bases;
 
-namespace SalesApi.Web.Controllers.Settings
+namespace SalesApi.Web.Controllers.Retail
 {
     [Route("api/sales/[controller]")]
-    public class ProductPriceController : SalesController<ProductPriceController>
+    public class ProductForRetailController : SalesController<ProductForRetailController>
     {
-        private readonly IProductPriceRepository _productPriceRepository;
-        public ProductPriceController(ICoreService<ProductPriceController> coreService,
-            IProductPriceRepository productPriceRepository) : base(coreService)
+        private readonly IProductForRetailRepository _productForRetailRepository;
+        public ProductForRetailController(ICoreService<ProductForRetailController> coreService,
+            IProductForRetailRepository productForRetailRepository) : base(coreService)
         {
-            _productPriceRepository = productPriceRepository;
+            _productForRetailRepository = productForRetailRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _productPriceRepository.All.ToListAsync();
-            var results = Mapper.Map<IEnumerable<ProductPriceViewModel>>(items);
+            var items = await _productForRetailRepository.All.ToListAsync();
+            var results = Mapper.Map<IEnumerable<ProductForRetailViewModel>>(items);
             return Ok(results);
         }
 
         [HttpGet]
-        [Route("{id}", Name = "GetProductPrice")]
+        [Route("{id}", Name = "GetProductForRetail")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _productPriceRepository.GetSingleAsync(id);
+             var item = await _productForRetailRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
-            var result = Mapper.Map<ProductPriceViewModel>(item);
+            var result = Mapper.Map<ProductForRetailViewModel>(item);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProductPriceViewModel productPriceVm)
+        public async Task<IActionResult> Post([FromBody] ProductForRetailViewModel productForRetailVm)
         {
-            if (productPriceVm == null)
+            if (productForRetailVm == null)
             {
                 return BadRequest();
             }
@@ -56,23 +56,23 @@ namespace SalesApi.Web.Controllers.Settings
                 return BadRequest(ModelState);
             }
 
-            var newItem = Mapper.Map<ProductPrice>(productPriceVm);
+            var newItem = Mapper.Map<ProductForRetail>(productForRetailVm);
             newItem.SetCreation(UserName);
-            _productPriceRepository.Add(newItem);
+            _productForRetailRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
 
-            var vm = Mapper.Map<ProductPriceViewModel>(newItem);
+            var vm = Mapper.Map<ProductForRetailViewModel>(newItem);
 
-            return CreatedAtRoute("GetProductPrice", new { id = vm.Id }, vm);
+            return CreatedAtRoute("GetProductForRetail", new { id = vm.Id }, vm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ProductPriceViewModel productPriceVm)
+        public async Task<IActionResult> Put(int id, [FromBody] ProductForRetailViewModel productForRetailVm)
         {
-            if (productPriceVm == null)
+            if (productForRetailVm == null)
             {
                 return BadRequest();
             }
@@ -81,14 +81,14 @@ namespace SalesApi.Web.Controllers.Settings
             {
                 return BadRequest(ModelState);
             }
-            var dbItem = await _productPriceRepository.GetSingleAsync(id);
+            var dbItem = await _productForRetailRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            Mapper.Map(productPriceVm, dbItem);
+            Mapper.Map(productForRetailVm, dbItem);
             dbItem.SetModification(UserName);
-            _productPriceRepository.Update(dbItem);
+            _productForRetailRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
@@ -98,18 +98,18 @@ namespace SalesApi.Web.Controllers.Settings
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<ProductPriceViewModel> patchDoc)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<ProductForRetailViewModel> patchDoc)
         {
             if (patchDoc == null)
             {
                 return BadRequest();
             }
-            var dbItem = await _productPriceRepository.GetSingleAsync(id);
+            var dbItem = await _productForRetailRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            var toPatchVm = Mapper.Map<ProductPriceViewModel>(dbItem);
+            var toPatchVm = Mapper.Map<ProductForRetailViewModel>(dbItem);
             patchDoc.ApplyTo(toPatchVm, ModelState);
 
             TryValidateModel(toPatchVm);
@@ -131,12 +131,12 @@ namespace SalesApi.Web.Controllers.Settings
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _productPriceRepository.GetSingleAsync(id);
+            var model = await _productForRetailRepository.GetSingleAsync(id);
             if (model == null)
             {
                 return NotFound();
             }
-            _productPriceRepository.Delete(model);
+            _productForRetailRepository.Delete(model);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "删除时出错");

@@ -4,8 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
+using SalesApi.Shared.Settings;
 using SharedSettings.Models;
-using SharedSettings.Settings;
 
 namespace SalesApi.Web.Configurations
 {

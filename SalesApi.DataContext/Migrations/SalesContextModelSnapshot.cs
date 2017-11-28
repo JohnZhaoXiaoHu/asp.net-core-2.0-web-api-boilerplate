@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SalesApi.DataContext.Contexts;
-using SharedSettings.Enums;
+using SalesApi.Shared.Enums;
 using System;
 
 namespace SalesApi.DataContext.Migrations
@@ -113,94 +113,6 @@ namespace SalesApi.DataContext.Migrations
                     b.ToTable("DistributionGroups");
                 });
 
-            modelBuilder.Entity("SalesApi.Models.Settings.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Barcode");
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<decimal>("EquivalentTon");
-
-                    b.Property<string>("FullName");
-
-                    b.Property<string>("LastAction");
-
-                    b.Property<string>("LegacyProductId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("ProductUnit");
-
-                    b.Property<int>("ShelfLife");
-
-                    b.Property<string>("Specification");
-
-                    b.Property<decimal>("TaxRate");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Settings.ProductPrice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("BoxPrice");
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<int>("EquivalentBox");
-
-                    b.Property<decimal>("InternalPrice");
-
-                    b.Property<bool>("IsOrderByBox");
-
-                    b.Property<bool>("IsOutOfStock");
-
-                    b.Property<string>("LastAction");
-
-                    b.Property<int>("MinOrderCount");
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("OrderDivisor");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int>("SalesType");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductPrices");
-                });
-
             modelBuilder.Entity("SalesApi.Models.Settings.SubArea", b =>
                 {
                     b.Property<int>("Id")
@@ -302,14 +214,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasOne("SalesApi.Models.Settings.Vehicle")
                         .WithMany("DeliveryVehicles")
                         .HasForeignKey("VehicleId1");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Settings.ProductPrice", b =>
-                {
-                    b.HasOne("SalesApi.Models.Settings.Product", "Product")
-                        .WithMany("ProductPrices")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SalesApi.Models.Settings.SubArea", b =>

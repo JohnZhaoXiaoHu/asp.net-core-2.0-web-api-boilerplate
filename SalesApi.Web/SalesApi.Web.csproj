@@ -29,6 +29,7 @@
     <ProjectReference Include="..\SalesApi.Models\SalesApi.Models.csproj" />
     <ProjectReference Include="..\SalesApi.Repositories\SalesApi.Repositories.csproj" />
     <ProjectReference Include="..\SalesApi.Services\SalesApi.Services.csproj" />
+    <ProjectReference Include="..\SalesApi.Shared\SalesApi.Shared.csproj" />
     <ProjectReference Include="..\SalesApi.ViewModels\SalesApi.ViewModels.csproj" />
     <ProjectReference Include="..\SharedSettings\SharedSettings.csproj" />
   </ItemGroup>

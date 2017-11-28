@@ -1,4 +1,4 @@
-﻿namespace SharedSettings.Enums
+﻿namespace SalesApi.Shared.Enums
 {
     public enum ProductUnit
     {

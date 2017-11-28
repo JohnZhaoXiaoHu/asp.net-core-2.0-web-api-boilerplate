@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SalesApi.Shared.Enums;
 using SalesApi.Web.Controllers.Bases;
-using SharedSettings.Enums;
 
 namespace SalesApi.Web.Controllers.Core
 {

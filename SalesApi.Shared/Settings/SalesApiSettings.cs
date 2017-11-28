@@ -1,4 +1,4 @@
-﻿namespace SharedSettings.Settings
+﻿namespace SalesApi.Shared.Settings
 {
     public class SalesApiSettings
     {

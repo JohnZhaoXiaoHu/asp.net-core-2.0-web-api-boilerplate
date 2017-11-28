@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SalesApi.Repositories.Retail;
 using SalesApi.Repositories.Settings;
 
 namespace SalesApi.Web.Configurations
@@ -7,12 +8,21 @@ namespace SalesApi.Web.Configurations
     {
         public static void AddRepositories(this IServiceCollection services)
         {
+            #region Settings
+
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IDistributionGroupRepository, DistributionGroupRepository>();
             services.AddScoped<IDeliveryVehicleRepository, DeliveryVehicleRepository>();
             services.AddScoped<ISubAreaRepository, SubAreaRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IProductPriceRepository, ProductPriceRepository>();
+
+            #endregion
+
+            #region Retail
+
+            services.AddScoped<IProductForRetailRepository, ProductForRetailRepository>();
+
+            #endregion
         }
     }
 }
