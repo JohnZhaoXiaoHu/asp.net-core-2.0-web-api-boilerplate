@@ -2,7 +2,7 @@
 {
     public enum SalesType
     {
-        分销 = 6,
+        零售 = 6,
         集体户 = 2,
         郊县 = 4,
         商超 = 3,
