@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
+using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
 
 namespace SalesApi.Web.Configurations
@@ -23,7 +25,7 @@ namespace SalesApi.Web.Configurations
 
             #region Retail
 
-            
+            CreateMap<ProductForRetailViewModel, ProductForRetail>();
 
             #endregion
         }

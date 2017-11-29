@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
@@ -34,7 +35,7 @@ namespace SalesApi.Web.Controllers.Retail
         [Route("{id}", Name = "GetProductForRetail")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _productForRetailRepository.GetSingleAsync(id);
+            var item = await _productForRetailRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -42,7 +43,7 @@ namespace SalesApi.Web.Controllers.Retail
             var result = Mapper.Map<ProductForRetailViewModel>(item);
             return Ok(result);
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProductForRetailViewModel productForRetailVm)
         {
@@ -57,6 +58,7 @@ namespace SalesApi.Web.Controllers.Retail
             }
 
             var newItem = Mapper.Map<ProductForRetail>(productForRetailVm);
+            _productForRetailRepository.SetPrice(newItem);
             newItem.SetCreation(UserName);
             _productForRetailRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
@@ -87,14 +89,15 @@ namespace SalesApi.Web.Controllers.Retail
                 return NotFound();
             }
             Mapper.Map(productForRetailVm, dbItem);
+            _productForRetailRepository.SetPrice(dbItem);
             dbItem.SetModification(UserName);
             _productForRetailRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-
-            return NoContent();
+            var vm = Mapper.Map<ProductForRetailViewModel>(dbItem);
+            return Ok(vm);
         }
 
         [HttpPatch("{id}")]
