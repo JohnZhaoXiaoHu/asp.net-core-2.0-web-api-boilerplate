@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
@@ -42,7 +43,7 @@ namespace SalesApi.Web.Controllers.Retail
             var result = Mapper.Map<RetailerViewModel>(item);
             return Ok(result);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RetailerViewModel retailerVm)
         {
@@ -143,5 +144,24 @@ namespace SalesApi.Web.Controllers.Retail
             }
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("ByDeliveryVehicle/{deliveryVehicleId}")]
+        public async Task<IActionResult> GetByDeliveryVehicle(int deliveryVehicleId)
+        {
+            var items = await _retailerRepository.All.Where(x => x.SubArea.DeliveryVehicleId == deliveryVehicleId).ToListAsync();
+            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
+            return Ok(results);
+        }
+
+        [HttpGet]
+        [Route("BySubArea/{subAreaId}")]
+        public async Task<IActionResult> GetBySubArea(int subAreaId)
+        {
+            var items = await _retailerRepository.All.Where(x => x.SubAreaId == subAreaId).ToListAsync();
+            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
+            return Ok(results);
+        }
+
     }
 }
