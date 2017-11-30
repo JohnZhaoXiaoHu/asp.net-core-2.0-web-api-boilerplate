@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Settings;
 using SalesApi.Repositories.Settings;
+using SalesApi.Shared.Enums;
 using SalesApi.ViewModels.Settings;
 using SalesApi.Web.Controllers.Bases;
 
@@ -149,6 +150,16 @@ namespace SalesApi.Web.Controllers.Settings
                 return StatusCode(500, "删除时出错");
             }
             return NoContent();
+        }
+
+        [Route("BySalesType/{salesType}")]
+        [HttpGet]
+        public async Task<IActionResult> GetBySalesType(SalesType salesType)
+        {
+            var items = await _subAreaRepository.AllIncluding(x => x.DeliveryVehicle)
+                .Where(x => x.DeliveryVehicle.SalesType == salesType).ToListAsync();
+            var results = Mapper.Map<IEnumerable<SubAreaViewModel>>(items);
+            return Ok(results);
         }
     }
 }

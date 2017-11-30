@@ -30,6 +30,7 @@ namespace SalesApi.Web.Configurations
             #region Retail
             
             CreateMap<ProductForRetail, ProductForRetailViewModel>();
+            CreateMap<Retailer, RetailerViewModel>();
 
             #endregion
         }

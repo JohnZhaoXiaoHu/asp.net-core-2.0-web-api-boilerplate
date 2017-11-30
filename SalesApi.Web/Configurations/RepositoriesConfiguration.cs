@@ -21,6 +21,7 @@ namespace SalesApi.Web.Configurations
             #region Retail
 
             services.AddScoped<IProductForRetailRepository, ProductForRetailRepository>();
+            services.AddScoped<IRetailerRepository, RetailerRepository>();
 
             #endregion
         }

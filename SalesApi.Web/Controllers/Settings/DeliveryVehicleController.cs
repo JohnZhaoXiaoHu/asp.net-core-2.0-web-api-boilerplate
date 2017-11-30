@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Settings;
 using SalesApi.Repositories.Settings;
+using SalesApi.Shared.Enums;
 using SalesApi.ViewModels.Settings;
 using SalesApi.Web.Controllers.Bases;
 
@@ -143,5 +145,15 @@ namespace SalesApi.Web.Controllers.Settings
             }
             return NoContent();
         }
+
+        [Route("BySalesType/{salesType}")]
+        [HttpGet]
+        public async Task<IActionResult> GetBySalesType(SalesType salesType)
+        {
+            var items = await _deliveryVehicleRepository.AllIncluding(x => x.Vehicle).Where(x => x.SalesType == salesType).ToListAsync();
+            var results = Mapper.Map<IEnumerable<DeliveryVehicleViewModel>>(items);
+            return Ok(results);
+        }
+
     }
 }

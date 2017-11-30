@@ -26,6 +26,7 @@ namespace SalesApi.Web.Configurations
             #region Retail
 
             CreateMap<ProductForRetailViewModel, ProductForRetail>();
+            CreateMap<RetailerViewModel, Retailer>();
 
             #endregion
         }

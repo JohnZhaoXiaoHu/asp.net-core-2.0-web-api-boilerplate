@@ -1,16 +1,24 @@
-﻿using Infrastructure.Features.Common;
+﻿using System.Collections.Generic;
+using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SalesApi.Models.Retail;
 
 namespace SalesApi.Models.Settings
 {
     public class SubArea : EntityBase
     {
+        public SubArea()
+        {
+            Retailers = new List<Retailer>();
+        }
+
         public int DeliveryVehicleId { get; set; }
         public string LegacySubAreaId { get; set; }
         public string Name { get; set; }
 
         public DeliveryVehicle DeliveryVehicle { get; set; }
+        public ICollection<Retailer> Retailers { get; set; }
     }
 
     public class SubAreaConfiguration : EntityBaseConfiguration<SubArea>
@@ -21,7 +29,7 @@ namespace SalesApi.Models.Settings
             b.Property(x => x.Name).IsRequired().HasMaxLength(20);
             b.HasOne(x => x.DeliveryVehicle).WithMany(x => x.SubAreas).HasForeignKey(x => x.DeliveryVehicleId)
                 .OnDelete(DeleteBehavior.Restrict);
-            b.HasIndex(x => new {x.DeliveryVehicleId, x.Name}).IsUnique();
+            b.HasIndex(x => new { x.DeliveryVehicleId, x.Name }).IsUnique();
         }
     }
 }
