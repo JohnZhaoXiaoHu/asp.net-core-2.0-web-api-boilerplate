@@ -29,6 +29,7 @@ namespace SalesApi.DataContext.Contexts
             #region Retail
 
             modelBuilder.ApplyConfiguration(new ProductForRetailConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailerConfiguration());
 
             #endregion
         }
@@ -46,6 +47,7 @@ namespace SalesApi.DataContext.Contexts
         #region Retail
 
         public DbSet<ProductForRetail> ProductForRetails { get; set; }
+        public DbSet<Retailer> Retailers { get; set; }
 
         #endregion
     }

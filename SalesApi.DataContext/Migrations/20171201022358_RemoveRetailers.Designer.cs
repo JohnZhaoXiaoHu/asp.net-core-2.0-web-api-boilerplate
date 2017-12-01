@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20171201022358_RemoveRetailers")]
+    partial class RemoveRetailers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,66 +74,6 @@ namespace SalesApi.DataContext.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductForRetails");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.Retailer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(200);
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("No")
-                        .IsRequired()
-                        .HasMaxLength(10);
-
-                    b.Property<int>("Order");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Pinyin")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("SalesType");
-
-                    b.Property<int>("SubAreaId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("No")
-                        .IsUnique();
-
-                    b.HasIndex("SubAreaId");
-
-                    b.ToTable("Retailers");
                 });
 
             modelBuilder.Entity("SalesApi.Models.Settings.DeliveryVehicle", b =>
@@ -372,14 +313,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasOne("SalesApi.Models.Settings.Product", "Product")
                         .WithOne("ProductForRetail")
                         .HasForeignKey("SalesApi.Models.Retail.ProductForRetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.Retailer", b =>
-                {
-                    b.HasOne("SalesApi.Models.Settings.SubArea", "SubArea")
-                        .WithMany("Retailers")
-                        .HasForeignKey("SubAreaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

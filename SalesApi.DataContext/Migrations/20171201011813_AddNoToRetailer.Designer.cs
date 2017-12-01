@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20171201011813_AddNoToRetailer")]
+    partial class AddNoToRetailer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,37 +81,25 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(200);
+                    b.Property<string>("Address");
 
                     b.Property<DateTime>("CreateTime");
 
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("CreateUser");
 
                     b.Property<bool>("Deleted");
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("LastAction");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("Name");
 
-                    b.Property<string>("No")
-                        .IsRequired()
-                        .HasMaxLength(10);
+                    b.Property<string>("No");
 
                     b.Property<int>("Order");
 
-                    b.Property<string>("Phone")
-                        .HasMaxLength(50);
+                    b.Property<string>("Phone");
 
-                    b.Property<string>("Pinyin")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("Pinyin");
 
                     b.Property<int>("SalesType");
 
@@ -118,21 +107,13 @@ namespace SalesApi.DataContext.Migrations
 
                     b.Property<DateTime>("UpdateTime");
 
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("UpdateUser");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("No")
-                        .IsUnique();
-
                     b.HasIndex("SubAreaId");
 
-                    b.ToTable("Retailers");
+                    b.ToTable("Retailer");
                 });
 
             modelBuilder.Entity("SalesApi.Models.Settings.DeliveryVehicle", b =>
@@ -380,7 +361,7 @@ namespace SalesApi.DataContext.Migrations
                     b.HasOne("SalesApi.Models.Settings.SubArea", "SubArea")
                         .WithMany("Retailers")
                         .HasForeignKey("SubAreaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SalesApi.Models.Settings.DeliveryVehicle", b =>
