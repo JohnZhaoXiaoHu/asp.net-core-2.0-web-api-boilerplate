@@ -1,4 +1,5 @@
-﻿using Infrastructure.Features.Common;
+﻿using System.Collections.Generic;
+using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Settings;
@@ -8,6 +9,11 @@ namespace SalesApi.Models.Retail
 {
     public class ProductForRetail : EntityBase
     {
+        public ProductForRetail()
+        {
+            RetailPromotionSeries = new List<RetailPromotionSeries>();
+        }
+
         public int ProductId { get; set; }
         public SalesType SalesType { get; set; }
         public int EquivalentBox { get; set; }
@@ -19,6 +25,10 @@ namespace SalesApi.Models.Retail
         public int OrderDivisor { get; set; }
 
         public Product Product { get; set; }
+        public ICollection<RetailPromotionSeries> RetailPromotionSeries { get; set; }
+        public ICollection<RetailPromotionSeriesBonus> RetailPromotionSeriesBonuses { get; set; }
+        public ICollection<RetailPromotionEvent> RetailPromotionEvents { get; set; }
+        public ICollection<RetailPromotionEventBonus> RetailPromotionEventBonuses { get; set; }
     }
 
     public class ProductForRetailConfiguration : EntityBaseConfiguration<ProductForRetail>
@@ -30,7 +40,6 @@ namespace SalesApi.Models.Retail
             b.Property(x => x.BoxPrice).HasColumnType("decimal(10, 2)");
             b.HasOne(x => x.Product).WithOne(x => x.ProductForRetail).HasForeignKey<ProductForRetail>(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
         }
     }
 }

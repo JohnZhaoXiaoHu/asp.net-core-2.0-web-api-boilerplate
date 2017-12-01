@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20171201070026_AddPromotionModels")]
+    partial class AddPromotionModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,6 +76,174 @@ namespace SalesApi.DataContext.Migrations
                     b.ToTable("ProductForRetails");
                 });
 
+            modelBuilder.Entity("SalesApi.Models.Retail.PromotionEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("ProductForRetailId");
+
+                    b.Property<int>("PromotionSeriesId");
+
+                    b.Property<int>("PurchaseBase");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductForRetailId");
+
+                    b.HasIndex("PromotionSeriesId");
+
+                    b.ToTable("PromotionEvents");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Retail.PromotionEventBonus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BonusCount");
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("ProductForRetailId");
+
+                    b.Property<int>("PromotionEventId");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductForRetailId");
+
+                    b.HasIndex("PromotionEventId");
+
+                    b.ToTable("PromotionEventBonuses");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Retail.PromotionSeries", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("ProductForRetailId");
+
+                    b.Property<int>("PurchaseBase");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductForRetailId");
+
+                    b.ToTable("PromotionSeries");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Retail.PromotionSeriesBonus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BonusCount");
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("ProductForRetailId");
+
+                    b.Property<int>("PromotionSeriesId");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductForRetailId");
+
+                    b.HasIndex("PromotionSeriesId");
+
+                    b.ToTable("PromotionSeriesBonuses");
+                });
+
             modelBuilder.Entity("SalesApi.Models.Retail.Retailer", b =>
                 {
                     b.Property<int>("Id")
@@ -133,176 +302,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasIndex("SubAreaId");
 
                     b.ToTable("Retailers");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionEvent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("ProductForRetailId");
-
-                    b.Property<int>("PurchaseBase");
-
-                    b.Property<int>("RetailPromotionSeriesId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductForRetailId");
-
-                    b.HasIndex("RetailPromotionSeriesId");
-
-                    b.ToTable("RetailPromotionEvents");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionEventBonus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BonusCount");
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("ProductForRetailId");
-
-                    b.Property<int>("RetailPromotionEventId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductForRetailId");
-
-                    b.HasIndex("RetailPromotionEventId");
-
-                    b.ToTable("RetailPromotionEventBonuses");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionSeries", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<DateTime>("EndDate");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("ProductForRetailId");
-
-                    b.Property<int>("PurchaseBase");
-
-                    b.Property<int>("SalesType");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductForRetailId");
-
-                    b.ToTable("RetailPromotionSeries");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionSeriesBonus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BonusCount");
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("ProductForRetailId");
-
-                    b.Property<int>("RetailPromotionSeriesId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductForRetailId");
-
-                    b.HasIndex("RetailPromotionSeriesId");
-
-                    b.ToTable("RetailPromotionSeriesBonuses");
                 });
 
             modelBuilder.Entity("SalesApi.Models.Settings.DeliveryVehicle", b =>
@@ -545,58 +544,58 @@ namespace SalesApi.DataContext.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("SalesApi.Models.Retail.PromotionEvent", b =>
+                {
+                    b.HasOne("SalesApi.Models.Retail.ProductForRetail", "ProductForRetail")
+                        .WithMany("PromotionEvents")
+                        .HasForeignKey("ProductForRetailId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SalesApi.Models.Retail.PromotionSeries", "PromotionSeries")
+                        .WithMany("PromotionEvents")
+                        .HasForeignKey("PromotionSeriesId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Retail.PromotionEventBonus", b =>
+                {
+                    b.HasOne("SalesApi.Models.Retail.ProductForRetail", "ProductForRetail")
+                        .WithMany("PromotionEventBonuses")
+                        .HasForeignKey("ProductForRetailId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SalesApi.Models.Retail.PromotionEvent", "PromotionEvent")
+                        .WithMany("PromotionEventBonuses")
+                        .HasForeignKey("PromotionEventId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Retail.PromotionSeries", b =>
+                {
+                    b.HasOne("SalesApi.Models.Retail.ProductForRetail", "ProductForRetail")
+                        .WithMany("PromotionSeries")
+                        .HasForeignKey("ProductForRetailId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Retail.PromotionSeriesBonus", b =>
+                {
+                    b.HasOne("SalesApi.Models.Retail.ProductForRetail", "ProductForRetail")
+                        .WithMany("PromotionSeriesBonuses")
+                        .HasForeignKey("ProductForRetailId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SalesApi.Models.Retail.PromotionSeries", "PromotionSeries")
+                        .WithMany("PromotionSeriesBonuses")
+                        .HasForeignKey("PromotionSeriesId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("SalesApi.Models.Retail.Retailer", b =>
                 {
                     b.HasOne("SalesApi.Models.Settings.SubArea", "SubArea")
                         .WithMany("Retailers")
                         .HasForeignKey("SubAreaId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionEvent", b =>
-                {
-                    b.HasOne("SalesApi.Models.Retail.ProductForRetail", "ProductForRetail")
-                        .WithMany("RetailPromotionEvents")
-                        .HasForeignKey("ProductForRetailId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SalesApi.Models.Retail.RetailPromotionSeries", "RetailPromotionSeries")
-                        .WithMany("RetailPromotionEvents")
-                        .HasForeignKey("RetailPromotionSeriesId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionEventBonus", b =>
-                {
-                    b.HasOne("SalesApi.Models.Retail.ProductForRetail", "ProductForRetail")
-                        .WithMany("RetailPromotionEventBonuses")
-                        .HasForeignKey("ProductForRetailId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SalesApi.Models.Retail.RetailPromotionEvent", "RetailPromotionEvent")
-                        .WithMany("RetailPromotionEventBonuses")
-                        .HasForeignKey("RetailPromotionEventId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionSeries", b =>
-                {
-                    b.HasOne("SalesApi.Models.Retail.ProductForRetail", "ProductForRetail")
-                        .WithMany("RetailPromotionSeries")
-                        .HasForeignKey("ProductForRetailId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionSeriesBonus", b =>
-                {
-                    b.HasOne("SalesApi.Models.Retail.ProductForRetail", "ProductForRetail")
-                        .WithMany("RetailPromotionSeriesBonuses")
-                        .HasForeignKey("ProductForRetailId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SalesApi.Models.Retail.RetailPromotionSeries", "RetailPromotionSeries")
-                        .WithMany("RetailPromotionSeriesBonuses")
-                        .HasForeignKey("RetailPromotionSeriesId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

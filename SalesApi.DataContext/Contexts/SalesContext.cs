@@ -30,6 +30,10 @@ namespace SalesApi.DataContext.Contexts
 
             modelBuilder.ApplyConfiguration(new ProductForRetailConfiguration());
             modelBuilder.ApplyConfiguration(new RetailerConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailPromotionSeriesConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailPromotionSeriesBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailPromotionEventConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailPromotionEventBonusConfiguration());
 
             #endregion
         }
@@ -48,6 +52,10 @@ namespace SalesApi.DataContext.Contexts
 
         public DbSet<ProductForRetail> ProductForRetails { get; set; }
         public DbSet<Retailer> Retailers { get; set; }
+        public DbSet<RetailPromotionSeries> RetailPromotionSeries { get; set; }
+        public DbSet<RetailPromotionSeriesBonus> RetailPromotionSeriesBonuses { get; set; }
+        public DbSet<RetailPromotionEvent> RetailPromotionEvents { get; set; }
+        public DbSet<RetailPromotionEventBonus> RetailPromotionEventBonuses { get; set; }
 
         #endregion
     }

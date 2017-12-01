@@ -27,6 +27,10 @@ namespace SalesApi.Web.Configurations
 
             CreateMap<ProductForRetailViewModel, ProductForRetail>();
             CreateMap<RetailerViewModel, Retailer>();
+            CreateMap<RetailPromotionSeriesViewModel, RetailPromotionSeries>();
+            CreateMap<RetailPromotionSeriesBonusViewModel, RetailPromotionSeriesBonus>();
+            CreateMap<RetailPromotionEventViewModel, RetailPromotionEvent>();
+            CreateMap<RetailPromotionEventBonusViewModel, RetailPromotionEventBonus>();
 
             #endregion
         }

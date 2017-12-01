@@ -22,6 +22,10 @@ namespace SalesApi.Web.Configurations
 
             services.AddScoped<IProductForRetailRepository, ProductForRetailRepository>();
             services.AddScoped<IRetailerRepository, RetailerRepository>();
+            services.AddScoped<IRetailPromotionSeriesRepository, RetailPromotionSeriesRepository>();
+            services.AddScoped<IRetailPromotionSeriesBonusRepository, RetailPromotionSeriesBonusRepository>();
+            services.AddScoped<IRetailPromotionEventRepository, RetailPromotionEventRepository>();
+            services.AddScoped<IRetailPromotionEventBonusRepository, RetailPromotionEventBonusRepository>();
 
             #endregion
         }
