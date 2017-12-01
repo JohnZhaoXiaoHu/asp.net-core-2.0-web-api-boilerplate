@@ -26,7 +26,7 @@ namespace SalesApi.Web.Controllers.Retail
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _productForRetailRepository.All.ToListAsync();
+            var items = await _productForRetailRepository.AllIncluding(x => x.Product).ToListAsync();
             var results = Mapper.Map<IEnumerable<ProductForRetailViewModel>>(items);
             return Ok(results);
         }
@@ -43,7 +43,7 @@ namespace SalesApi.Web.Controllers.Retail
             var result = Mapper.Map<ProductForRetailViewModel>(item);
             return Ok(result);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProductForRetailViewModel productForRetailVm)
         {

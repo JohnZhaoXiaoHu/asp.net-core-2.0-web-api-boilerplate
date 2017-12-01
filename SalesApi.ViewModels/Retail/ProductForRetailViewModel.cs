@@ -39,5 +39,7 @@ namespace SalesApi.ViewModels.Retail
         [Display(Name = "报货整数倍")]
         [Range(0, int.MaxValue, ErrorMessage = "{0}不可以小于{1}")]
         public int OrderDivisor { get; set; }
+
+        public string ProductName { get; set; }
     }
 }

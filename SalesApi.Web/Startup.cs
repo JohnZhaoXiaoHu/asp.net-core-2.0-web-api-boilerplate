@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Infrastructure.Features.Data;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SalesApi.DataContext.Contexts;
 using SalesApi.Shared.Settings;
+using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Configurations;
 using SharedSettings.Settings;
 using Swashbuckle.AspNetCore.Swagger;
@@ -43,7 +45,8 @@ namespace SalesApi.Web
                     .RequireAuthenticatedUser()
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
-            });
+            }).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RetailPromotionSeriesViewModelValidator>());
+            
 
             services.AddAutoMapper();
 

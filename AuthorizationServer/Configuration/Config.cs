@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using IdentityServer4;
 using IdentityServer4.Models;
-using SharedSettings.Settings;
 using IdentityModel;
 using SalesApi.Shared.Settings;
 
@@ -13,7 +12,6 @@ namespace AuthorizationServer.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(CoreApiSettings.ApiResource.Name, CoreApiSettings.ApiResource.DisplayName) { },
                 new ApiResource(SalesApiSettings.ApiResource.Name, SalesApiSettings.ApiResource.DisplayName) {
                     UserClaims = { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email }
                 }
@@ -24,26 +22,6 @@ namespace AuthorizationServer.Configuration
         {
             return new List<Client>
             {
-                // Core JavaScript Client
-                new Client
-                {
-                    ClientId = CoreApiSettings.Client.ClientId,
-                    ClientName = CoreApiSettings.Client.ClientName,
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris =           { CoreApiSettings.Client.RedirectUri, CoreApiSettings.Client.SilentRedirectUri },
-                    PostLogoutRedirectUris = { CoreApiSettings.Client.PostLogoutRedirectUris },
-                    AllowedCorsOrigins =     { CoreApiSettings.Client.AllowedCorsOrigins },
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
-                        CoreApiSettings.ApiResource.Name
-                    }
-                },
                 // Sales JavaScript Client
                 new Client
                 {
@@ -62,8 +40,7 @@ namespace AuthorizationServer.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        SalesApiSettings.ApiResource.Name,
-                        CoreApiSettings.ApiResource.Name
+                        SalesApiSettings.ApiResource.Name
                     }
                 }
             };

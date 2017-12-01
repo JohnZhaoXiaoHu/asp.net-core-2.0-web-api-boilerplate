@@ -28,8 +28,9 @@ namespace SalesApi.Web.Configurations
             #endregion
 
             #region Retail
-            
-            CreateMap<ProductForRetail, ProductForRetailViewModel>();
+
+            CreateMap<ProductForRetail, ProductForRetailViewModel>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name));
             CreateMap<Retailer, RetailerViewModel>();
             CreateMap<RetailPromotionSeries, RetailPromotionSeriesViewModel>();
             CreateMap<RetailPromotionSeriesBonus, RetailPromotionSeriesBonusViewModel>();
