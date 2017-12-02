@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +37,7 @@ namespace SalesApi.Web.Controllers.Retail
         [Route("{id}", Name = "GetRetailPromotionEvent")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _retailPromotionEventRepository.GetSingleAsync(id);
+            var item = await _retailPromotionEventRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -143,5 +146,18 @@ namespace SalesApi.Web.Controllers.Retail
             }
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("ByRange")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetByRange(DateTime start, DateTime end)
+        {
+            var items = await _retailPromotionEventRepository
+                .AllIncluding(x => x.RetailPromotionEventBonuses)
+                .Where(x => x.Date >= start && x.Date <= end).ToListAsync();
+            var results = Mapper.Map<IEnumerable<RetailPromotionEventForFullCalendarViewModel>>(items);
+            return Ok(results);
+        }
+
     }
 }

@@ -35,6 +35,12 @@ namespace SalesApi.Web.Configurations
             CreateMap<RetailPromotionSeries, RetailPromotionSeriesViewModel>();
             CreateMap<RetailPromotionSeriesBonus, RetailPromotionSeriesBonusViewModel>();
             CreateMap<RetailPromotionEvent, RetailPromotionEventViewModel>();
+            CreateMap<RetailPromotionEvent, RetailPromotionEventForFullCalendarViewModel>()
+                .ForMember(d => d.Title, o => o.MapFrom(s => s.Name))
+                .ForMember(d => d.Start, o => o.MapFrom(s => s.Date))
+                .ForMember(d => d.End, o => o.MapFrom(s => s.Date))
+                .ForMember(d => d.AllDay, o => o.MapFrom(s => true))
+                .ForMember(d => d.Editable, o => o.MapFrom(s => false));
             CreateMap<RetailPromotionEventBonus, RetailPromotionEventBonusViewModel>();
 
             #endregion

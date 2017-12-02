@@ -1,4 +1,5 @@
-﻿using Infrastructure.Features.Data;
+﻿using System.Linq;
+using Infrastructure.Features.Data;
 using SalesApi.Models.Retail;
 
 namespace SalesApi.Repositories.Retail

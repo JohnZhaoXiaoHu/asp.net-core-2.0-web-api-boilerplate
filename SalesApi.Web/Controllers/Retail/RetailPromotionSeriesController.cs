@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
@@ -16,10 +17,14 @@ namespace SalesApi.Web.Controllers.Retail
     public class RetailPromotionSeriesController : SalesController<RetailPromotionSeriesController>
     {
         private readonly IRetailPromotionSeriesRepository _retailPromotionSeriesRepository;
+        private readonly IRetailPromotionEventRepository _retailPromotionEventRepository;
+
         public RetailPromotionSeriesController(ICoreService<RetailPromotionSeriesController> coreService,
-            IRetailPromotionSeriesRepository retailPromotionSeriesRepository) : base(coreService)
+            IRetailPromotionSeriesRepository retailPromotionSeriesRepository,
+            IRetailPromotionEventRepository retailPromotionEventRepository) : base(coreService)
         {
             _retailPromotionSeriesRepository = retailPromotionSeriesRepository;
+            _retailPromotionEventRepository = retailPromotionEventRepository;
         }
 
         [HttpGet]
@@ -44,7 +49,7 @@ namespace SalesApi.Web.Controllers.Retail
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RetailPromotionSeriesViewModel retailPromotionSeriesVm)
+        public async Task<IActionResult> Post([FromBody] RetailPromotionSeriesAddViewModel retailPromotionSeriesVm)
         {
             if (retailPromotionSeriesVm == null)
             {
@@ -58,6 +63,19 @@ namespace SalesApi.Web.Controllers.Retail
 
             var newItem = Mapper.Map<RetailPromotionSeries>(retailPromotionSeriesVm);
             newItem.SetCreation(UserName);
+            foreach (var newItemRetailPromotionSeriesBonuse in newItem.RetailPromotionSeriesBonuses)
+            {
+                newItemRetailPromotionSeriesBonuse.SetCreation(UserName);
+            }
+            var events = _retailPromotionEventRepository.GenerateEvents(newItem).ToList();
+            TryValidateModel(events);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            newItem.RetailPromotionEvents = events;
             _retailPromotionSeriesRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
