@@ -19,10 +19,14 @@ namespace SalesApi.Web.Controllers.Retail
     public class RetailPromotionEventController : SalesController<RetailPromotionEventController>
     {
         private readonly IRetailPromotionEventRepository _retailPromotionEventRepository;
+        private readonly IRetailPromotionEventBonusRepository _retailPromotionEventBonusRepository;
+
         public RetailPromotionEventController(ICoreService<RetailPromotionEventController> coreService,
-            IRetailPromotionEventRepository retailPromotionEventRepository) : base(coreService)
+            IRetailPromotionEventRepository retailPromotionEventRepository,
+            IRetailPromotionEventBonusRepository retailPromotionEventBonusRepository) : base(coreService)
         {
             _retailPromotionEventRepository = retailPromotionEventRepository;
+            _retailPromotionEventBonusRepository = retailPromotionEventBonusRepository;
         }
 
         [HttpGet]
@@ -37,7 +41,7 @@ namespace SalesApi.Web.Controllers.Retail
         [Route("{id}", Name = "GetRetailPromotionEvent")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await _retailPromotionEventRepository.GetSingleAsync(id);
+            var item = await _retailPromotionEventRepository.GetSingleAsync(x => x.Id == id, x => x.RetailPromotionEventBonuses);
             if (item == null)
             {
                 return NotFound();
@@ -84,13 +88,40 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
-            var dbItem = await _retailPromotionEventRepository.GetSingleAsync(id);
+            var dbItem = await _retailPromotionEventRepository.GetSingleAsync(x => x.Id == id, x => x.RetailPromotionEventBonuses);
             if (dbItem == null)
             {
                 return NotFound();
             }
+            var bonusVms = retailPromotionEventVm.RetailPromotionEventBonuses;
+            retailPromotionEventVm.RetailPromotionEventBonuses = null;
+            var bonuses = dbItem.RetailPromotionEventBonuses;
+            dbItem.RetailPromotionEventBonuses = null;
             Mapper.Map(retailPromotionEventVm, dbItem);
             dbItem.SetModification(UserName);
+
+            var toAddBonusVms = bonusVms.Where(x => x.Id == 0).ToList();
+            var toAddBonuses = Mapper.Map<List<RetailPromotionEventBonus>>(toAddBonusVms);
+            foreach (var addBonus in toAddBonuses)
+            {
+                addBonus.SetCreation(UserName);
+                _retailPromotionEventBonusRepository.Add(addBonus);
+            }
+            var bonusVmIds = bonusVms.Where(x => x.Id > 0).Select(x => x.Id).ToList();
+            var bonusIds = bonuses.Select(x => x.Id).ToList();
+            var toDeleteIds = bonusIds.Except(bonusVmIds);
+            var toDeleteBonuses = bonuses.Where(x => toDeleteIds.Contains(x.Id));
+            _retailPromotionEventBonusRepository.DeleteRange(toDeleteBonuses);
+            var toUpdateIds = bonusIds.Intersect(bonusVmIds);
+            var toUpdateBonuses = bonuses.Where(x => toUpdateIds.Contains(x.Id)).ToList();
+            foreach (var bonus in toUpdateBonuses)
+            {
+                var bonusVm = bonusVms.SingleOrDefault(x => x.Id == bonus.Id);
+                Mapper.Map(bonusVm, bonus);
+                bonus.SetModification(UserName);
+                _retailPromotionEventBonusRepository.Update(bonus);
+            }
+            dbItem.RetailPromotionEventBonuses = toAddBonuses.Concat(toUpdateBonuses).ToList();
             _retailPromotionEventRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
