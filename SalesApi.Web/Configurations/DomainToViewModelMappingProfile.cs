@@ -36,7 +36,7 @@ namespace SalesApi.Web.Configurations
             CreateMap<RetailPromotionSeriesBonus, RetailPromotionSeriesBonusViewModel>();
             CreateMap<RetailPromotionEvent, RetailPromotionEventViewModel>();
             CreateMap<RetailPromotionEvent, RetailPromotionEventForFullCalendarViewModel>()
-                .ForMember(d => d.Title, o => o.MapFrom(s => s.Name))
+                .ForMember(d => d.Title, o => o.MapFrom(s => $"{s.Name}[序列:{s.RetailPromotionSeriesId}]"))
                 .ForMember(d => d.Start, o => o.MapFrom(s => s.Date))
                 .ForMember(d => d.End, o => o.MapFrom(s => s.Date))
                 .ForMember(d => d.AllDay, o => o.MapFrom(s => true))
