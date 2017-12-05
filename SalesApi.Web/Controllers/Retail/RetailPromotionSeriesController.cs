@@ -18,13 +18,19 @@ namespace SalesApi.Web.Controllers.Retail
     {
         private readonly IRetailPromotionSeriesRepository _retailPromotionSeriesRepository;
         private readonly IRetailPromotionEventRepository _retailPromotionEventRepository;
+        private readonly IRetailPromotionSeriesBonusRepository _retailPromotionSeriesBonusRepository;
+        private readonly IRetailPromotionEventBonusRepository _retailPromotionEventBonusRepository;
 
         public RetailPromotionSeriesController(ICoreService<RetailPromotionSeriesController> coreService,
             IRetailPromotionSeriesRepository retailPromotionSeriesRepository,
-            IRetailPromotionEventRepository retailPromotionEventRepository) : base(coreService)
+            IRetailPromotionEventRepository retailPromotionEventRepository,
+            IRetailPromotionSeriesBonusRepository retailPromotionSeriesBonusRepository,
+            IRetailPromotionEventBonusRepository retailPromotionEventBonusRepository) : base(coreService)
         {
             _retailPromotionSeriesRepository = retailPromotionSeriesRepository;
             _retailPromotionEventRepository = retailPromotionEventRepository;
+            _retailPromotionSeriesBonusRepository = retailPromotionSeriesBonusRepository;
+            _retailPromotionEventBonusRepository = retailPromotionEventBonusRepository;
         }
 
         [HttpGet]
@@ -39,7 +45,7 @@ namespace SalesApi.Web.Controllers.Retail
         [Route("{id}", Name = "GetRetailPromotionSeries")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _retailPromotionSeriesRepository.GetSingleAsync(id);
+            var item = await _retailPromotionSeriesRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -63,9 +69,9 @@ namespace SalesApi.Web.Controllers.Retail
 
             var newItem = Mapper.Map<RetailPromotionSeries>(retailPromotionSeriesVm);
             newItem.SetCreation(UserName);
-            foreach (var newItemRetailPromotionSeriesBonuse in newItem.RetailPromotionSeriesBonuses)
+            foreach (var newItemRetailPromotionSeriesBonus in newItem.RetailPromotionSeriesBonuses)
             {
-                newItemRetailPromotionSeriesBonuse.SetCreation(UserName);
+                newItemRetailPromotionSeriesBonus.SetCreation(UserName);
             }
             var events = _retailPromotionEventRepository.GenerateEvents(newItem).ToList();
             TryValidateModel(events);
@@ -88,7 +94,7 @@ namespace SalesApi.Web.Controllers.Retail
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] RetailPromotionSeriesViewModel retailPromotionSeriesVm)
+        public async Task<IActionResult> Put(int id, [FromBody] RetailPromotionSeriesEditViewModel retailPromotionSeriesVm)
         {
             if (retailPromotionSeriesVm == null)
             {
@@ -99,13 +105,64 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
-            var dbItem = await _retailPromotionSeriesRepository.GetSingleAsync(id);
+            var dbItem = await _retailPromotionSeriesRepository.GetSingleAsync(x => x.Id == id, x => x.RetailPromotionSeriesBonuses);
             if (dbItem == null)
             {
                 return NotFound();
             }
+
+            var bonusVms = retailPromotionSeriesVm.RetailPromotionSeriesBonuses;
+            retailPromotionSeriesVm.RetailPromotionSeriesBonuses = null;
+            var bonuses = dbItem.RetailPromotionSeriesBonuses;
+            dbItem.RetailPromotionSeriesBonuses = null;
             Mapper.Map(retailPromotionSeriesVm, dbItem);
             dbItem.SetModification(UserName);
+
+            var toAddVms = bonusVms.Where(x => x.Id == 0).ToList();
+            var toAdd = Mapper.Map<List<RetailPromotionSeriesBonus>>(toAddVms);
+            foreach (var bonus in toAdd)
+            {
+                bonus.SetCreation(UserName);
+            }
+            _retailPromotionSeriesBonusRepository.AddRange(toAdd);
+
+            var vmIds = bonusVms.Where(x => x.Id != 0).Select(x => x.Id).ToList();
+            var dbIds = bonuses.Select(x => x.Id).ToList();
+            var toDeleteIds = dbIds.Except(vmIds).ToList();
+            var toDelete = bonuses.Where(x => toDeleteIds.Contains(x.Id)).ToList();
+            _retailPromotionSeriesBonusRepository.DeleteRange(toDelete);
+
+            var toUpdateIds = vmIds.Intersect(dbIds).ToList();
+            var toUpdate = bonuses.Where(x => toUpdateIds.Contains(x.Id)).ToList();
+            foreach (var bonus in toUpdate)
+            {
+                var vm = bonusVms.SingleOrDefault(x => x.Id == bonus.Id);
+                if (vm != null)
+                {
+                    Mapper.Map(vm, bonus);
+                    bonus.SetModification(UserName);
+                    _retailPromotionSeriesBonusRepository.Update(bonus);
+                }
+            }
+
+            dbItem.RetailPromotionSeriesBonuses = toUpdate.Concat(toAdd).ToList();
+
+            var toDeleteEvents = await _retailPromotionEventRepository
+                .AllIncluding(x => x.RetailPromotionEventBonuses)
+                .Where(x => x.RetailPromotionSeriesId == id).ToListAsync();
+            var toDeleteEventBonuses = toDeleteEvents.SelectMany(x => x.RetailPromotionEventBonuses).ToList();
+            _retailPromotionEventBonusRepository.DeleteRange(toDeleteEventBonuses);
+            _retailPromotionEventRepository.DeleteRange(toDeleteEvents);
+
+            var events = _retailPromotionEventRepository.GenerateEvents(dbItem).ToList();
+            TryValidateModel(events);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _retailPromotionEventRepository.AddRange(events);
+
             _retailPromotionSeriesRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {

@@ -41,7 +41,8 @@ namespace SalesApi.Web.Controllers.Retail
         [Route("{id}", Name = "GetRetailPromotionEvent")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await _retailPromotionEventRepository.GetSingleAsync(x => x.Id == id, x => x.RetailPromotionEventBonuses);
+            var item = await _retailPromotionEventRepository
+                .GetSingleAsync(x => x.Id == id, x => x.RetailPromotionEventBonuses, x => x.RetailPromotionSeries);
             if (item == null)
             {
                 return NotFound();

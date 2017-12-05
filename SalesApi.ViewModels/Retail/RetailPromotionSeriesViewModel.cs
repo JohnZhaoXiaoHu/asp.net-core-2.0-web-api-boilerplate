@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using FluentValidation;
 using Infrastructure.Features.Common;
 using SalesApi.Shared.Enums;
 
@@ -27,13 +26,5 @@ namespace SalesApi.ViewModels.Retail
         [Display(Name = "基数")]
         [Range(1, int.MaxValue, ErrorMessage = "{0}的必须大于{1}")]
         public int PurchaseBase { get; set; }
-    }
-
-    public class RetailPromotionSeriesViewModelValidator : AbstractValidator<RetailPromotionSeriesViewModel>
-    {
-        public RetailPromotionSeriesViewModelValidator()
-        {
-            RuleFor(x => x.StartDate).LessThanOrEqualTo(x => x.EndDate).WithMessage("开始日期不能大于结束日期");
-        }
     }
 }

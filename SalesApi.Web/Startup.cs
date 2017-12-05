@@ -46,7 +46,7 @@ namespace SalesApi.Web
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             })
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RetailPromotionSeriesViewModelValidator>());
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RetailPromotionSeriesAddViewModelValidator>());
             
 
             services.AddAutoMapper();

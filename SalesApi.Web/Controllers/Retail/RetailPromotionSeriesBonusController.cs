@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
@@ -34,7 +35,7 @@ namespace SalesApi.Web.Controllers.Retail
         [Route("{id}", Name = "GetRetailPromotionSeriesBonus")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _retailPromotionSeriesBonusRepository.GetSingleAsync(id);
+            var item = await _retailPromotionSeriesBonusRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -143,5 +144,17 @@ namespace SalesApi.Web.Controllers.Retail
             }
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("ByRetailPromotionSeries/{retailPromotionSeriesId}")]
+        public async Task<IActionResult> GetByRetailPromotionSeries(int retailPromotionSeriesId)
+        {
+            var items = await _retailPromotionSeriesBonusRepository
+                .All.Where(x => x.RetailPromotionSeriesId == retailPromotionSeriesId)
+                .ToListAsync();
+            var results = Mapper.Map<IEnumerable<RetailPromotionSeriesBonusViewModel>>(items);
+            return Ok(results);
+        }
+
     }
 }

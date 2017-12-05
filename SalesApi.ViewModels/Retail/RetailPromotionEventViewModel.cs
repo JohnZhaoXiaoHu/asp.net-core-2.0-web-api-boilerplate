@@ -19,6 +19,7 @@ namespace SalesApi.ViewModels.Retail
         [Range(1, int.MaxValue, ErrorMessage = "{0}的必须大于{1}")]
         public int PurchaseBase { get; set; }
 
+        public string SeriesName { get; set; }
         public List<RetailPromotionEventBonusViewModel> RetailPromotionEventBonuses { get; set; }
     }
 }

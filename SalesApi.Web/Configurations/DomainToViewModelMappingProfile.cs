@@ -34,13 +34,15 @@ namespace SalesApi.Web.Configurations
             CreateMap<Retailer, RetailerViewModel>();
             CreateMap<RetailPromotionSeries, RetailPromotionSeriesViewModel>();
             CreateMap<RetailPromotionSeriesBonus, RetailPromotionSeriesBonusViewModel>();
-            CreateMap<RetailPromotionEvent, RetailPromotionEventViewModel>();
+            CreateMap<RetailPromotionEvent, RetailPromotionEventViewModel>()
+                .ForMember(d => d.SeriesName, o => o.MapFrom(s => s.RetailPromotionSeries == null ? null : s.RetailPromotionSeries.Name));
             CreateMap<RetailPromotionEvent, RetailPromotionEventForFullCalendarViewModel>()
-                .ForMember(d => d.Title, o => o.MapFrom(s => $"{s.Name}[序列:{s.RetailPromotionSeriesId}]"))
+                .ForMember(d => d.Title, o => o.MapFrom(s => $"[{s.RetailPromotionSeriesId}] {s.Name}"))
                 .ForMember(d => d.Start, o => o.MapFrom(s => s.Date))
                 .ForMember(d => d.End, o => o.MapFrom(s => s.Date))
                 .ForMember(d => d.AllDay, o => o.MapFrom(s => true))
                 .ForMember(d => d.Editable, o => o.MapFrom(s => false));
+                // .ForMember(d => d.Url, o => o.MapFrom(s => $"/retail/edit-retail-promotion-event/{s.Id}"));
             CreateMap<RetailPromotionEventBonus, RetailPromotionEventBonusViewModel>();
 
             #endregion
