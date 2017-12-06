@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Features.Data;
 using Microsoft.EntityFrameworkCore;
+using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
 
@@ -45,6 +46,12 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<DeliveryVehicle> DeliveryVehicles { get; set; }
         public DbSet<SubArea> SubAreas { get; set; }
         public DbSet<Product> Products { get; set; }
+
+        #endregion
+
+        #region Overall
+
+        public DbSet<SalesDay> SalesDays { get; set; }
 
         #endregion
 
