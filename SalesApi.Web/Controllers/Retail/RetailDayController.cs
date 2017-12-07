@@ -146,6 +146,13 @@ namespace SalesApi.Web.Controllers.Retail
         }
 
         [HttpGet]
+        [Route("Tomorrow")]
+        public IActionResult GetTomorrow()
+        {
+            return Ok(Tomorrow);
+        }
+
+        [HttpGet]
         [Route("ByDate/{date?}")]
         public async Task<IActionResult> GetByDate(DateTime? date = null)
         {
