@@ -48,13 +48,13 @@ namespace SalesApi.Web
                 options.Filters.Add(new AuthorizeFilter(policy));
             })
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RetailPromotionSeriesAddViewModelValidator>());
-            
 
             services.AddAutoMapper();
 
             services.AddScoped<IUnitOfWork, SalesContext>();
             services.AddScoped(typeof(ICoreService<>), typeof(CoreService<>));
             services.AddScoped(typeof(IRetailService<>), typeof(RetailService<>));
+            services.AddScoped<IRetailDayService, RetailDayService>();
 
             services.AddRepositories();
 

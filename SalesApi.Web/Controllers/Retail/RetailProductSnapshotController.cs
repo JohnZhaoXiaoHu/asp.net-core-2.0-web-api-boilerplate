@@ -152,7 +152,7 @@ namespace SalesApi.Web.Controllers.Retail
         {
             var dateStr = GetDateString(date);
             var items = await _retailProductSnapshotRepository.All.Where(x => x.RetailDay.Date == dateStr).ToListAsync();
-            var vms = Mapper.Map<IEnumerable<RetailDayViewModel>>(items);
+            var vms = Mapper.Map<IEnumerable<RetailProductSnapshotViewModel>>(items);
             return Ok(vms);
         }
     }

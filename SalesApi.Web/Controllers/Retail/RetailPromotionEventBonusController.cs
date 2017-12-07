@@ -145,15 +145,5 @@ namespace SalesApi.Web.Controllers.Retail
             }
             return NoContent();
         }
-
-        [HttpGet]
-        [Route("ByDate/{date?}")]
-        public async Task<IActionResult> GetByDate(DateTime? date = null)
-        {
-            var theDate = date ?? Tomorrow;
-            var items = await _retailPromotionEventBonusRepository.All.Where(x => x.RetailPromotionEvent.Date == theDate).ToListAsync();
-            var vms = Mapper.Map<IEnumerable<RetailPromotionEventBonusViewModel>>(items);
-            return Ok(vms);
-        }
     }
 }

@@ -17,10 +17,14 @@ namespace SalesApi.Web.Controllers.Retail
     public class RetailDayController : RetailController<RetailDayController>
     {
         private readonly IRetailDayRepository _retailDayRepository;
+        private readonly IRetailDayService _retailDayService;
+
         public RetailDayController(IRetailService<RetailDayController> retailService,
-            IRetailDayRepository retailDayRepository) : base(retailService)
+            IRetailDayRepository retailDayRepository,
+            IRetailDayService retailDayService) : base(retailService)
         {
             _retailDayRepository = retailDayRepository;
+            _retailDayService = retailDayService;
         }
 
         [HttpGet]
@@ -166,5 +170,13 @@ namespace SalesApi.Web.Controllers.Retail
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("Initialize")]
+        public async Task<IActionResult> Initialize()
+        {
+            await _retailDayService.Initialzie(Tomorrow, UserName);
+            await UnitOfWork.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
