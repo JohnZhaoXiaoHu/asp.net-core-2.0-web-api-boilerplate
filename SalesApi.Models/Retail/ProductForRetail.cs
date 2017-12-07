@@ -29,6 +29,7 @@ namespace SalesApi.Models.Retail
         public ICollection<RetailPromotionSeriesBonus> RetailPromotionSeriesBonuses { get; set; }
         public ICollection<RetailPromotionEvent> RetailPromotionEvents { get; set; }
         public ICollection<RetailPromotionEventBonus> RetailPromotionEventBonuses { get; set; }
+        public ICollection<RetailProductSnapshot> RetailProductSnapshots { get; set; }
     }
 
     public class ProductForRetailConfiguration : EntityBaseConfiguration<ProductForRetail>

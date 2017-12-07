@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
@@ -14,40 +15,40 @@ using SalesApi.Web.Controllers.Bases;
 namespace SalesApi.Web.Controllers.Retail
 {
     [Route("api/sales/[controller]")]
-    public class RetailerController : RetailController<RetailerController>
+    public class RetailProductSnapshotController : RetailController<RetailProductSnapshotController>
     {
-        private readonly IRetailerRepository _retailerRepository;
-        public RetailerController(IRetailService<RetailerController> retailService,
-            IRetailerRepository retailerRepository) : base(retailService)
+        private readonly IRetailProductSnapshotRepository _retailProductSnapshotRepository;
+        public RetailProductSnapshotController(IRetailService<RetailProductSnapshotController> retailService,
+            IRetailProductSnapshotRepository retailProductSnapshotRepository) : base(retailService)
         {
-            _retailerRepository = retailerRepository;
+            _retailProductSnapshotRepository = retailProductSnapshotRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _retailerRepository.All.ToListAsync();
-            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
+            var items = await _retailProductSnapshotRepository.All.ToListAsync();
+            var results = Mapper.Map<IEnumerable<RetailProductSnapshotViewModel>>(items);
             return Ok(results);
         }
 
         [HttpGet]
-        [Route("{id}", Name = "GetRetailer")]
+        [Route("{id}", Name = "GetRetailProductSnapshot")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await _retailerRepository.GetSingleAsync(id);
+            var item = await _retailProductSnapshotRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
-            var result = Mapper.Map<RetailerViewModel>(item);
+            var result = Mapper.Map<RetailProductSnapshotViewModel>(item);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RetailerViewModel retailerVm)
+        public async Task<IActionResult> Post([FromBody] RetailProductSnapshotViewModel retailProductSnapshotVm)
         {
-            if (retailerVm == null)
+            if (retailProductSnapshotVm == null)
             {
                 return BadRequest();
             }
@@ -57,24 +58,23 @@ namespace SalesApi.Web.Controllers.Retail
                 return BadRequest(ModelState);
             }
 
-            var newItem = Mapper.Map<Retailer>(retailerVm);
-            _retailerRepository.SetPinyin(newItem);
+            var newItem = Mapper.Map<RetailProductSnapshot>(retailProductSnapshotVm);
             newItem.SetCreation(UserName);
-            _retailerRepository.Add(newItem);
+            _retailProductSnapshotRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
 
-            var vm = Mapper.Map<RetailerViewModel>(newItem);
+            var vm = Mapper.Map<RetailProductSnapshotViewModel>(newItem);
 
-            return CreatedAtRoute("GetRetailer", new { id = vm.Id }, vm);
+            return CreatedAtRoute("GetRetailProductSnapshot", new { id = vm.Id }, vm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] RetailerViewModel retailerVm)
+        public async Task<IActionResult> Put(int id, [FromBody] RetailProductSnapshotViewModel retailProductSnapshotVm)
         {
-            if (retailerVm == null)
+            if (retailProductSnapshotVm == null)
             {
                 return BadRequest();
             }
@@ -83,36 +83,35 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
-            var dbItem = await _retailerRepository.GetSingleAsync(id);
+            var dbItem = await _retailProductSnapshotRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            Mapper.Map(retailerVm, dbItem);
-            _retailerRepository.SetPinyin(dbItem);
+            Mapper.Map(retailProductSnapshotVm, dbItem);
             dbItem.SetModification(UserName);
-            _retailerRepository.Update(dbItem);
+            _retailProductSnapshotRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-            var vm = Mapper.Map<RetailerViewModel>(dbItem);
-            return Ok(vm);
+
+            return NoContent();
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<RetailerViewModel> patchDoc)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<RetailProductSnapshotViewModel> patchDoc)
         {
             if (patchDoc == null)
             {
                 return BadRequest();
             }
-            var dbItem = await _retailerRepository.GetSingleAsync(id);
+            var dbItem = await _retailProductSnapshotRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            var toPatchVm = Mapper.Map<RetailerViewModel>(dbItem);
+            var toPatchVm = Mapper.Map<RetailProductSnapshotViewModel>(dbItem);
             patchDoc.ApplyTo(toPatchVm, ModelState);
 
             TryValidateModel(toPatchVm);
@@ -134,12 +133,12 @@ namespace SalesApi.Web.Controllers.Retail
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _retailerRepository.GetSingleAsync(id);
+            var model = await _retailProductSnapshotRepository.GetSingleAsync(id);
             if (model == null)
             {
                 return NotFound();
             }
-            _retailerRepository.Delete(model);
+            _retailProductSnapshotRepository.Delete(model);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "删除时出错");
@@ -148,22 +147,13 @@ namespace SalesApi.Web.Controllers.Retail
         }
 
         [HttpGet]
-        [Route("ByDeliveryVehicle/{deliveryVehicleId}")]
-        public async Task<IActionResult> GetByDeliveryVehicle(int deliveryVehicleId)
+        [Route("ByDate/{date?}")]
+        public async Task<IActionResult> GetByDate(DateTime? date = null)
         {
-            var items = await _retailerRepository.All.Where(x => x.SubArea.DeliveryVehicleId == deliveryVehicleId).ToListAsync();
-            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
-            return Ok(results);
+            var dateStr = GetDateString(date);
+            var items = await _retailProductSnapshotRepository.All.Where(x => x.RetailDay.Date == dateStr).ToListAsync();
+            var vms = Mapper.Map<IEnumerable<RetailDayViewModel>>(items);
+            return Ok(vms);
         }
-
-        [HttpGet]
-        [Route("BySubArea/{subAreaId}")]
-        public async Task<IActionResult> GetBySubArea(int subAreaId)
-        {
-            var items = await _retailerRepository.All.Where(x => x.SubAreaId == subAreaId).ToListAsync();
-            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
-            return Ok(results);
-        }
-
     }
 }

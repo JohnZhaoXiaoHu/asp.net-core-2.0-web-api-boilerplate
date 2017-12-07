@@ -1,23 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Retail;
 using SalesApi.Repositories.Retail;
+using SalesApi.Services.Retail;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Controllers.Bases;
 
 namespace SalesApi.Web.Controllers.Retail
 {
     [Route("api/sales/[controller]")]
-    public class RetailPromotionEventBonusController : SalesController<RetailPromotionEventBonusController>
+    public class RetailPromotionEventBonusController : RetailController<RetailPromotionEventBonusController>
     {
         private readonly IRetailPromotionEventBonusRepository _retailPromotionEventBonusRepository;
-        public RetailPromotionEventBonusController(ICoreService<RetailPromotionEventBonusController> coreService,
-            IRetailPromotionEventBonusRepository retailPromotionEventBonusRepository) : base(coreService)
+        public RetailPromotionEventBonusController(IRetailService<RetailPromotionEventBonusController> retailService,
+            IRetailPromotionEventBonusRepository retailPromotionEventBonusRepository) : base(retailService)
         {
             _retailPromotionEventBonusRepository = retailPromotionEventBonusRepository;
         }
@@ -144,5 +146,14 @@ namespace SalesApi.Web.Controllers.Retail
             return NoContent();
         }
 
+        [HttpGet]
+        [Route("ByDate/{date?}")]
+        public async Task<IActionResult> GetByDate(DateTime? date = null)
+        {
+            var theDate = date ?? Tomorrow;
+            var items = await _retailPromotionEventBonusRepository.All.Where(x => x.RetailPromotionEvent.Date == theDate).ToListAsync();
+            var vms = Mapper.Map<IEnumerable<RetailPromotionEventBonusViewModel>>(items);
+            return Ok(vms);
+        }
     }
 }

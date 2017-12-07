@@ -2,23 +2,23 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Retail;
 using SalesApi.Repositories.Retail;
+using SalesApi.Services.Retail;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Controllers.Bases;
 
 namespace SalesApi.Web.Controllers.Retail
 {
     [Route("api/sales/[controller]")]
-    public class RetailPromotionSeriesBonusController : SalesController<RetailPromotionSeriesBonusController>
+    public class RetailPromotionSeriesBonusController : RetailController<RetailPromotionSeriesBonusController>
     {
         private readonly IRetailPromotionSeriesBonusRepository _retailPromotionSeriesBonusRepository;
-        public RetailPromotionSeriesBonusController(ICoreService<RetailPromotionSeriesBonusController> coreService,
-            IRetailPromotionSeriesBonusRepository retailPromotionSeriesBonusRepository) : base(coreService)
+        public RetailPromotionSeriesBonusController(IRetailService<RetailPromotionSeriesBonusController> retailService,
+            IRetailPromotionSeriesBonusRepository retailPromotionSeriesBonusRepository) : base(retailService)
         {
             _retailPromotionSeriesBonusRepository = retailPromotionSeriesBonusRepository;
         }

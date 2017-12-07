@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
+using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
 
@@ -23,6 +25,12 @@ namespace SalesApi.Web.Configurations
 
             #endregion
 
+            #region Overall
+
+            CreateMap<SalesDayViewModel, SalesDay>();
+
+            #endregion
+
             #region Retail
 
             CreateMap<ProductForRetailViewModel, ProductForRetail>();
@@ -32,6 +40,8 @@ namespace SalesApi.Web.Configurations
             CreateMap<RetailPromotionEventBonusViewModel, RetailPromotionEventBonus>();
             CreateMap<RetailPromotionSeriesAddViewModel, RetailPromotionSeries>();
             CreateMap<RetailPromotionSeriesEditViewModel, RetailPromotionSeries>();
+            CreateMap<RetailDayViewModel, RetailDay>();
+            CreateMap<RetailProductSnapshotViewModel, RetailProductSnapshot>();
 
             #endregion
         }

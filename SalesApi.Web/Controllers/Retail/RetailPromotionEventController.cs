@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Retail;
 using SalesApi.Repositories.Retail;
+using SalesApi.Services.Retail;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Controllers.Bases;
 
 namespace SalesApi.Web.Controllers.Retail
 {
     [Route("api/sales/[controller]")]
-    public class RetailPromotionEventController : SalesController<RetailPromotionEventController>
+    public class RetailPromotionEventController : RetailController<RetailPromotionEventController>
     {
         private readonly IRetailPromotionEventRepository _retailPromotionEventRepository;
         private readonly IRetailPromotionEventBonusRepository _retailPromotionEventBonusRepository;
 
-        public RetailPromotionEventController(ICoreService<RetailPromotionEventController> coreService,
+        public RetailPromotionEventController(IRetailService<RetailPromotionEventController> retailService,
             IRetailPromotionEventRepository retailPromotionEventRepository,
-            IRetailPromotionEventBonusRepository retailPromotionEventBonusRepository) : base(coreService)
+            IRetailPromotionEventBonusRepository retailPromotionEventBonusRepository) : base(retailService)
         {
             _retailPromotionEventRepository = retailPromotionEventRepository;
             _retailPromotionEventBonusRepository = retailPromotionEventBonusRepository;

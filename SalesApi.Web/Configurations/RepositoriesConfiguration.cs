@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SalesApi.Repositories.Overall;
 using SalesApi.Repositories.Retail;
 using SalesApi.Repositories.Settings;
 
@@ -18,6 +19,12 @@ namespace SalesApi.Web.Configurations
 
             #endregion
 
+            #region Overall
+
+            services.AddScoped<ISalesDayRepository, SalesDayRepository>();
+
+            #endregion
+
             #region Retail
 
             services.AddScoped<IProductForRetailRepository, ProductForRetailRepository>();
@@ -26,6 +33,8 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<IRetailPromotionSeriesBonusRepository, RetailPromotionSeriesBonusRepository>();
             services.AddScoped<IRetailPromotionEventRepository, RetailPromotionEventRepository>();
             services.AddScoped<IRetailPromotionEventBonusRepository, RetailPromotionEventBonusRepository>();
+            services.AddScoped<IRetailDayRepository, RetailDayRepository>();
+            services.AddScoped<IRetailProductSnapshotRepository, RetailProductSnapshotRepository>();
 
             #endregion
         }

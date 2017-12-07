@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SalesApi.DataContext.Contexts;
+using SalesApi.Services.Retail;
 using SalesApi.Shared.Settings;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Configurations;
@@ -53,6 +54,8 @@ namespace SalesApi.Web
 
             services.AddScoped<IUnitOfWork, SalesContext>();
             services.AddScoped(typeof(ICoreService<>), typeof(CoreService<>));
+            services.AddScoped(typeof(IRetailService<>), typeof(RetailService<>));
+
             services.AddRepositories();
 
             var physicalProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());

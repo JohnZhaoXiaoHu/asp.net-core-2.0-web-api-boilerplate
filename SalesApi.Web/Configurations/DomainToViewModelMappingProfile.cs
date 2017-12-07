@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
+using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
 
@@ -27,6 +29,12 @@ namespace SalesApi.Web.Configurations
 
             #endregion
 
+            #region Overall
+
+            CreateMap<SalesDay, SalesDayViewModel>();
+
+            #endregion
+
             #region Retail
 
             CreateMap<ProductForRetail, ProductForRetailViewModel>()
@@ -44,6 +52,8 @@ namespace SalesApi.Web.Configurations
                 .ForMember(d => d.Editable, o => o.MapFrom(s => false));
                 // .ForMember(d => d.Url, o => o.MapFrom(s => $"/retail/edit-retail-promotion-event/{s.Id}"));
             CreateMap<RetailPromotionEventBonus, RetailPromotionEventBonusViewModel>();
+            CreateMap<RetailDay, RetailDayViewModel>();
+            CreateMap<RetailProductSnapshot, RetailProductSnapshotViewModel>();
 
             #endregion
         }

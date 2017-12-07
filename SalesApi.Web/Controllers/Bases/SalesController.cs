@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
 using AutoMapper;
-using Infrastructure.Features.Common;
 using Infrastructure.Features.Data;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +29,14 @@ namespace SalesApi.Web.Controllers.Bases
 
         protected DateTime Now => DateTime.Now;
         protected string UserName => User.Identity.Name ?? "Anonymous";
+        protected DateTime Tomorrow => DateTime.Now.AddDays(1).Date;
 
         #endregion
+
+        [NonAction]
+        protected string GetDateString(DateTime? date = null)
+        {
+            return date.HasValue ? date.Value.Date.ToString("yyyy-MM-dd") : Tomorrow.ToString("yyyy-MM-dd");
+        }
     }
 }

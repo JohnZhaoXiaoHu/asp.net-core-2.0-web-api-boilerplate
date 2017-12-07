@@ -2,30 +2,30 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Retail;
 using SalesApi.Repositories.Retail;
+using SalesApi.Services.Retail;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Controllers.Bases;
 
 namespace SalesApi.Web.Controllers.Retail
 {
     [Route("api/sales/[controller]")]
-    public class RetailPromotionSeriesController : SalesController<RetailPromotionSeriesController>
+    public class RetailPromotionSeriesController : RetailController<RetailPromotionSeriesController>
     {
         private readonly IRetailPromotionSeriesRepository _retailPromotionSeriesRepository;
         private readonly IRetailPromotionEventRepository _retailPromotionEventRepository;
         private readonly IRetailPromotionSeriesBonusRepository _retailPromotionSeriesBonusRepository;
         private readonly IRetailPromotionEventBonusRepository _retailPromotionEventBonusRepository;
 
-        public RetailPromotionSeriesController(ICoreService<RetailPromotionSeriesController> coreService,
+        public RetailPromotionSeriesController(IRetailService<RetailPromotionSeriesController> retailService,
             IRetailPromotionSeriesRepository retailPromotionSeriesRepository,
             IRetailPromotionEventRepository retailPromotionEventRepository,
             IRetailPromotionSeriesBonusRepository retailPromotionSeriesBonusRepository,
-            IRetailPromotionEventBonusRepository retailPromotionEventBonusRepository) : base(coreService)
+            IRetailPromotionEventBonusRepository retailPromotionEventBonusRepository) : base(retailService)
         {
             _retailPromotionSeriesRepository = retailPromotionSeriesRepository;
             _retailPromotionEventRepository = retailPromotionEventRepository;

@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20171207005216_AddSalesAndRetailDayProductSnapshot")]
+    partial class AddSalesAndRetailDayProductSnapshot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,6 +232,8 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<decimal>("Price");
 
                     b.Property<int>("ProductForRetailId");
+
+                    b.Property<string>("ProductName");
 
                     b.Property<int>("ProductUnit");
 

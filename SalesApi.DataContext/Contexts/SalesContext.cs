@@ -63,6 +63,8 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<RetailPromotionSeriesBonus> RetailPromotionSeriesBonuses { get; set; }
         public DbSet<RetailPromotionEvent> RetailPromotionEvents { get; set; }
         public DbSet<RetailPromotionEventBonus> RetailPromotionEventBonuses { get; set; }
+        public DbSet<RetailDay> RetailDays { get; set; }
+        public DbSet<RetailProductSnapshot> RetailProductSnapshots { get; set; }
 
         #endregion
     }

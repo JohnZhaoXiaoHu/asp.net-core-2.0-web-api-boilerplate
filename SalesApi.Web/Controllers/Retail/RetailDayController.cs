@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Microsoft.AspNetCore.JsonPatch;
@@ -14,40 +14,40 @@ using SalesApi.Web.Controllers.Bases;
 namespace SalesApi.Web.Controllers.Retail
 {
     [Route("api/sales/[controller]")]
-    public class RetailerController : RetailController<RetailerController>
+    public class RetailDayController : RetailController<RetailDayController>
     {
-        private readonly IRetailerRepository _retailerRepository;
-        public RetailerController(IRetailService<RetailerController> retailService,
-            IRetailerRepository retailerRepository) : base(retailService)
+        private readonly IRetailDayRepository _retailDayRepository;
+        public RetailDayController(IRetailService<RetailDayController> retailService,
+            IRetailDayRepository retailDayRepository) : base(retailService)
         {
-            _retailerRepository = retailerRepository;
+            _retailDayRepository = retailDayRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _retailerRepository.All.ToListAsync();
-            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
+            var items = await _retailDayRepository.All.ToListAsync();
+            var results = Mapper.Map<IEnumerable<RetailDayViewModel>>(items);
             return Ok(results);
         }
 
         [HttpGet]
-        [Route("{id}", Name = "GetRetailer")]
+        [Route("{id}", Name = "GetRetailDay")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await _retailerRepository.GetSingleAsync(id);
+            var item = await _retailDayRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
-            var result = Mapper.Map<RetailerViewModel>(item);
+            var result = Mapper.Map<RetailDayViewModel>(item);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RetailerViewModel retailerVm)
+        public async Task<IActionResult> Post([FromBody] RetailDayViewModel retailDayVm)
         {
-            if (retailerVm == null)
+            if (retailDayVm == null)
             {
                 return BadRequest();
             }
@@ -57,24 +57,23 @@ namespace SalesApi.Web.Controllers.Retail
                 return BadRequest(ModelState);
             }
 
-            var newItem = Mapper.Map<Retailer>(retailerVm);
-            _retailerRepository.SetPinyin(newItem);
+            var newItem = Mapper.Map<RetailDay>(retailDayVm);
             newItem.SetCreation(UserName);
-            _retailerRepository.Add(newItem);
+            _retailDayRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
 
-            var vm = Mapper.Map<RetailerViewModel>(newItem);
+            var vm = Mapper.Map<RetailDayViewModel>(newItem);
 
-            return CreatedAtRoute("GetRetailer", new { id = vm.Id }, vm);
+            return CreatedAtRoute("GetRetailDay", new { id = vm.Id }, vm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] RetailerViewModel retailerVm)
+        public async Task<IActionResult> Put(int id, [FromBody] RetailDayViewModel retailDayVm)
         {
-            if (retailerVm == null)
+            if (retailDayVm == null)
             {
                 return BadRequest();
             }
@@ -83,36 +82,35 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
-            var dbItem = await _retailerRepository.GetSingleAsync(id);
+            var dbItem = await _retailDayRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            Mapper.Map(retailerVm, dbItem);
-            _retailerRepository.SetPinyin(dbItem);
+            Mapper.Map(retailDayVm, dbItem);
             dbItem.SetModification(UserName);
-            _retailerRepository.Update(dbItem);
+            _retailDayRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-            var vm = Mapper.Map<RetailerViewModel>(dbItem);
-            return Ok(vm);
+
+            return NoContent();
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<RetailerViewModel> patchDoc)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<RetailDayViewModel> patchDoc)
         {
             if (patchDoc == null)
             {
                 return BadRequest();
             }
-            var dbItem = await _retailerRepository.GetSingleAsync(id);
+            var dbItem = await _retailDayRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            var toPatchVm = Mapper.Map<RetailerViewModel>(dbItem);
+            var toPatchVm = Mapper.Map<RetailDayViewModel>(dbItem);
             patchDoc.ApplyTo(toPatchVm, ModelState);
 
             TryValidateModel(toPatchVm);
@@ -134,12 +132,12 @@ namespace SalesApi.Web.Controllers.Retail
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _retailerRepository.GetSingleAsync(id);
+            var model = await _retailDayRepository.GetSingleAsync(id);
             if (model == null)
             {
                 return NotFound();
             }
-            _retailerRepository.Delete(model);
+            _retailDayRepository.Delete(model);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "删除时出错");
@@ -148,21 +146,17 @@ namespace SalesApi.Web.Controllers.Retail
         }
 
         [HttpGet]
-        [Route("ByDeliveryVehicle/{deliveryVehicleId}")]
-        public async Task<IActionResult> GetByDeliveryVehicle(int deliveryVehicleId)
+        [Route("ByDate/{date?}")]
+        public async Task<IActionResult> GetByDate(DateTime? date = null)
         {
-            var items = await _retailerRepository.All.Where(x => x.SubArea.DeliveryVehicleId == deliveryVehicleId).ToListAsync();
-            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
-            return Ok(results);
-        }
-
-        [HttpGet]
-        [Route("BySubArea/{subAreaId}")]
-        public async Task<IActionResult> GetBySubArea(int subAreaId)
-        {
-            var items = await _retailerRepository.All.Where(x => x.SubAreaId == subAreaId).ToListAsync();
-            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
-            return Ok(results);
+            var dateStr = GetDateString(date);
+            var item = await _retailDayRepository.GetSingleAsync(x => x.Date == dateStr);
+            if (item == null)
+            {
+                return NoContent();
+            }
+            var result = Mapper.Map<RetailDayViewModel>(item);
+            return Ok(result);
         }
 
     }

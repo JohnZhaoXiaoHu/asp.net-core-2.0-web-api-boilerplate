@@ -33,7 +33,7 @@ namespace Infrastructure.Services
             Mapper = mapper;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             UnitOfWork?.Dispose();
         }
