@@ -51,7 +51,7 @@ namespace SalesApi.DataContext.Contexts
 
         #region Overall
 
-        public DbSet<SalesDay> SalesDays { get; set; }
+        // public DbSet<SalesDay> SalesDays { get; set; }
 
         #endregion
 
