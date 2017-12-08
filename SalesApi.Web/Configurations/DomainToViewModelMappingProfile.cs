@@ -50,10 +50,10 @@ namespace SalesApi.Web.Configurations
                 .ForMember(d => d.End, o => o.MapFrom(s => s.Date))
                 .ForMember(d => d.AllDay, o => o.MapFrom(s => true))
                 .ForMember(d => d.Editable, o => o.MapFrom(s => false));
-                // .ForMember(d => d.Url, o => o.MapFrom(s => $"/retail/edit-retail-promotion-event/{s.Id}"));
             CreateMap<RetailPromotionEventBonus, RetailPromotionEventBonusViewModel>();
             CreateMap<RetailDay, RetailDayViewModel>();
             CreateMap<RetailProductSnapshot, RetailProductSnapshotViewModel>();
+            CreateMap<RetailOrder, RetailOrderViewModel>();
 
             #endregion
         }

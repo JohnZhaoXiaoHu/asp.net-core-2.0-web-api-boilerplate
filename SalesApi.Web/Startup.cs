@@ -53,8 +53,6 @@ namespace SalesApi.Web
 
             services.AddScoped<IUnitOfWork, SalesContext>();
             services.AddScoped(typeof(ICoreService<>), typeof(CoreService<>));
-            services.AddScoped(typeof(IRetailService<>), typeof(RetailService<>));
-            services.AddScoped<IRetailDayService, RetailDayService>();
 
             services.AddRepositories();
 
@@ -62,6 +60,8 @@ namespace SalesApi.Web
             var embeddedProvider = new EmbeddedFileProvider(Assembly.GetEntryAssembly());
             var compositeProvider = new CompositeFileProvider(physicalProvider, embeddedProvider);
             services.AddSingleton<IFileProvider>(compositeProvider);
+
+            services.AddServices();
 
             services.AddSwaggerGen(c =>
             {

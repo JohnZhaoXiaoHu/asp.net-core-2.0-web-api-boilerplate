@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Microsoft.AspNetCore.JsonPatch;
@@ -144,6 +146,15 @@ namespace SalesApi.Web.Controllers.Retail
                 return StatusCode(500, "删除时出错");
             }
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("NotDeleted")]
+        public async Task<IActionResult> GetNotDeleted()
+        {
+            var items = await _productForRetailRepository.All.Where(x => !x.Deleted).ToListAsync();
+            var results = Mapper.Map<IEnumerable<ProductForRetailViewModel>>(items);
+            return Ok(results);
         }
     }
 }

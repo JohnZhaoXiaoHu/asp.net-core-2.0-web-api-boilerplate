@@ -165,5 +165,14 @@ namespace SalesApi.Web.Controllers.Retail
             return Ok(results);
         }
 
+        [HttpGet]
+        [Route("NotDeleted")]
+        public async Task<IActionResult> GetNotDeleted()
+        {
+            var items = await _retailerRepository.All.Where(x => !x.Deleted).ToListAsync();
+            var results = Mapper.Map<IEnumerable<RetailerViewModel>>(items);
+            return Ok(results);
+        }
+
     }
 }

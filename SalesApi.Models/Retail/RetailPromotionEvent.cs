@@ -11,6 +11,7 @@ namespace SalesApi.Models.Retail
         public RetailPromotionEvent()
         {
             RetailPromotionEventBonuses = new List<RetailPromotionEventBonus>();
+            RetailOrders = new List<RetailOrder>();
         }
 
         public int RetailPromotionSeriesId { get; set; }
@@ -22,6 +23,7 @@ namespace SalesApi.Models.Retail
         public RetailPromotionSeries RetailPromotionSeries { get; set; }
         public ProductForRetail ProductForRetail { get; set; }
         public ICollection<RetailPromotionEventBonus> RetailPromotionEventBonuses { get; set; }
+        public ICollection<RetailOrder> RetailOrders { get; set; }
     }
 
     public class RetailPromotionEventConfiguration : EntityBaseConfiguration<RetailPromotionEvent>

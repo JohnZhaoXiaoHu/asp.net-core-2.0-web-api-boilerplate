@@ -27,6 +27,12 @@ namespace SalesApi.DataContext.Contexts
 
             #endregion
 
+            #region Overall
+
+            modelBuilder.ApplyConfiguration(new SalesDayConfiguration());
+
+            #endregion
+
             #region Retail
 
             modelBuilder.ApplyConfiguration(new ProductForRetailConfiguration());
@@ -35,6 +41,9 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new RetailPromotionSeriesBonusConfiguration());
             modelBuilder.ApplyConfiguration(new RetailPromotionEventConfiguration());
             modelBuilder.ApplyConfiguration(new RetailPromotionEventBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailDayConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailProductSnapshotConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailOrderConfiguration());
 
             #endregion
         }
@@ -65,6 +74,7 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<RetailPromotionEventBonus> RetailPromotionEventBonuses { get; set; }
         public DbSet<RetailDay> RetailDays { get; set; }
         public DbSet<RetailProductSnapshot> RetailProductSnapshots { get; set; }
+        public DbSet<RetailOrder> RetailOrders { get; set; }
 
         #endregion
     }
