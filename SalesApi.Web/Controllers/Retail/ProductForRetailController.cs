@@ -152,7 +152,7 @@ namespace SalesApi.Web.Controllers.Retail
         [Route("NotDeleted")]
         public async Task<IActionResult> GetNotDeleted()
         {
-            var items = await _productForRetailRepository.All.Where(x => !x.Deleted).ToListAsync();
+            var items = await _productForRetailRepository.AllIncluding(x => x.Product).Where(x => !x.Deleted).ToListAsync();
             var results = Mapper.Map<IEnumerable<ProductForRetailViewModel>>(items);
             return Ok(results);
         }
