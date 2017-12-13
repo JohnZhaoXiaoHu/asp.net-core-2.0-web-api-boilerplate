@@ -21,7 +21,7 @@ namespace SalesApi.Models.Retail
     {
         public override void ConfigureDerived(EntityTypeBuilder<RetailDay> b)
         {
-            b.Property(x => x.Date).IsRequired().HasMaxLength(8);
+            b.Property(x => x.Date).IsRequired().HasMaxLength(10);
             b.HasIndex(x => x.Date).IsUnique();
         }
     }

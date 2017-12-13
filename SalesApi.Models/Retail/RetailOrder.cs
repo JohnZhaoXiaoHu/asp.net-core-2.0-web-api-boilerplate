@@ -6,7 +6,7 @@ namespace SalesApi.Models.Retail
 {
     public class RetailOrder : EntityBase
     {
-        public int ProductForRetailId { get; set; }
+        public int RetailProductSnapshotId { get; set; }
         public int RetailerId { get; set; }
         public int? RetailPromotionEventId { get; set; }
 
@@ -15,7 +15,7 @@ namespace SalesApi.Models.Retail
         public int Ordered { get; set; }
         public int Gift { get; set; }
 
-        public ProductForRetail ProductForRetail { get; set; }
+        public RetailProductSnapshot RetailProductSnapshot { get; set; }
         public Retailer Retailer { get; set; }
         public RetailPromotionEvent RetailPromotionEvent { get; set; }
     }
@@ -26,12 +26,12 @@ namespace SalesApi.Models.Retail
         {
             b.Property(x => x.Date).IsRequired().HasMaxLength(10);
             b.Property(x => x.LegacyOrderId).HasMaxLength(20);
-            b.HasOne(x => x.ProductForRetail).WithMany().HasForeignKey(x => x.ProductForRetailId)
+            b.HasOne(x => x.RetailProductSnapshot).WithMany().HasForeignKey(x => x.RetailProductSnapshotId)
                 .OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.Retailer).WithMany().HasForeignKey(x => x.RetailerId).OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.RetailPromotionEvent).WithMany().HasForeignKey(x => x.RetailPromotionEventId)
                 .OnDelete(DeleteBehavior.SetNull);
-            b.HasIndex(x => new { x.Date, x.ProductForRetailId, x.RetailerId }).IsUnique();
+            b.HasIndex(x => new { x.Date, x.RetailProductSnapshotId, x.RetailerId }).IsUnique();
         }
     }
 }

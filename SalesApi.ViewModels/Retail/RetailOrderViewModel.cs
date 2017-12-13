@@ -4,7 +4,7 @@ namespace SalesApi.ViewModels.Retail
 {
     public class RetailOrderViewModel: EntityBase
     {
-        public int ProductForRetailId { get; set; }
+        public int RetailProductSnapshotId { get; set; }
         public int RetailerId { get; set; }
         public int? RetailPromotionEventId { get; set; }
 

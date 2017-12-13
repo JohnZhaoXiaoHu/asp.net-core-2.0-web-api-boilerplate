@@ -160,20 +160,20 @@ namespace SalesApi.Web.Controllers.Retail
             return Ok(results);
         }
 
-        [HttpPut("SaveOrder/{productForRetailId}/{retailerId}/{date}/{ordered}/{gift}")]
-        public async Task<IActionResult> SaveOrder(int productForRetailId, int retailerId, DateTime date, int ordered, int gift)
+        [HttpPut("SaveOrder/{retailProductSnapshotId}/{retailerId}/{date}/{ordered}/{gift}")]
+        public async Task<IActionResult> SaveOrder(int retailProductSnapshotId, int retailerId, DateTime date, int ordered, int gift)
         {
             var dateStr = GetDateString(date);
             var retailOrder = await _retailOrderRepository.GetSingleAsync(x =>
-                x.ProductForRetailId == productForRetailId && x.RetailerId == retailerId && x.Date == dateStr);
+                x.RetailProductSnapshotId == retailProductSnapshotId && x.RetailerId == retailerId && x.Date == dateStr);
             var promotionEvent = await
                 _retailPromotionEventRepository.GetSingleAsync(x =>
-                    x.ProductForRetailId == productForRetailId && x.Date == date);
+                    x.ProductForRetailId == retailProductSnapshotId && x.Date == date);
             if (retailOrder == null)
             {
                 retailOrder = new RetailOrder
                 {
-                    ProductForRetailId = productForRetailId,
+                    RetailProductSnapshotId = retailProductSnapshotId,
                     RetailerId = retailerId,
                     Date = dateStr,
                     Ordered = ordered,
