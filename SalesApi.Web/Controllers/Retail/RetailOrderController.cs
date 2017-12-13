@@ -18,10 +18,14 @@ namespace SalesApi.Web.Controllers.Retail
     public class RetailOrderController : SalesController<RetailOrderController>
     {
         private readonly IRetailOrderRepository _retailOrderRepository;
+        private readonly IRetailPromotionEventRepository _retailPromotionEventRepository;
+
         public RetailOrderController(ICoreService<RetailOrderController> coreService,
-            IRetailOrderRepository retailOrderRepository) : base(coreService)
+            IRetailOrderRepository retailOrderRepository,
+            IRetailPromotionEventRepository retailPromotionEventRepository) : base(coreService)
         {
             _retailOrderRepository = retailOrderRepository;
+            _retailPromotionEventRepository = retailPromotionEventRepository;
         }
 
         [HttpGet]
@@ -154,6 +158,44 @@ namespace SalesApi.Web.Controllers.Retail
             var items = await _retailOrderRepository.All.Where(x => x.RetailerId == retailerId && x.Date == dateStr).ToListAsync();
             var results = Mapper.Map<IEnumerable<RetailOrderViewModel>>(items);
             return Ok(results);
+        }
+
+        [HttpPut("SaveOrder/{productForRetailId}/{retailerId}/{date}/{ordered}/{gift}")]
+        public async Task<IActionResult> SaveOrder(int productForRetailId, int retailerId, DateTime date, int ordered, int gift)
+        {
+            var dateStr = GetDateString(date);
+            var retailOrder = await _retailOrderRepository.GetSingleAsync(x =>
+                x.ProductForRetailId == productForRetailId && x.RetailerId == retailerId && x.Date == dateStr);
+            var promotionEvent = await
+                _retailPromotionEventRepository.GetSingleAsync(x =>
+                    x.ProductForRetailId == productForRetailId && x.Date == date);
+            if (retailOrder == null)
+            {
+                retailOrder = new RetailOrder
+                {
+                    ProductForRetailId = productForRetailId,
+                    RetailerId = retailerId,
+                    Date = dateStr,
+                    Ordered = ordered,
+                    Gift = gift,
+                    RetailPromotionEventId = promotionEvent?.Id
+                };
+                retailOrder.SetCreation(UserName);
+                _retailOrderRepository.Add(retailOrder);
+            }
+            else
+            {
+                retailOrder.Ordered = ordered;
+                retailOrder.Gift = gift;
+                retailOrder.SetModification(UserName);
+                _retailOrderRepository.Update(retailOrder);
+            }
+            if (!await UnitOfWork.SaveAsync())
+            {
+                return StatusCode(500, "保存时出错");
+            }
+
+            return NoContent();
         }
 
     }
