@@ -12,6 +12,10 @@ namespace SalesApi.Models.Retail
         public ProductForRetail()
         {
             RetailPromotionSeries = new List<RetailPromotionSeries>();
+            RetailPromotionSeriesBonuses = new List<RetailPromotionSeriesBonus>();
+            RetailPromotionEvents = new List<RetailPromotionEvent>();
+            RetailPromotionEventBonuses = new List<RetailPromotionEventBonus>();
+            RetailProductSnapshots = new List<RetailProductSnapshot>();
         }
 
         public int ProductId { get; set; }

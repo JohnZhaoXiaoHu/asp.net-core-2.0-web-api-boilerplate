@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SalesApi.Models.Collective;
 using SalesApi.Models.Retail;
 using SalesApi.Shared.Enums;
 
@@ -19,6 +20,7 @@ namespace SalesApi.Models.Settings
         public decimal TaxRate { get; set; }
 
         public ProductForRetail ProductForRetail { get; set; }
+        public ProductForCollective ProductForCollective { get; set; }
     }
 
     public class ProductConfiguration : EntityBaseConfiguration<Product>
