@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Features.Data;
 using Microsoft.EntityFrameworkCore;
+using SalesApi.Models.Collective;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
@@ -46,6 +47,16 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new RetailOrderConfiguration());
 
             #endregion
+
+            #region Collective
+
+            modelBuilder.ApplyConfiguration(new CollectiveCustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductForCollectiveConfiguration());
+            modelBuilder.ApplyConfiguration(new CollectiveDayConfiguration());
+            modelBuilder.ApplyConfiguration(new CollectiveProductSnapshotConfiguration());
+            modelBuilder.ApplyConfiguration(new CollectiveOrderConfiguration());
+
+            #endregion
         }
 
         #region Settings
@@ -75,6 +86,16 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<RetailDay> RetailDays { get; set; }
         public DbSet<RetailProductSnapshot> RetailProductSnapshots { get; set; }
         public DbSet<RetailOrder> RetailOrders { get; set; }
+
+        #endregion
+
+        #region Collective
+
+        public DbSet<CollectiveCustomer> CollectiveCustomers { get; set; }
+        public DbSet<ProductForCollective> ProductForCollectives { get; set; }
+        public DbSet<CollectiveProductSnapshot> CollectiveProductSnapshots { get; set; }
+        public DbSet<CollectiveDay> CollectiveDays { get; set; }
+        public DbSet<CollectiveOrder> CollectiveOrders { get; set; }
 
         #endregion
     }

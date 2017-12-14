@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SalesApi.Repositories.Collective;
 using SalesApi.Repositories.Overall;
 using SalesApi.Repositories.Retail;
 using SalesApi.Repositories.Settings;
@@ -36,6 +37,16 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<IRetailDayRepository, RetailDayRepository>();
             services.AddScoped<IRetailProductSnapshotRepository, RetailProductSnapshotRepository>();
             services.AddScoped<IRetailOrderRepository, RetailOrderRepository>();
+
+            #endregion
+
+            #region Collective
+
+            services.AddScoped<IProductForCollectiveRepository, ProductForCollectiveRepository>();
+            services.AddScoped<ICollectiveCustomerRepository, CollectiveCustomerRepository>();
+            services.AddScoped<ICollectiveDayRepository, CollectiveDayRepository>();
+            services.AddScoped<ICollectiveProductSnapshotRepository, CollectiveProductSnapshotRepository>();
+            services.AddScoped<ICollectiveOrderRepository, CollectiveOrderRepository>();
 
             #endregion
         }

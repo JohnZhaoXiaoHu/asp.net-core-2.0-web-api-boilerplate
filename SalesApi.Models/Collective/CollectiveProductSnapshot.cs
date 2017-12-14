@@ -17,9 +17,6 @@ namespace SalesApi.Models.Collective
         
         public SalesType SalesType { get; set; }
         public int EquivalentBox { get; set; }
-        public decimal Price { get; set; }
-        public decimal InternalPrice { get; set; }
-        public decimal BoxPrice { get; set; }
         public bool IsOrderByBox { get; set; }
         public int MinOrderCount { get; set; }
         public int OrderDivisor { get; set; }
@@ -42,10 +39,6 @@ namespace SalesApi.Models.Collective
     {
         public override void ConfigureDerived(EntityTypeBuilder<CollectiveProductSnapshot> b)
         {
-            b.Property(x => x.Price).HasColumnType("decimal(10, 6)");
-            b.Property(x => x.InternalPrice).HasColumnType("decimal(10, 6)");
-            b.Property(x => x.BoxPrice).HasColumnType("decimal(10, 2)");
-
             b.Property(x => x.LegacyProductId).HasMaxLength(5);
             b.Property(x => x.Name).IsRequired().HasMaxLength(10);
             b.Property(x => x.FullName).IsRequired().HasMaxLength(50);

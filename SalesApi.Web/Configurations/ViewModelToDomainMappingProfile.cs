@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using SalesApi.Models.Collective;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
+using SalesApi.ViewModels.Collective;
 using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
@@ -43,6 +45,16 @@ namespace SalesApi.Web.Configurations
             CreateMap<RetailDayViewModel, RetailDay>();
             CreateMap<RetailProductSnapshotViewModel, RetailProductSnapshot>();
             CreateMap<RetailOrderViewModel, RetailOrder>();
+
+            #endregion
+
+            #region Collective
+
+            CreateMap<ProductForCollectiveViewModel, ProductForCollective>();
+            CreateMap<CollectiveCustomerViewModel, CollectiveCustomer>();
+            CreateMap<CollectiveDayViewModel, CollectiveDay>();
+            CreateMap<CollectiveProductSnapshotViewModel, CollectiveProductSnapshot>();
+            CreateMap<CollectiveOrderViewModel, CollectiveOrder>();
 
             #endregion
         }
