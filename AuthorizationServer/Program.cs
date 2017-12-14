@@ -3,6 +3,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Events;
+using SharedSettings.Settings;
 
 namespace AuthorizationServer
 {
@@ -35,7 +36,8 @@ namespace AuthorizationServer
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://0.0.0.0:5000")
+                .UseIISIntegration()
+                .UseUrls(AuthorizationServerSettings.AuthorizationServerBase)
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .Build();

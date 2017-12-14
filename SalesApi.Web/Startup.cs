@@ -14,7 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SalesApi.DataContext.Contexts;
-using SalesApi.Services.Retail;
 using SalesApi.Shared.Settings;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Configurations;
@@ -41,7 +40,7 @@ namespace SalesApi.Web
             {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
 
-                // set authorize on all controllers
+                // set authorize on all controllers or routes
                 var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
@@ -94,6 +93,9 @@ namespace SalesApi.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+#if !DEBUG
+            app.InitializeDatabase();
+#endif
             app.UseExceptionHandlingMiddleware();
             app.UseCors(SalesApiSettings.CorsPolicyName);
             app.UseStaticFiles();

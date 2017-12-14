@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SalesApi.Shared.Settings;
 using Serilog;
 using SharedSettings.Policies;
 
@@ -98,6 +99,16 @@ namespace AuthorizationServer
             {
                 options.AddPolicy(CoreApiAuthorizationPolicy.PolicyName, policy =>
                     policy.RequireClaim(CoreApiAuthorizationPolicy.ClaimName, CoreApiAuthorizationPolicy.ClaimValue));
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(SalesApiSettings.CorsPolicyName, policy =>
+                {
+                    policy.WithOrigins(SalesApiSettings.CorsOrigin)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
         }
 
