@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using SharedSettings.Policies;
 
 namespace AuthorizationServer
@@ -72,7 +73,6 @@ namespace AuthorizationServer
             services.AddMvc();
 
             services.AddAutoMapper();
-
             services.AddIdentityServer()
 #if DEBUG
                 .AddDeveloperSigningCredential()
