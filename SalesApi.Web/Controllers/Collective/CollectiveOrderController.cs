@@ -148,27 +148,27 @@ namespace SalesApi.Web.Controllers.Collective
         }
 
         [HttpGet]
-        [Route("ByDateAndCollectiveer/{collectiveerId}/{date?}")]
-        public async Task<IActionResult> GetByDateAndCollectiveer(int collectiveerId, DateTime? date = null)
+        [Route("ByDateAndCollectiveCustomer/{collectiveCustomerId}/{date?}")]
+        public async Task<IActionResult> GetByDateAndCollectiveCustomer(int collectiveCustomerId, DateTime? date = null)
         {
             var dateStr = GetDateString(date);
-            var items = await _collectiveOrderRepository.All.Where(x => x.CollectiveCustomerId == collectiveerId && x.Date == dateStr).ToListAsync();
+            var items = await _collectiveOrderRepository.All.Where(x => x.CollectiveCustomerId == collectiveCustomerId && x.Date == dateStr).ToListAsync();
             var results = Mapper.Map<IEnumerable<CollectiveOrderViewModel>>(items);
             return Ok(results);
         }
 
-        [HttpPut("SaveOrder/{collectiveProductSnapshotId}/{collectiveerId}/{date}/{ordered}/{gift}")]
-        public async Task<IActionResult> SaveOrder(int collectiveProductSnapshotId, int collectiveerId, DateTime date, int ordered, int gift)
+        [HttpPut("SaveOrder/{collectiveProductSnapshotId}/{collectiveCustomerId}/{date}/{ordered}/{gift}")]
+        public async Task<IActionResult> SaveOrder(int collectiveProductSnapshotId, int collectiveCustomerId, DateTime date, int ordered, int gift)
         {
             var dateStr = GetDateString(date);
             var collectiveOrder = await _collectiveOrderRepository.GetSingleAsync(x =>
-                x.CollectiveProductSnapshotId == collectiveProductSnapshotId && x.CollectiveCustomerId == collectiveerId && x.Date == dateStr);
+                x.CollectiveProductSnapshotId == collectiveProductSnapshotId && x.CollectiveCustomerId == collectiveCustomerId && x.Date == dateStr);
             if (collectiveOrder == null)
             {
                 collectiveOrder = new CollectiveOrder
                 {
                     CollectiveProductSnapshotId = collectiveProductSnapshotId,
-                    CollectiveCustomerId = collectiveerId,
+                    CollectiveCustomerId = collectiveCustomerId,
                     Date = dateStr,
                     Ordered = ordered,
                     Gift = gift
