@@ -13,6 +13,7 @@ namespace SalesApi.Models.Collective
         public string LegacyOrderId { get; set; }
         public int Ordered { get; set; }
         public int Gift { get; set; }
+        public decimal Price { get; set; }
 
         public CollectiveProductSnapshot CollectiveProductSnapshot { get; set; }
         public CollectiveCustomer CollectiveCustomer { get; set; }
@@ -24,6 +25,7 @@ namespace SalesApi.Models.Collective
         {
             b.Property(x => x.Date).IsRequired().HasMaxLength(10);
             b.Property(x => x.LegacyOrderId).HasMaxLength(20);
+            b.Property(x => x.Price).HasColumnType("decimal(10, 2)");
             b.HasOne(x => x.CollectiveProductSnapshot).WithMany().HasForeignKey(x => x.CollectiveProductSnapshotId)
                 .OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.CollectiveCustomer).WithMany().HasForeignKey(x => x.CollectiveCustomerId).OnDelete(DeleteBehavior.Restrict);
