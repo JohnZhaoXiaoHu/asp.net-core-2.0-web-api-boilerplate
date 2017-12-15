@@ -72,7 +72,7 @@ namespace AuthorizationServer
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddMvc();
-
+            
             services.AddAutoMapper();
             services.AddIdentityServer()
 #if DEBUG

@@ -6,8 +6,8 @@
         public const string SalesApiServerBase = "http://localhost:5100";
         public const string ClientUriBase = "http://localhost:4200";
 #else
-        public const string SalesApiServerBase = "http://acmilan.in:80";
-        public const string ClientUriBase = "http://173.248.130.144:8080";
+        public const string SalesApiServerBase = "http://120.27.16.7:91";
+        public const string ClientUriBase = "http://120.27.16.7:92";
 #endif
         public static string CorsPolicyName = "sales";
         public static string CorsOrigin = ClientUriBase;

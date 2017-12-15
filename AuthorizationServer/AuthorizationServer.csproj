@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-IdentityServerWithAspNetIdentity-04C6939F-E672-4E56-B4A5-5F064EB67F23</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\MLH Server.pubxml" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.1" />
@@ -28,6 +32,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SalesApi.Shared\SalesApi.Shared.csproj" />
     <ProjectReference Include="..\SharedSettings\SharedSettings.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="logs\" />
   </ItemGroup>
 
 </Project>
