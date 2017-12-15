@@ -5,8 +5,8 @@
 #if DEBUG
         public static string AuthorizationServerBase = "http://localhost:5000";
 #else
-        public static (string Path, string Password) Certificate = (@"E:\Certificates\mlhsales.pfx", "Bx@steel");
-        public static string AuthorizationServerBase = "http://120.27.16.7:90";
+        public static (string Path, string Password) Certificate = (@"E:\Certificates\my.pfx", "Password");
+        public static string AuthorizationServerBase = "http://localhost:90";
 #endif
     }
 }
