@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20171216011458_AddPriceToCollectiveOrder")]
+    partial class AddPriceToCollectiveOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,47 +174,6 @@ namespace SalesApi.DataContext.Migrations
                         .IsUnique();
 
                     b.ToTable("CollectiveOrders");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Collective.CollectivePrice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CollectiveCustomerId");
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<int>("ProductForCollectiveId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductForCollectiveId");
-
-                    b.HasIndex("CollectiveCustomerId", "ProductForCollectiveId")
-                        .IsUnique();
-
-                    b.ToTable("CollectivePrices");
                 });
 
             modelBuilder.Entity("SalesApi.Models.Collective.CollectiveProductSnapshot", b =>
@@ -1098,19 +1058,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasOne("SalesApi.Models.Collective.CollectiveProductSnapshot", "CollectiveProductSnapshot")
                         .WithMany()
                         .HasForeignKey("CollectiveProductSnapshotId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Collective.CollectivePrice", b =>
-                {
-                    b.HasOne("SalesApi.Models.Collective.CollectiveCustomer", "CollectiveCustomer")
-                        .WithMany("CollectivePrices")
-                        .HasForeignKey("CollectiveCustomerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SalesApi.Models.Collective.ProductForCollective", "ProductForCollective")
-                        .WithMany("CollectivePrices")
-                        .HasForeignKey("ProductForCollectiveId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

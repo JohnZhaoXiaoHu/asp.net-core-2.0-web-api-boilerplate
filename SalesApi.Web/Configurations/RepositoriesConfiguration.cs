@@ -47,6 +47,7 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<ICollectiveDayRepository, CollectiveDayRepository>();
             services.AddScoped<ICollectiveProductSnapshotRepository, CollectiveProductSnapshotRepository>();
             services.AddScoped<ICollectiveOrderRepository, CollectiveOrderRepository>();
+            services.AddScoped<ICollectivePriceRepository, CollectivePriceRepository>();
 
             #endregion
         }
