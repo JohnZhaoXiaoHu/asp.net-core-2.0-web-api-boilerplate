@@ -11,5 +11,6 @@ namespace SalesApi.ViewModels.Collective
         public string LegacyOrderId { get; set; }
         public int Ordered { get; set; }
         public int Gift { get; set; }
+        public decimal Price { get; set; }
     }
 }

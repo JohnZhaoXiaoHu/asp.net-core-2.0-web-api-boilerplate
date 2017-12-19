@@ -13,6 +13,7 @@ namespace SalesApi.Models.Collective
         {
             SalesType = SalesType.集体户;
             CollectiveProductSnapshots = new List<CollectiveProductSnapshot>();
+            CollectivePrices = new List<CollectivePrice>();
         }
 
         public int ProductId { get; set; }
@@ -24,6 +25,7 @@ namespace SalesApi.Models.Collective
 
         public Product Product { get; set; }
         public ICollection<CollectiveProductSnapshot> CollectiveProductSnapshots { get; set; }
+        public ICollection<CollectivePrice> CollectivePrices { get; set; }
     }
 
     public class ProductForCollectiveConfiguration : EntityBaseConfiguration<ProductForCollective>

@@ -1,4 +1,5 @@
-﻿using Infrastructure.Features.Common;
+﻿using System.Collections.Generic;
+using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Settings;
@@ -8,6 +9,11 @@ namespace SalesApi.Models.Collective
 {
     public class CollectiveCustomer : EntityBase
     {
+        public CollectiveCustomer()
+        {
+            CollectivePrices = new List<CollectivePrice>();
+        }
+
         public int SubAreaId { get; set; }
         public SalesType SalesType { get; set; }
         public string No { get; set; }
@@ -17,6 +23,7 @@ namespace SalesApi.Models.Collective
         public string Address { get; set; }
 
         public SubArea SubArea { get; set; }
+        public ICollection<CollectivePrice> CollectivePrices { get; set; }
     }
 
     public class CollectiveCustomerConfiguration : EntityBaseConfiguration<CollectiveCustomer>

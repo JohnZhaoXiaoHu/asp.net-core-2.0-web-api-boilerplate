@@ -55,6 +55,7 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new CollectiveDayConfiguration());
             modelBuilder.ApplyConfiguration(new CollectiveProductSnapshotConfiguration());
             modelBuilder.ApplyConfiguration(new CollectiveOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new CollectivePriceConfiguration());
 
             #endregion
         }
@@ -96,6 +97,7 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<CollectiveProductSnapshot> CollectiveProductSnapshots { get; set; }
         public DbSet<CollectiveDay> CollectiveDays { get; set; }
         public DbSet<CollectiveOrder> CollectiveOrders { get; set; }
+        public DbSet<CollectivePrice> CollectivePrices { get; set; }
 
         #endregion
     }
