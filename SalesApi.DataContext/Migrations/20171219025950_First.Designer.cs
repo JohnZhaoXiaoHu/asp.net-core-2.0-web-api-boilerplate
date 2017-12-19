@@ -12,8 +12,8 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    [Migration("20171216023634_AddCollectivePrice")]
-    partial class AddCollectivePrice
+    [Migration("20171219025950_First")]
+    partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
