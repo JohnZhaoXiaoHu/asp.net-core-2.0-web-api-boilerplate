@@ -30,7 +30,6 @@ namespace SalesApi.Models.Retail
             b.Property(x => x.Address).HasMaxLength(200);
 
             b.HasIndex(x => x.No).IsUnique();
-            b.HasIndex(x => x.Name).IsUnique();
 
             b.HasOne(x => x.SubArea).WithMany(x => x.Retailers).HasForeignKey(x => x.SubAreaId)
                 .OnDelete(DeleteBehavior.Restrict);
