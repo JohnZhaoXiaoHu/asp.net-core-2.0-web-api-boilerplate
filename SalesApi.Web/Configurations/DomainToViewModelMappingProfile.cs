@@ -65,7 +65,8 @@ namespace SalesApi.Web.Configurations
             CreateMap<CollectiveCustomer, CollectiveCustomerViewModel>();
             CreateMap<CollectiveDay, CollectiveDayViewModel>();
             CreateMap<CollectiveProductSnapshot, CollectiveProductSnapshotViewModel>();
-            CreateMap<CollectiveOrder, CollectiveOrderViewModel>();
+            CreateMap<CollectiveOrder, CollectiveOrderViewModel>()
+                .ForMember(d => d.ProductForCollectiveId, o => o.MapFrom(s => s.CollectiveProductSnapshot != null ? (int?)s.CollectiveProductSnapshot.ProductForCollectiveId : null));
             CreateMap<CollectivePrice, CollectivePriceViewModel>();
 
             #endregion

@@ -191,5 +191,18 @@ namespace SalesApi.Web.Controllers.Collective
             return NoContent();
         }
 
+        [HttpGet]
+        [Route("ByCollectiveCustomereAndDateRange/{collectiveCustomerId}/{startDate}/{endDate}")]
+        public async Task<IActionResult> GetByCollectiveCustomereAndDateRange(int collectiveCustomerId, DateTime startDate, DateTime endDate)
+        {
+            var startDateStr = GetDateString(startDate);
+            var endDateStr = GetDateString(endDate);
+            var items = await _collectiveOrderRepository.AllIncluding(x => x.CollectiveProductSnapshot)
+                .Where(x => x.CollectiveCustomerId == collectiveCustomerId && string.Compare(x.Date, startDateStr, StringComparison.Ordinal) >= 0 && string.Compare(x.Date, endDateStr, StringComparison.Ordinal) <= 0)
+                .ToListAsync();
+            var results = Mapper.Map<IEnumerable<CollectiveOrderViewModel>>(items);
+            return Ok(results);
+        }
+
     }
 }

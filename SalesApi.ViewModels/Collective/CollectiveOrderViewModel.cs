@@ -12,5 +12,7 @@ namespace SalesApi.ViewModels.Collective
         public int Ordered { get; set; }
         public int Gift { get; set; }
         public decimal Price { get; set; }
+
+        public int? ProductForCollectiveId { get; set; }
     }
 }
