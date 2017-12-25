@@ -151,7 +151,8 @@ namespace SalesApi.Web.Controllers.Collective
         public async Task<IActionResult> GetByDate(DateTime? date = null)
         {
             var dateStr = GetDateString(date);
-            var items = await _collectiveProductSnapshotRepository.All.Where(x => x.CollectiveDay.Date == dateStr).ToListAsync();
+            var items = await _collectiveProductSnapshotRepository.All.Where(x => x.CollectiveDay.Date == dateStr)
+                .OrderBy(x => x.ProductForCollective.Product.Order).ToListAsync();
             var vms = Mapper.Map<IEnumerable<CollectiveProductSnapshotViewModel>>(items);
             return Ok(vms);
         }
