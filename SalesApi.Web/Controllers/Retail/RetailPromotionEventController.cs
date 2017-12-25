@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
@@ -12,6 +13,7 @@ using SalesApi.Repositories.Retail;
 using SalesApi.Services.Retail;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Controllers.Bases;
+using SharedSettings.Tools;
 
 namespace SalesApi.Web.Controllers.Retail
 {
@@ -63,7 +65,7 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
-
+            await ValidateRetailDay(retailPromotionEventVm.Date);
             var newItem = Mapper.Map<RetailPromotionEvent>(retailPromotionEventVm);
             newItem.SetCreation(UserName);
             _retailPromotionEventRepository.Add(newItem);
@@ -89,6 +91,7 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
+            await ValidateRetailDay(retailPromotionEventVm.Date);
             var dbItem = await _retailPromotionEventRepository.GetSingleAsync(x => x.Id == id, x => x.RetailPromotionEventBonuses);
             if (dbItem == null)
             {
@@ -152,6 +155,7 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
+            await ValidateRetailDay(toPatchVm.Date);
 
             Mapper.Map(toPatchVm, dbItem);
 
@@ -171,12 +175,28 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return NotFound();
             }
+            await ValidateRetailDay(model.Date);
             _retailPromotionEventRepository.Delete(model);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "删除时出错");
             }
             return NoContent();
+        }
+
+        [NonAction]
+        private async Task ValidateRetailDay(DateTime date)
+        {
+            var latestRetailDay = await RetailDayRepository.All.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+            if (latestRetailDay != null)
+            {
+                var latestRetailDate = DateTime.ParseExact(latestRetailDay.Date, DateTools.OrderDateFormat,
+                    CultureInfo.InvariantCulture);
+                if (date <= latestRetailDate)
+                {
+                    throw new Exception("该日期已经初始化或不是最近日期, 无法添加/修改/删除买赠活动事件");
+                }
+            }
         }
 
         [HttpGet]

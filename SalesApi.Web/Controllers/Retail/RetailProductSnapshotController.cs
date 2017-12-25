@@ -151,7 +151,7 @@ namespace SalesApi.Web.Controllers.Retail
         public async Task<IActionResult> GetByDate(DateTime? date = null)
         {
             var dateStr = GetDateString(date);
-            var items = await _retailProductSnapshotRepository.All.Where(x => x.RetailDay.Date == dateStr).ToListAsync();
+            var items = await _retailProductSnapshotRepository.All.Where(x => x.RetailDay.Date == dateStr).OrderBy(x => x.ProductForRetail.Product.Order).ToListAsync();
             var vms = Mapper.Map<IEnumerable<RetailProductSnapshotViewModel>>(items);
             return Ok(vms);
         }

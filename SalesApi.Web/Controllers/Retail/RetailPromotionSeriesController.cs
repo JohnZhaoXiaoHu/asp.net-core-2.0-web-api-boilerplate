@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
@@ -10,6 +12,7 @@ using SalesApi.Repositories.Retail;
 using SalesApi.Services.Retail;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Controllers.Bases;
+using SharedSettings.Tools;
 
 namespace SalesApi.Web.Controllers.Retail
 {
@@ -66,7 +69,7 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
-
+            await ValidateRetailDay(retailPromotionSeriesVm.StartDate);
             var newItem = Mapper.Map<RetailPromotionSeries>(retailPromotionSeriesVm);
             newItem.SetCreation(UserName);
             foreach (var newItemRetailPromotionSeriesBonus in newItem.RetailPromotionSeriesBonuses)
@@ -110,7 +113,7 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return NotFound();
             }
-
+            await ValidateRetailDay(retailPromotionSeriesVm.StartDate);
             var bonusVms = retailPromotionSeriesVm.RetailPromotionSeriesBonuses;
             retailPromotionSeriesVm.RetailPromotionSeriesBonuses = null;
             var bonuses = dbItem.RetailPromotionSeriesBonuses;
@@ -192,7 +195,7 @@ namespace SalesApi.Web.Controllers.Retail
             {
                 return BadRequest(ModelState);
             }
-
+            await ValidateRetailDay(toPatchVm.StartDate);
             Mapper.Map(toPatchVm, dbItem);
 
             if (!await UnitOfWork.SaveAsync())
@@ -206,17 +209,39 @@ namespace SalesApi.Web.Controllers.Retail
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _retailPromotionSeriesRepository.GetSingleAsync(id);
+            var model = await _retailPromotionSeriesRepository
+                .GetSingleAsync(x => x.Id == id, x => x.RetailPromotionSeriesBonuses, x => x.RetailPromotionEvents);
             if (model == null)
             {
                 return NotFound();
             }
+            var eventBonuses = await _retailPromotionEventBonusRepository.All
+                .Where(x => x.RetailPromotionEvent.RetailPromotionSeriesId == id).ToListAsync();
+            _retailPromotionSeriesBonusRepository.DeleteRange(model.RetailPromotionSeriesBonuses);
+            _retailPromotionEventBonusRepository.DeleteRange(eventBonuses);
+            _retailPromotionEventRepository.DeleteRange(model.RetailPromotionEvents);
             _retailPromotionSeriesRepository.Delete(model);
+            await ValidateRetailDay(model.StartDate);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "删除时出错");
             }
             return NoContent();
+        }
+
+        [NonAction]
+        private async Task ValidateRetailDay(DateTime startDate)
+        {
+            var latestRetailDay = await RetailDayRepository.All.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+            if (latestRetailDay != null)
+            {
+                var latestRetailDate = DateTime.ParseExact(latestRetailDay.Date, DateTools.OrderDateFormat,
+                    CultureInfo.InvariantCulture);
+                if (startDate <= latestRetailDate)
+                {
+                    throw new Exception("区间内有日期已经初始化, 无法添加/修改/删除买赠活动序列");
+                }
+            }
         }
     }
 }

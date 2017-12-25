@@ -8,5 +8,6 @@ namespace SalesApi.ViewModels.Settings
         public string LegacySubAreaId { get; set; }
         public string Name { get; set; }
         public bool Deleted { get; set; }
+        public int Order { get; set; }
     }
 }

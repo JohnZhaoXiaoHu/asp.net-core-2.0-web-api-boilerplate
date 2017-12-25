@@ -56,6 +56,7 @@ namespace SalesApi.Web.Configurations
             CreateMap<CollectiveProductSnapshotViewModel, CollectiveProductSnapshot>();
             CreateMap<CollectiveOrderViewModel, CollectiveOrder>();
             CreateMap<CollectivePriceViewModel, CollectivePrice>();
+            CreateMap<CollectiveOrderSetPriceViewModel, CollectiveOrder>();
 
             #endregion
         }

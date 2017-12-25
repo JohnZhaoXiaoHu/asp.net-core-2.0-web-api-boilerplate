@@ -9,18 +9,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Collective;
 using SalesApi.Repositories.Collective;
+using SalesApi.Services.Collective;
 using SalesApi.ViewModels.Collective;
 using SalesApi.Web.Controllers.Bases;
 
 namespace SalesApi.Web.Controllers.Collective
 {
     [Route("api/sales/[controller]")]
-    public class CollectiveOrderController : SalesController<CollectiveOrderController>
+    public class CollectiveOrderController : CollectiveController<CollectiveOrderController>
     {
         private readonly ICollectiveOrderRepository _collectiveOrderRepository;
 
-        public CollectiveOrderController(ICoreService<CollectiveOrderController> coreService,
-            ICollectiveOrderRepository collectiveOrderRepository) : base(coreService)
+        public CollectiveOrderController(ICollectiveService<CollectiveOrderController> service,
+            ICollectiveOrderRepository collectiveOrderRepository) : base(service)
         {
             _collectiveOrderRepository = collectiveOrderRepository;
         }
@@ -202,6 +203,77 @@ namespace SalesApi.Web.Controllers.Collective
                 .ToListAsync();
             var results = Mapper.Map<IEnumerable<CollectiveOrderViewModel>>(items);
             return Ok(results);
+        }
+
+        [HttpGet]
+        [Route("SetPrice/{id}", Name = "GetCollectiveOrderSetPrice")]
+        public async Task<IActionResult> GetCollectiveOrderSetPrice(int id)
+        {
+            var item = await _collectiveOrderRepository.GetSingleAsync(x => x.Id == id, x => x.CollectiveProductSnapshot);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            var result = Mapper.Map<CollectiveOrderSetPriceViewModel>(item);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("SetPrice")]
+        public async Task<IActionResult> SetPriceAdd([FromBody] CollectiveOrderSetPriceViewModel collectiveOrderVm)
+        {
+            if (collectiveOrderVm == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var collectiveDay = await CollectiveDayRepository.GetSingleAsync(x => x.Date == collectiveOrderVm.Date, x => x.CollectiveProductSnapshots);
+            if (collectiveDay == null || !collectiveDay.Initialized)
+            {
+                throw new Exception("该日期还未初始化");
+            }
+            var productSnapshot = collectiveDay.CollectiveProductSnapshots.SingleOrDefault(x =>
+                x.ProductForCollectiveId == collectiveOrderVm.ProductForCollectiveId);
+            if (productSnapshot == null)
+            {
+                throw new Exception($"该产品在{collectiveDay.Date}不可用");
+            }
+            var newItem = Mapper.Map<CollectiveOrder>(collectiveOrderVm);
+            newItem.CollectiveProductSnapshotId = productSnapshot.Id;
+            newItem.SetCreation(UserName, "区间新增价格");
+            _collectiveOrderRepository.Add(newItem);
+            if (!await UnitOfWork.SaveAsync())
+            {
+                return StatusCode(500, "保存时出错");
+            }
+
+            var vm = Mapper.Map<CollectiveOrderSetPriceViewModel>(newItem);
+
+            return CreatedAtRoute("GetCollectiveOrderSetPrice", new { id = vm.Id }, vm);
+        }
+
+        [HttpPut]
+        [Route("SetPrice/{id}/{price}")]
+        public async Task<IActionResult> SetPriceEdit(int id, decimal price)
+        {
+            var dbItem = await _collectiveOrderRepository.GetSingleAsync(id);
+            if (dbItem == null)
+            {
+                return NotFound();
+            }
+            dbItem.Price = price;
+            dbItem.SetModification(UserName, "区间修改价格");
+            _collectiveOrderRepository.Update(dbItem);
+            if (!await UnitOfWork.SaveAsync())
+            {
+                return StatusCode(500, "保存时出错");
+            }
+
+            return NoContent();
         }
 
     }

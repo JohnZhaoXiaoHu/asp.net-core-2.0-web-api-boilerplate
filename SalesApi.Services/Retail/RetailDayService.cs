@@ -125,6 +125,8 @@ namespace SalesApi.Services.Retail
             ps.EquivalentTon = p.EquivalentTon;
             ps.Barcode = p.Barcode;
             ps.TaxRate = p.TaxRate;
+
+            ps.Order = p.Order;
         }
     }
 }
