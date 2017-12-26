@@ -1,15 +1,26 @@
 ﻿using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SalesApi.Models.Collective;
-using SalesApi.Models.County;
-using SalesApi.Models.Retail;
 using SalesApi.Shared.Enums;
 
-namespace SalesApi.Models.Settings
+namespace SalesApi.Models.County
 {
-    public class Product : EntityBase
+    public class CountyProductSnapshot : EntityBase
     {
+        public CountyProductSnapshot()
+        {
+            SalesType = SalesType.郊县;
+        }
+
+        public int CountyDayId { get; set; }
+        public int ProductForCountyId { get; set; }
+        
+        public SalesType SalesType { get; set; }
+        public int EquivalentBox { get; set; }
+        public bool IsOrderByBox { get; set; }
+        public int MinOrderCount { get; set; }
+        public int OrderDivisor { get; set; }
+        
         public string LegacyProductId { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
@@ -20,14 +31,13 @@ namespace SalesApi.Models.Settings
         public string Barcode { get; set; }
         public decimal TaxRate { get; set; }
 
-        public ProductForRetail ProductForRetail { get; set; }
-        public ProductForCollective ProductForCollective { get; set; }
+        public CountyDay CountyDay { get; set; }
         public ProductForCounty ProductForCounty { get; set; }
     }
 
-    public class ProductConfiguration : EntityBaseConfiguration<Product>
+    public class CountyProductSnapshotConfiguration : EntityBaseConfiguration<CountyProductSnapshot>
     {
-        public override void ConfigureDerived(EntityTypeBuilder<Product> b)
+        public override void ConfigureDerived(EntityTypeBuilder<CountyProductSnapshot> b)
         {
             b.Property(x => x.LegacyProductId).HasMaxLength(5);
             b.Property(x => x.Name).IsRequired().HasMaxLength(10);
@@ -36,6 +46,11 @@ namespace SalesApi.Models.Settings
             b.Property(x => x.EquivalentTon).HasColumnType("decimal(7, 6)");
             b.Property(x => x.Barcode).HasMaxLength(20);
             b.Property(x => x.TaxRate).HasColumnType("decimal(7, 6)");
+
+            b.HasOne(x => x.CountyDay).WithMany(x => x.CountyProductSnapshots).HasForeignKey(x => x.CountyDayId)
+                .OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(x => x.ProductForCounty).WithMany(x => x.CountyProductSnapshots)
+                .HasForeignKey(x => x.ProductForCountyId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

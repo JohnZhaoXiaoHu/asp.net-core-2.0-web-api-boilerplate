@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using SalesApi.Models.Collective;
+using SalesApi.Models.County;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
 using SalesApi.ViewModels.Collective;
+using SalesApi.ViewModels.County;
 using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
@@ -57,6 +59,23 @@ namespace SalesApi.Web.Configurations
             CreateMap<CollectiveOrderViewModel, CollectiveOrder>();
             CreateMap<CollectivePriceViewModel, CollectivePrice>();
             CreateMap<CollectiveOrderSetPriceViewModel, CollectiveOrder>();
+
+            #endregion
+
+            #region County
+
+            CreateMap<ProductForCountyViewModel, ProductForCounty>();
+            CreateMap<CountyAgentViewModel, CountyAgent>();
+            CreateMap<CountyAgentPriceViewModel, CountyAgentPrice>();
+            CreateMap<CountyDayViewModel, CountyDay>();
+            CreateMap<CountyProductSnapshotViewModel, CountyProductSnapshot>();
+            CreateMap<CountyOrderViewModel, CountyOrder>();
+            CreateMap<CountyOrderSetPriceViewModel, CountyOrder>();
+            CreateMap<CountyPromotionSeriesBonusViewModel, CountyPromotionSeriesBonus>();
+            CreateMap<CountyPromotionEventViewModel, CountyPromotionEvent>();
+            CreateMap<CountyPromotionEventBonusViewModel, CountyPromotionEventBonus>();
+            CreateMap<CountyPromotionSeriesAddViewModel, CountyPromotionSeries>();
+            CreateMap<CountyPromotionSeriesEditViewModel, CountyPromotionSeries>();
 
             #endregion
         }

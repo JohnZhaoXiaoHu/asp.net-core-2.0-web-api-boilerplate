@@ -8,6 +8,11 @@ namespace SalesApi.Models.Retail
 {
     public class Retailer: EntityBase
     {
+        public Retailer()
+        {
+            SalesType = SalesType.零售;
+        }
+
         public int SubAreaId { get; set; }
         public SalesType SalesType { get; set; }
         public string No { get; set; }

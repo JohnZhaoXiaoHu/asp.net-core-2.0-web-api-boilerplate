@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SalesApi.Services.Collective;
+using SalesApi.Services.County;
 using SalesApi.Services.Retail;
 
 namespace SalesApi.Web.Configurations
@@ -27,6 +28,13 @@ namespace SalesApi.Web.Configurations
 
             services.AddScoped(typeof(ICollectiveService<>), typeof(CollectiveService<>));
             services.AddScoped<ICollectiveDayService, CollectiveDayService>();
+
+            #endregion
+
+            #region County
+
+            services.AddScoped(typeof(ICountyService<>), typeof(CountyService<>));
+            services.AddScoped<ICountyDayService, CountyDayService>();
 
             #endregion
         }

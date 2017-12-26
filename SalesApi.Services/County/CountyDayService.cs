@@ -4,96 +4,96 @@ using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
-using SalesApi.Models.Collective;
+using SalesApi.Models.County;
 using SalesApi.Models.Settings;
-using SalesApi.Repositories.Collective;
+using SalesApi.Repositories.County;
 using SalesApi.Repositories.Settings;
 
-namespace SalesApi.Services.Collective
+namespace SalesApi.Services.County
 {
-    public interface ICollectiveDayService
+    public interface ICountyDayService
     {
         Task Initialzie(DateTime date, string userName);
     }
 
-    public class CollectiveDayService : ICollectiveDayService
+    public class CountyDayService : ICountyDayService
     {
-        private readonly ICollectiveDayRepository _collectiveDayRepository;
-        private readonly ICollectiveProductSnapshotRepository _collectiveProductSnapshotRepository;
-        private readonly IProductForCollectiveRepository _productForCollectiveRepository;
+        private readonly ICountyDayRepository _collectiveDayRepository;
+        private readonly ICountyProductSnapshotRepository _collectiveProductSnapshotRepository;
+        private readonly IProductForCountyRepository _productForCountyRepository;
         private readonly IProductRepository _productRepository;
 
-        public CollectiveDayService(
-            ICollectiveDayRepository collectiveDayRepository, 
-            ICollectiveProductSnapshotRepository collectiveProductSnapshotRepository, 
-            IProductForCollectiveRepository productForCollectiveRepository, 
+        public CountyDayService(
+            ICountyDayRepository collectiveDayRepository, 
+            ICountyProductSnapshotRepository collectiveProductSnapshotRepository, 
+            IProductForCountyRepository productForCountyRepository, 
             IProductRepository productRepository)
         {
             _collectiveDayRepository = collectiveDayRepository;
             _collectiveProductSnapshotRepository = collectiveProductSnapshotRepository;
-            _productForCollectiveRepository = productForCollectiveRepository;
+            _productForCountyRepository = productForCountyRepository;
             _productRepository = productRepository;
         }
 
         public async Task Initialzie(DateTime date, string userName)
         {
             var dateStr = date.ToString("yyyy-MM-dd");
-            var item = await _collectiveDayRepository.GetSingleAsync(x => x.Date == dateStr, x => x.CollectiveProductSnapshots);
+            var item = await _collectiveDayRepository.GetSingleAsync(x => x.Date == dateStr, x => x.CountyProductSnapshots);
             var products = await _productRepository.All.Where(x => !x.Deleted).ToListAsync();
-            var productForCollectives = await _productForCollectiveRepository.All.Where(x => !x.Deleted).ToListAsync();
+            var productForCountys = await _productForCountyRepository.All.Where(x => !x.Deleted).ToListAsync();
             if (item != null)
             {
                 if (item.Initialized)
                 {
-                    throw new Exception("该集体户日已经初始化, 操作失败");
+                    throw new Exception("该郊县日已经初始化, 操作失败");
                 }
                 item.Initialized = true;
                 item.SetModification(userName, "初始化");
-                InitializeCollectiveProducts(userName, item, productForCollectives, products);
+                InitializeCountyProducts(userName, item, productForCountys, products);
                 _collectiveDayRepository.Update(item);
             }
             else
             {
-                item = new CollectiveDay
+                item = new CountyDay
                 {
                     Date = dateStr,
                     Initialized = true
                 };
                 item.SetCreation(userName, "初始化");
-                InitializeCollectiveProducts(userName, item, productForCollectives, products);
+                InitializeCountyProducts(userName, item, productForCountys, products);
                 _collectiveDayRepository.Add(item);
             }
         }
 
-        private void InitializeCollectiveProducts(string userName, CollectiveDay item, List<ProductForCollective> productForCollectives, List<Product> products)
+        private void InitializeCountyProducts(string userName, CountyDay item, List<ProductForCounty> productForCountys, List<Product> products)
         {
-            var dbDayProducts = item.CollectiveProductSnapshots;
+            var dbDayProducts = item.CountyProductSnapshots;
             foreach (var dayProduct in dbDayProducts)
             {
-                var productForCollective =
-                    productForCollectives.SingleOrDefault(x => x.Id == dayProduct.ProductForCollectiveId);
-                if (productForCollective == null)
+                var productForCounty =
+                    productForCountys.SingleOrDefault(x => x.Id == dayProduct.ProductForCountyId);
+                if (productForCounty == null)
                 {
                     throw new Exception($"未能找到集体户产品: {dayProduct.Name}");
                 }
-                var product = products.SingleOrDefault(x => x.Id == productForCollective.ProductId);
+                var product = products.SingleOrDefault(x => x.Id == productForCounty.ProductId);
                 if (product == null)
                 {
                     throw new Exception($"未能找到产品: {dayProduct.Name}");
                 }
-                SetCollectiveProductSnapshot(dayProduct, productForCollective, product);
+                SetCountyProductSnapshot(dayProduct, productForCounty, product);
                 dayProduct.SetModification(userName, "重新初始化");
                 _collectiveProductSnapshotRepository.Update(dayProduct);
             }
-            var dayProductIds = dbDayProducts.Select(x => x.ProductForCollectiveId).ToList();
-            var collectiveProductIds = productForCollectives.Select(x => x.Id).ToList();
+            var dayProductIds = dbDayProducts.Select(x => x.ProductForCountyId).ToList();
+            var collectiveProductIds = productForCountys.Select(x => x.Id).ToList();
             var toAddIds = collectiveProductIds.Except(dayProductIds).ToList();
-            var toAdd = productForCollectives.Where(x => toAddIds.Contains(x.Id)).ToList();
+            var toAdd = productForCountys.Where(x => toAddIds.Contains(x.Id)).ToList();
             foreach (var pr in toAdd)
             {
-                var dayProduct = new CollectiveProductSnapshot
+                var dayProduct = new CountyProductSnapshot
                 {
-                    ProductForCollectiveId = pr.Id,
+                    ProductForCountyId = pr.Id,
                 };
                 dayProduct.SetCreation(userName, "初始化");
                 var product = products.SingleOrDefault(x => x.Id == pr.ProductId);
@@ -101,12 +101,12 @@ namespace SalesApi.Services.Collective
                 {
                     throw new Exception($"未能找到产品, 集体户产品ID: {pr.Id}");
                 }
-                SetCollectiveProductSnapshot(dayProduct, pr, product);
-                item.CollectiveProductSnapshots.Add(dayProduct);
+                SetCountyProductSnapshot(dayProduct, pr, product);
+                item.CountyProductSnapshots.Add(dayProduct);
             }
         }
 
-        private void SetCollectiveProductSnapshot(CollectiveProductSnapshot ps, ProductForCollective r, Product p)
+        private void SetCountyProductSnapshot(CountyProductSnapshot ps, ProductForCounty r, Product p)
         {
             ps.EquivalentBox = r.EquivalentBox;
             ps.IsOrderByBox = r.IsOrderByBox;

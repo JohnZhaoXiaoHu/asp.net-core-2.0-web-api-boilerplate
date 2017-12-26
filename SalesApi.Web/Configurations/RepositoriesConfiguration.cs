@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SalesApi.Repositories.Collective;
+using SalesApi.Repositories.County;
 using SalesApi.Repositories.Overall;
 using SalesApi.Repositories.Retail;
 using SalesApi.Repositories.Settings;
@@ -48,6 +49,21 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<ICollectiveProductSnapshotRepository, CollectiveProductSnapshotRepository>();
             services.AddScoped<ICollectiveOrderRepository, CollectiveOrderRepository>();
             services.AddScoped<ICollectivePriceRepository, CollectivePriceRepository>();
+
+            #endregion
+
+            #region County
+
+            services.AddScoped<IProductForCountyRepository, ProductForCountyRepository>();
+            services.AddScoped<ICountyAgentRepository, CountyAgentRepository>();
+            services.AddScoped<ICountyAgentPriceRepository, CountyAgentPriceRepository>();
+            services.AddScoped<ICountyDayRepository, CountyDayRepository>();
+            services.AddScoped<ICountyProductSnapshotRepository, CountyProductSnapshotRepository>();
+            services.AddScoped<ICountyOrderRepository, CountyOrderRepository>();
+            services.AddScoped<ICountyPromotionSeriesRepository, CountyPromotionSeriesRepository>();
+            services.AddScoped<ICountyPromotionSeriesBonusRepository, CountyPromotionSeriesBonusRepository>();
+            services.AddScoped<ICountyPromotionEventRepository, CountyPromotionEventRepository>();
+            services.AddScoped<ICountyPromotionEventBonusRepository, CountyPromotionEventBonusRepository>();
 
             #endregion
         }

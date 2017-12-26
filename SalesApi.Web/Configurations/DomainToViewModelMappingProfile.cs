@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using SalesApi.Models.Collective;
+using SalesApi.Models.County;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
 using SalesApi.ViewModels.Collective;
+using SalesApi.ViewModels.County;
 using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
@@ -63,6 +65,7 @@ namespace SalesApi.Web.Configurations
             #region Collective
 
             CreateMap<ProductForCollective, ProductForCollectiveViewModel>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name))
                 .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order));
             CreateMap<CollectiveCustomer, CollectiveCustomerViewModel>();
             CreateMap<CollectiveDay, CollectiveDayViewModel>();
@@ -73,6 +76,33 @@ namespace SalesApi.Web.Configurations
             CreateMap<CollectiveOrder, CollectiveOrderSetPriceViewModel>()
                 .ForMember(d => d.ProductForCollectiveId,
                     o => o.MapFrom(s => s.CollectiveProductSnapshot.ProductForCollectiveId));
+
+            #endregion
+
+            #region County
+
+            CreateMap<ProductForCounty, ProductForCountyViewModel>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name))
+                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order));
+            CreateMap<CountyAgent, CountyAgentViewModel>();
+            CreateMap<CountyAgentPrice, CountyAgentPriceViewModel>();
+            CreateMap<CountyDay, CountyDayViewModel>();
+            CreateMap<CountyProductSnapshot, CountyProductSnapshotViewModel>();
+            CreateMap<CountyOrder, CountyOrderViewModel>()
+                .ForMember(d => d.ProductForCountyId, o => o.MapFrom(s => s.CountyProductSnapshot != null ? (int?)s.CountyProductSnapshot.ProductForCountyId : null));
+            CreateMap<CountyOrder, CountyOrderSetPriceViewModel>()
+                .ForMember(d => d.ProductForCountyId,
+                    o => o.MapFrom(s => s.CountyProductSnapshot.ProductForCountyId));
+            CreateMap<CountyPromotionSeries, CountyPromotionSeriesViewModel>();
+            CreateMap<CountyPromotionSeriesBonus, CountyPromotionSeriesBonusViewModel>();
+            CreateMap<CountyPromotionEvent, CountyPromotionEventViewModel>()
+                .ForMember(d => d.SeriesName, o => o.MapFrom(s => s.CountyPromotionSeries == null ? null : s.CountyPromotionSeries.Name));
+            CreateMap<CountyPromotionEvent, CountyPromotionEventForFullCalendarViewModel>()
+                .ForMember(d => d.Title, o => o.MapFrom(s => $"[{s.CountyPromotionSeriesId}] {s.Name}"))
+                .ForMember(d => d.Start, o => o.MapFrom(s => s.Date))
+                .ForMember(d => d.End, o => o.MapFrom(s => s.Date))
+                .ForMember(d => d.AllDay, o => o.MapFrom(s => true))
+                .ForMember(d => d.Editable, o => o.MapFrom(s => false));
 
             #endregion
         }

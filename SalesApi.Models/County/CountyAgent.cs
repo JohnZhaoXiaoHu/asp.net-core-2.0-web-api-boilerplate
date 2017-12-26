@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Settings;
 using SalesApi.Shared.Enums;
 
-namespace SalesApi.Models.Collective
+namespace SalesApi.Models.County
 {
-    public class CollectiveCustomer : EntityBase
+    public class CountyAgent: EntityBase
     {
-        public CollectiveCustomer()
+        public CountyAgent()
         {
-            CollectivePrices = new List<CollectivePrice>();
-            SalesType = SalesType.集体户;
+            SalesType = SalesType.郊县;
+            CountyAgentPrices = new List<CountyAgentPrice>();
         }
 
         public int SubAreaId { get; set; }
@@ -24,12 +24,12 @@ namespace SalesApi.Models.Collective
         public string Address { get; set; }
 
         public SubArea SubArea { get; set; }
-        public ICollection<CollectivePrice> CollectivePrices { get; set; }
+        public ICollection<CountyAgentPrice> CountyAgentPrices { get; set; }
     }
 
-    public class CollectiveCustomerConfiguration : EntityBaseConfiguration<CollectiveCustomer>
+    public class CountyAgentConfiguration : EntityBaseConfiguration<CountyAgent>
     {
-        public override void ConfigureDerived(EntityTypeBuilder<CollectiveCustomer> b)
+        public override void ConfigureDerived(EntityTypeBuilder<CountyAgent> b)
         {
             b.Property(x => x.No).IsRequired().HasMaxLength(10);
             b.Property(x => x.Name).IsRequired().HasMaxLength(50);
@@ -38,9 +38,8 @@ namespace SalesApi.Models.Collective
             b.Property(x => x.Address).HasMaxLength(200);
 
             b.HasIndex(x => x.No).IsUnique();
-            b.HasIndex(x => x.Name).IsUnique();
 
-            b.HasOne(x => x.SubArea).WithMany(x => x.CollectiveCustomers).HasForeignKey(x => x.SubAreaId)
+            b.HasOne(x => x.SubArea).WithMany(x => x.CountyAgents).HasForeignKey(x => x.SubAreaId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

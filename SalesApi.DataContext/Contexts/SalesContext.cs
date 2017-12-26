@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Features.Data;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Collective;
+using SalesApi.Models.County;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
@@ -58,6 +59,21 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new CollectivePriceConfiguration());
 
             #endregion
+
+            #region County
+
+            modelBuilder.ApplyConfiguration(new ProductForCountyConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyAgentConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyAgentPriceConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyDayConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyProductSnapshotConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyPromotionSeriesConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyPromotionSeriesBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyPromotionEventConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyPromotionEventBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyOrderConfiguration());
+
+            #endregion
         }
 
         #region Settings
@@ -98,6 +114,21 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<CollectiveDay> CollectiveDays { get; set; }
         public DbSet<CollectiveOrder> CollectiveOrders { get; set; }
         public DbSet<CollectivePrice> CollectivePrices { get; set; }
+
+        #endregion
+
+        #region County
+
+        public DbSet<ProductForCounty> ProductForCounties { get; set; }
+        public DbSet<CountyAgent> CountyAgents { get; set; }
+        public DbSet<CountyAgentPrice> CountyAgentPrices { get; set; }
+        public DbSet<CountyDay> CountyDays { get; set; }
+        public DbSet<CountyProductSnapshot> CountyProductSnapshots { get; set; }
+        public DbSet<CountyPromotionSeries> CountyPromotionSeries { get; set; }
+        public DbSet<CountyPromotionSeriesBonus> CountyPromotionSeriesBonuses { get; set; }
+        public DbSet<CountyPromotionEvent> CountyPromotionEvents { get; set; }
+        public DbSet<CountyPromotionEventBonus> CountyPromotionEventBonuses { get; set; }
+        public DbSet<CountyOrder> CountyOrders { get; set; }
 
         #endregion
     }

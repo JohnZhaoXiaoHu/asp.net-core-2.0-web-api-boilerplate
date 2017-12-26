@@ -3,6 +3,7 @@ using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Collective;
+using SalesApi.Models.County;
 using SalesApi.Models.Retail;
 
 namespace SalesApi.Models.Settings
@@ -13,6 +14,7 @@ namespace SalesApi.Models.Settings
         {
             Retailers = new List<Retailer>();
             CollectiveCustomers = new List<CollectiveCustomer>();
+            CountyAgents = new List<CountyAgent>();
         }
 
         public int DeliveryVehicleId { get; set; }
@@ -22,6 +24,7 @@ namespace SalesApi.Models.Settings
         public DeliveryVehicle DeliveryVehicle { get; set; }
         public ICollection<Retailer> Retailers { get; set; }
         public ICollection<CollectiveCustomer> CollectiveCustomers { get; set; }
+        public ICollection<CountyAgent> CountyAgents { get; set; }
     }
 
     public class SubAreaConfiguration : EntityBaseConfiguration<SubArea>
