@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
@@ -143,5 +144,15 @@ namespace SalesApi.Web.Controllers.Collective
             }
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("ByCollectiveCustomer/{collectiveCustomerId}")]
+        public async Task<IActionResult> GetByCollectiveCustomer(int collectiveCustomerId)
+        {
+            var items = await _collectivePriceRepository.All.Where(x => x.CollectiveCustomerId == collectiveCustomerId).ToListAsync();
+            var results = Mapper.Map<IEnumerable<CollectivePriceViewModel>>(items);
+            return Ok(results);
+        }
+
     }
 }

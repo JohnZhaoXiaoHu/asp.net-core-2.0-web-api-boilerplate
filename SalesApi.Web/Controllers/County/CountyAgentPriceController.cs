@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
 using Infrastructure.Services;
@@ -34,7 +35,7 @@ namespace SalesApi.Web.Controllers.County
         [Route("{id}", Name = "GetCountyAgentPrice")]
         public async Task<IActionResult> Get(int id)
         {
-             var item = await _countyAgentPriceRepository.GetSingleAsync(id);
+            var item = await _countyAgentPriceRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -143,5 +144,15 @@ namespace SalesApi.Web.Controllers.County
             }
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("ByCountyAgent/{countyAgentId}")]
+        public async Task<IActionResult> GetByCountyAgent(int countyAgentId)
+        {
+            var items = await _countyAgentPriceRepository.All.Where(x => x.CountyAgentId == countyAgentId).ToListAsync();
+            var results = Mapper.Map<IEnumerable<CountyAgentPriceViewModel>>(items);
+            return Ok(results);
+        }
+
     }
 }

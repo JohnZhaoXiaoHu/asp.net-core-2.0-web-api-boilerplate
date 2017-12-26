@@ -158,8 +158,8 @@ namespace SalesApi.Web.Controllers.Collective
             return Ok(results);
         }
 
-        [HttpPut("SaveOrder/{collectiveProductSnapshotId}/{collectiveCustomerId}/{date}/{ordered}/{gift}")]
-        public async Task<IActionResult> SaveOrder(int collectiveProductSnapshotId, int collectiveCustomerId, DateTime date, int ordered, int gift)
+        [HttpPut("SaveOrder/{collectiveProductSnapshotId}/{collectiveCustomerId}/{date}/{ordered}/{gift}/{price}")]
+        public async Task<IActionResult> SaveOrder(int collectiveProductSnapshotId, int collectiveCustomerId, DateTime date, int ordered, int gift, decimal price)
         {
             var dateStr = GetDateString(date);
             var collectiveOrder = await _collectiveOrderRepository.GetSingleAsync(x =>
@@ -172,7 +172,8 @@ namespace SalesApi.Web.Controllers.Collective
                     CollectiveCustomerId = collectiveCustomerId,
                     Date = dateStr,
                     Ordered = ordered,
-                    Gift = gift
+                    Gift = gift,
+                    Price = price
                 };
                 collectiveOrder.SetCreation(UserName);
                 _collectiveOrderRepository.Add(collectiveOrder);
@@ -181,6 +182,7 @@ namespace SalesApi.Web.Controllers.Collective
             {
                 collectiveOrder.Ordered = ordered;
                 collectiveOrder.Gift = gift;
+                collectiveOrder.Price = price;
                 collectiveOrder.SetModification(UserName);
                 _collectiveOrderRepository.Update(collectiveOrder);
             }
@@ -193,8 +195,8 @@ namespace SalesApi.Web.Controllers.Collective
         }
 
         [HttpGet]
-        [Route("ByCollectiveCustomereAndDateRange/{collectiveCustomerId}/{startDate}/{endDate}")]
-        public async Task<IActionResult> GetByCollectiveCustomereAndDateRange(int collectiveCustomerId, DateTime startDate, DateTime endDate)
+        [Route("ByCollectiveCustomerAndDateRange/{collectiveCustomerId}/{startDate}/{endDate}")]
+        public async Task<IActionResult> GetByCollectiveCustomerAndDateRange(int collectiveCustomerId, DateTime startDate, DateTime endDate)
         {
             var startDateStr = GetDateString(startDate);
             var endDateStr = GetDateString(endDate);

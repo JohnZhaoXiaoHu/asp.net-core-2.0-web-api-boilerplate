@@ -158,8 +158,8 @@ namespace SalesApi.Web.Controllers.County
             return Ok(results);
         }
 
-        [HttpPut("SaveOrder/{countyProductSnapshotId}/{countyAgentId}/{date}/{ordered}/{gift}")]
-        public async Task<IActionResult> SaveOrder(int countyProductSnapshotId, int countyAgentId, DateTime date, int ordered, int gift)
+        [HttpPut("SaveOrder/{countyProductSnapshotId}/{countyAgentId}/{date}/{ordered}/{gift}/{price}")]
+        public async Task<IActionResult> SaveOrder(int countyProductSnapshotId, int countyAgentId, DateTime date, int ordered, int gift, decimal price)
         {
             var dateStr = GetDateString(date);
             var countyOrder = await _countyOrderRepository.GetSingleAsync(x =>
@@ -172,7 +172,8 @@ namespace SalesApi.Web.Controllers.County
                     CountyAgentId = countyAgentId,
                     Date = dateStr,
                     Ordered = ordered,
-                    Gift = gift
+                    Gift = gift,
+                    Price = price
                 };
                 countyOrder.SetCreation(UserName);
                 _countyOrderRepository.Add(countyOrder);
@@ -181,6 +182,7 @@ namespace SalesApi.Web.Controllers.County
             {
                 countyOrder.Ordered = ordered;
                 countyOrder.Gift = gift;
+                countyOrder.Price = price;
                 countyOrder.SetModification(UserName);
                 _countyOrderRepository.Update(countyOrder);
             }
