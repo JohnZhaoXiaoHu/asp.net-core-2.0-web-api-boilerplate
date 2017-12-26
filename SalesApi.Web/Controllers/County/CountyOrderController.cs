@@ -149,8 +149,8 @@ namespace SalesApi.Web.Controllers.County
         }
 
         [HttpGet]
-        [Route("ByDateAndCountyCustomer/{countyAgentId}/{date?}")]
-        public async Task<IActionResult> GetByDateAndCountyCustomer(int countyAgentId, DateTime? date = null)
+        [Route("ByDateAndCountyAgent/{countyAgentId}/{date?}")]
+        public async Task<IActionResult> GetByDateAndCountyAgent(int countyAgentId, DateTime? date = null)
         {
             var dateStr = GetDateString(date);
             var items = await _countyOrderRepository.All.Where(x => x.CountyAgentId == countyAgentId && x.Date == dateStr).ToListAsync();
@@ -193,8 +193,8 @@ namespace SalesApi.Web.Controllers.County
         }
 
         [HttpGet]
-        [Route("ByCountyCustomereAndDateRange/{countyAgentId}/{startDate}/{endDate}")]
-        public async Task<IActionResult> GetByCountyCustomereAndDateRange(int countyAgentId, DateTime startDate, DateTime endDate)
+        [Route("ByCountyAgentAndDateRange/{countyAgentId}/{startDate}/{endDate}")]
+        public async Task<IActionResult> GetByCountyAgentAndDateRange(int countyAgentId, DateTime startDate, DateTime endDate)
         {
             var startDateStr = GetDateString(startDate);
             var endDateStr = GetDateString(endDate);
