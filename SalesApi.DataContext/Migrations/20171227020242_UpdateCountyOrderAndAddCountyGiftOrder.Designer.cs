@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20171227020242_UpdateCountyOrderAndAddCountyGiftOrder")]
+    partial class UpdateCountyOrderAndAddCountyGiftOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -655,8 +656,7 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasIndex("CountyPromotionSeriesId");
 
-                    b.HasIndex("ProductForCountyId", "Date")
-                        .IsUnique();
+                    b.HasIndex("ProductForCountyId");
 
                     b.ToTable("CountyPromotionEvents");
                 });
@@ -734,12 +734,11 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CountyOrderId");
+
                     b.HasIndex("CountyPromotionEventBonusId");
 
-                    b.HasIndex("CountyOrderId", "CountyPromotionEventBonusId")
-                        .IsUnique();
-
-                    b.ToTable("CountyPromotionGiftOrder");
+                    b.ToTable("CountyPromotionGiftOrders");
                 });
 
             modelBuilder.Entity("SalesApi.Models.County.CountyPromotionSeries", b =>
@@ -1248,10 +1247,9 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RetailPromotionSeriesId");
+                    b.HasIndex("ProductForRetailId");
 
-                    b.HasIndex("ProductForRetailId", "Date")
-                        .IsUnique();
+                    b.HasIndex("RetailPromotionSeriesId");
 
                     b.ToTable("RetailPromotionEvents");
                 });
@@ -1294,47 +1292,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasIndex("RetailPromotionEventId");
 
                     b.ToTable("RetailPromotionEventBonuses");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionGiftOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("PromotionGift");
-
-                    b.Property<int>("RetailOrderId");
-
-                    b.Property<int>("RetailPromotionEventBonusId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RetailPromotionEventBonusId");
-
-                    b.HasIndex("RetailOrderId", "RetailPromotionEventBonusId")
-                        .IsUnique();
-
-                    b.ToTable("RetailPromotionGiftOrder");
                 });
 
             modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionSeries", b =>
@@ -1911,19 +1868,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasOne("SalesApi.Models.Retail.RetailPromotionEvent", "RetailPromotionEvent")
                         .WithMany("RetailPromotionEventBonuses")
                         .HasForeignKey("RetailPromotionEventId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionGiftOrder", b =>
-                {
-                    b.HasOne("SalesApi.Models.Retail.RetailOrder", "RetailOrder")
-                        .WithMany("RetailPromotionGiftOrders")
-                        .HasForeignKey("RetailOrderId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SalesApi.Models.Retail.RetailPromotionEventBonus", "RetailPromotionEventBonus")
-                        .WithMany()
-                        .HasForeignKey("RetailPromotionEventBonusId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +18,14 @@ namespace SalesApi.Web.Controllers.County
     public class CountyOrderController : CountyController<CountyOrderController>
     {
         private readonly ICountyOrderRepository _countyOrderRepository;
+        private readonly ICountyOrderService _countyOrderService;
 
         public CountyOrderController(ICountyService<CountyOrderController> service,
-            ICountyOrderRepository countyOrderRepository) : base(service)
+            ICountyOrderRepository countyOrderRepository,
+            ICountyOrderService countyOrderService) : base(service)
         {
             _countyOrderRepository = countyOrderRepository;
+            _countyOrderService = countyOrderService;
         }
 
         [HttpGet]
@@ -158,40 +160,16 @@ namespace SalesApi.Web.Controllers.County
             return Ok(results);
         }
 
-        [HttpPut("SaveOrder/{countyProductSnapshotId}/{countyAgentId}/{date}/{ordered}/{gift}/{price}")]
-        public async Task<IActionResult> SaveOrder(int countyProductSnapshotId, int countyAgentId, DateTime date, int ordered, int gift, decimal price)
+        [HttpPut("SaveOrder/{countyProductSnapshotId}/{productForCountyId}/{countyAgentId}/{date}/{ordered}/{gift}/{price}")]
+        public async Task<IActionResult> SaveOrder(int countyProductSnapshotId, int productForCountyId, int countyAgentId, DateTime date, int ordered, int gift, decimal price)
         {
-            var dateStr = GetDateString(date);
-            var countyOrder = await _countyOrderRepository.GetSingleAsync(x =>
-                x.CountyProductSnapshotId == countyProductSnapshotId && x.CountyAgentId == countyAgentId && x.Date == dateStr);
-            if (countyOrder == null)
-            {
-                countyOrder = new CountyOrder
-                {
-                    CountyProductSnapshotId = countyProductSnapshotId,
-                    CountyAgentId = countyAgentId,
-                    Date = dateStr,
-                    Ordered = ordered,
-                    Gift = gift,
-                    Price = price
-                };
-                countyOrder.SetCreation(UserName);
-                _countyOrderRepository.Add(countyOrder);
-            }
-            else
-            {
-                countyOrder.Ordered = ordered;
-                countyOrder.Gift = gift;
-                countyOrder.Price = price;
-                countyOrder.SetModification(UserName);
-                _countyOrderRepository.Update(countyOrder);
-            }
+            var countyOrder = await _countyOrderService.SaveOrderAsync(countyProductSnapshotId, productForCountyId, countyAgentId, date, ordered, gift, price, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-
-            return NoContent();
+            var vm = Mapper.Map<CountyOrder, CountyOrderWithGiftViewModel>(countyOrder);
+            return Ok(vm);
         }
 
         [HttpGet]

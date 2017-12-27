@@ -1,6 +1,8 @@
-﻿using Infrastructure.Features.Common;
+﻿using System.Collections.Generic;
+using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SalesApi.Models.County;
 
 namespace SalesApi.Models.Retail
 {
@@ -18,6 +20,7 @@ namespace SalesApi.Models.Retail
         public RetailProductSnapshot RetailProductSnapshot { get; set; }
         public Retailer Retailer { get; set; }
         public RetailPromotionEvent RetailPromotionEvent { get; set; }
+        public ICollection<RetailPromotionGiftOrder> RetailPromotionGiftOrders { get; set; }
     }
 
     public class RetailOrderConfiguration : EntityBaseConfiguration<RetailOrder>

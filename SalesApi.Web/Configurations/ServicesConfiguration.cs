@@ -21,6 +21,7 @@ namespace SalesApi.Web.Configurations
 
             services.AddScoped(typeof(IRetailService<>), typeof(RetailService<>));
             services.AddScoped<IRetailDayService, RetailDayService>();
+            services.AddScoped<IRetailOrderService, RetailOrderService>();
 
             #endregion
 
@@ -35,6 +36,7 @@ namespace SalesApi.Web.Configurations
 
             services.AddScoped(typeof(ICountyService<>), typeof(CountyService<>));
             services.AddScoped<ICountyDayService, CountyDayService>();
+            services.AddScoped<ICountyOrderService, CountyOrderService>();
 
             #endregion
         }

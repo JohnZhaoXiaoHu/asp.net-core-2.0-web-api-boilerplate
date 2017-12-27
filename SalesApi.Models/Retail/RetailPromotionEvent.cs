@@ -35,6 +35,7 @@ namespace SalesApi.Models.Retail
                 .OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.ProductForRetail).WithMany(x => x.RetailPromotionEvents).HasForeignKey(x => x.ProductForRetailId)
                 .OnDelete(DeleteBehavior.Restrict);
+            b.HasIndex(x => new { x.ProductForRetailId, x.Date }).IsUnique();
         }
     }
 }

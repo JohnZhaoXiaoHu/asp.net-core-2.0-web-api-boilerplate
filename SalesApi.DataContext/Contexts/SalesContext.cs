@@ -46,6 +46,7 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new RetailDayConfiguration());
             modelBuilder.ApplyConfiguration(new RetailProductSnapshotConfiguration());
             modelBuilder.ApplyConfiguration(new RetailOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new RetailPromotionGiftOrderConfiguration());
 
             #endregion
 
@@ -72,6 +73,7 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new CountyPromotionEventConfiguration());
             modelBuilder.ApplyConfiguration(new CountyPromotionEventBonusConfiguration());
             modelBuilder.ApplyConfiguration(new CountyOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyPromotionGiftOrderConfiguration());
 
             #endregion
         }
@@ -129,6 +131,8 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<CountyPromotionEvent> CountyPromotionEvents { get; set; }
         public DbSet<CountyPromotionEventBonus> CountyPromotionEventBonuses { get; set; }
         public DbSet<CountyOrder> CountyOrders { get; set; }
+        public DbSet<CountyPromotionGiftOrder> CountyPromotionGiftOrders { get; set; }
+        public DbSet<CountyPromotionGiftOrder> PromotionGiftOrders { get; set; }
 
         #endregion
     }

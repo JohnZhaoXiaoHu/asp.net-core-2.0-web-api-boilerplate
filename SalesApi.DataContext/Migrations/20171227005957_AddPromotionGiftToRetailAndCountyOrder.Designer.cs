@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20171227005957_AddPromotionGiftToRetailAndCountyOrder")]
+    partial class AddPromotionGiftToRetailAndCountyOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -515,7 +516,7 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<int>("SalesType");
+                    b.Property<int>("PromotionGift");
 
                     b.Property<DateTime>("UpdateTime");
 
@@ -655,8 +656,7 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasIndex("CountyPromotionSeriesId");
 
-                    b.HasIndex("ProductForCountyId", "Date")
-                        .IsUnique();
+                    b.HasIndex("ProductForCountyId");
 
                     b.ToTable("CountyPromotionEvents");
                 });
@@ -699,47 +699,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasIndex("ProductForCountyId");
 
                     b.ToTable("CountyPromotionEventBonuses");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.County.CountyPromotionGiftOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CountyOrderId");
-
-                    b.Property<int>("CountyPromotionEventBonusId");
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("PromotionGift");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountyPromotionEventBonusId");
-
-                    b.HasIndex("CountyOrderId", "CountyPromotionEventBonusId")
-                        .IsUnique();
-
-                    b.ToTable("CountyPromotionGiftOrder");
                 });
 
             modelBuilder.Entity("SalesApi.Models.County.CountyPromotionSeries", b =>
@@ -1095,6 +1054,8 @@ namespace SalesApi.DataContext.Migrations
 
                     b.Property<int>("Ordered");
 
+                    b.Property<int>("PromotionGift");
+
                     b.Property<int>("RetailProductSnapshotId");
 
                     b.Property<int?>("RetailPromotionEventId");
@@ -1248,10 +1209,9 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RetailPromotionSeriesId");
+                    b.HasIndex("ProductForRetailId");
 
-                    b.HasIndex("ProductForRetailId", "Date")
-                        .IsUnique();
+                    b.HasIndex("RetailPromotionSeriesId");
 
                     b.ToTable("RetailPromotionEvents");
                 });
@@ -1294,47 +1254,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasIndex("RetailPromotionEventId");
 
                     b.ToTable("RetailPromotionEventBonuses");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionGiftOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("PromotionGift");
-
-                    b.Property<int>("RetailOrderId");
-
-                    b.Property<int>("RetailPromotionEventBonusId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RetailPromotionEventBonusId");
-
-                    b.HasIndex("RetailOrderId", "RetailPromotionEventBonusId")
-                        .IsUnique();
-
-                    b.ToTable("RetailPromotionGiftOrder");
                 });
 
             modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionSeries", b =>
@@ -1795,19 +1714,6 @@ namespace SalesApi.DataContext.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("SalesApi.Models.County.CountyPromotionGiftOrder", b =>
-                {
-                    b.HasOne("SalesApi.Models.County.CountyOrder", "CountyOrder")
-                        .WithMany("CountyPromotionGiftOrders")
-                        .HasForeignKey("CountyOrderId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SalesApi.Models.County.CountyPromotionEventBonus", "CountyPromotionEventBonus")
-                        .WithMany()
-                        .HasForeignKey("CountyPromotionEventBonusId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("SalesApi.Models.County.CountyPromotionSeries", b =>
                 {
                     b.HasOne("SalesApi.Models.County.ProductForCounty", "ProductForCounty")
@@ -1911,19 +1817,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasOne("SalesApi.Models.Retail.RetailPromotionEvent", "RetailPromotionEvent")
                         .WithMany("RetailPromotionEventBonuses")
                         .HasForeignKey("RetailPromotionEventId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Retail.RetailPromotionGiftOrder", b =>
-                {
-                    b.HasOne("SalesApi.Models.Retail.RetailOrder", "RetailOrder")
-                        .WithMany("RetailPromotionGiftOrders")
-                        .HasForeignKey("RetailOrderId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SalesApi.Models.Retail.RetailPromotionEventBonus", "RetailPromotionEventBonus")
-                        .WithMany()
-                        .HasForeignKey("RetailPromotionEventBonusId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

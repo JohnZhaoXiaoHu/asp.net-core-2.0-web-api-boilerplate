@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Retail;
 using SalesApi.Repositories.Retail;
+using SalesApi.Services.Retail;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Controllers.Bases;
 
@@ -18,14 +19,15 @@ namespace SalesApi.Web.Controllers.Retail
     public class RetailOrderController : SalesController<RetailOrderController>
     {
         private readonly IRetailOrderRepository _retailOrderRepository;
-        private readonly IRetailPromotionEventRepository _retailPromotionEventRepository;
+        private readonly IRetailOrderService _retailOrderService;
 
         public RetailOrderController(ICoreService<RetailOrderController> coreService,
             IRetailOrderRepository retailOrderRepository,
-            IRetailPromotionEventRepository retailPromotionEventRepository) : base(coreService)
+            IRetailPromotionEventRepository retailPromotionEventRepository,
+            IRetailOrderService retailOrderService) : base(coreService)
         {
             _retailOrderRepository = retailOrderRepository;
-            _retailPromotionEventRepository = retailPromotionEventRepository;
+            _retailOrderService = retailOrderService;
         }
 
         [HttpGet]
@@ -159,43 +161,17 @@ namespace SalesApi.Web.Controllers.Retail
             var results = Mapper.Map<IEnumerable<RetailOrderViewModel>>(items);
             return Ok(results);
         }
-
-        [HttpPut("SaveOrder/{retailProductSnapshotId}/{retailerId}/{date}/{ordered}/{gift}")]
-        public async Task<IActionResult> SaveOrder(int retailProductSnapshotId, int retailerId, DateTime date, int ordered, int gift)
+        
+        [HttpPut("SaveOrder/{retailProductSnapshotId}/{productForRetailId}/{retailerId}/{date}/{ordered}/{gift}")]
+        public async Task<IActionResult> SaveOrder(int retailProductSnapshotId, int productForRetailId, int retailerId, DateTime date, int ordered, int gift)
         {
-            var dateStr = GetDateString(date);
-            var retailOrder = await _retailOrderRepository.GetSingleAsync(x =>
-                x.RetailProductSnapshotId == retailProductSnapshotId && x.RetailerId == retailerId && x.Date == dateStr);
-            var promotionEvent = await
-                _retailPromotionEventRepository.GetSingleAsync(x =>
-                    x.ProductForRetailId == retailProductSnapshotId && x.Date == date);
-            if (retailOrder == null)
-            {
-                retailOrder = new RetailOrder
-                {
-                    RetailProductSnapshotId = retailProductSnapshotId,
-                    RetailerId = retailerId,
-                    Date = dateStr,
-                    Ordered = ordered,
-                    Gift = gift,
-                    RetailPromotionEventId = promotionEvent?.Id
-                };
-                retailOrder.SetCreation(UserName);
-                _retailOrderRepository.Add(retailOrder);
-            }
-            else
-            {
-                retailOrder.Ordered = ordered;
-                retailOrder.Gift = gift;
-                retailOrder.SetModification(UserName);
-                _retailOrderRepository.Update(retailOrder);
-            }
+            var countyOrder = await _retailOrderService.SaveOrderAsync(retailProductSnapshotId, productForRetailId, retailerId, date, ordered, gift, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-
-            return NoContent();
+            var vm = Mapper.Map<RetailOrder, RetailOrderWithGiftViewModel>(countyOrder);
+            return Ok(vm);
         }
 
     }

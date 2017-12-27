@@ -38,6 +38,7 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<IRetailDayRepository, RetailDayRepository>();
             services.AddScoped<IRetailProductSnapshotRepository, RetailProductSnapshotRepository>();
             services.AddScoped<IRetailOrderRepository, RetailOrderRepository>();
+            services.AddScoped<IRetailPromotionGiftOrderRepository, RetailPromotionGiftOrderRepository>();
 
             #endregion
 
@@ -64,6 +65,7 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<ICountyPromotionSeriesBonusRepository, CountyPromotionSeriesBonusRepository>();
             services.AddScoped<ICountyPromotionEventRepository, CountyPromotionEventRepository>();
             services.AddScoped<ICountyPromotionEventBonusRepository, CountyPromotionEventBonusRepository>();
+            services.AddScoped<ICountyPromotionGiftOrderRepository, CountyPromotionGiftOrderRepository>();
 
             #endregion
         }

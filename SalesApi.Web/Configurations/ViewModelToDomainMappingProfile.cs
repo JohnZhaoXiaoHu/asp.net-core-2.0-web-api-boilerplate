@@ -47,6 +47,7 @@ namespace SalesApi.Web.Configurations
             CreateMap<RetailDayViewModel, RetailDay>();
             CreateMap<RetailProductSnapshotViewModel, RetailProductSnapshot>();
             CreateMap<RetailOrderViewModel, RetailOrder>();
+            CreateMap<RetailPromotionGiftOrderViewModel, RetailPromotionGiftOrder>();
 
             #endregion
 
@@ -76,6 +77,7 @@ namespace SalesApi.Web.Configurations
             CreateMap<CountyPromotionEventBonusViewModel, CountyPromotionEventBonus>();
             CreateMap<CountyPromotionSeriesAddViewModel, CountyPromotionSeries>();
             CreateMap<CountyPromotionSeriesEditViewModel, CountyPromotionSeries>();
+            CreateMap<CountyPromotionGiftOrderViewModel, CountyPromotionGiftOrder>();
 
             #endregion
         }

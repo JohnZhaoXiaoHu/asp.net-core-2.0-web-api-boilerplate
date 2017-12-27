@@ -59,6 +59,10 @@ namespace SalesApi.Web.Configurations
             CreateMap<RetailDay, RetailDayViewModel>();
             CreateMap<RetailProductSnapshot, RetailProductSnapshotViewModel>();
             CreateMap<RetailOrder, RetailOrderViewModel>();
+            CreateMap<RetailPromotionGiftOrder, RetailPromotionGiftOrderViewModel>()
+                .ForMember(d => d.ProductForRetailId, o => o.MapFrom(s => s.RetailPromotionEventBonus.ProductForRetailId))
+                .ForMember(d => d.RetailPromotionEventId, o => o.MapFrom(s => s.RetailPromotionEventBonus.RetailPromotionEventId));
+            CreateMap<RetailOrder, RetailOrderWithGiftViewModel>();
 
             #endregion
 
@@ -103,6 +107,10 @@ namespace SalesApi.Web.Configurations
                 .ForMember(d => d.End, o => o.MapFrom(s => s.Date))
                 .ForMember(d => d.AllDay, o => o.MapFrom(s => true))
                 .ForMember(d => d.Editable, o => o.MapFrom(s => false));
+            CreateMap<CountyPromotionGiftOrder, CountyPromotionGiftOrderViewModel>()
+                .ForMember(d => d.ProductForCountyId, o => o.MapFrom(s => s.CountyPromotionEventBonus.ProductForCountyId))
+                .ForMember(d => d.CountyPromotionEventId, o => o.MapFrom(s => s.CountyPromotionEventBonus.CountyPromotionEventId));
+            CreateMap<CountyOrder, CountyOrderWithGiftViewModel>();
 
             #endregion
         }

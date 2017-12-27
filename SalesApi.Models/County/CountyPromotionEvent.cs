@@ -35,6 +35,7 @@ namespace SalesApi.Models.County
                 .OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.ProductForCounty).WithMany(x => x.CountyPromotionEvents).HasForeignKey(x => x.ProductForCountyId)
                 .OnDelete(DeleteBehavior.Restrict);
+            b.HasIndex(x => new {x.ProductForCountyId, x.Date}).IsUnique();
         }
     }
 }
