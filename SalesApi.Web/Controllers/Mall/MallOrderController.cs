@@ -6,11 +6,13 @@ using Infrastructure.Features.Common;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using SalesApi.Models.Mall;
 using SalesApi.Repositories.Mall;
 using SalesApi.Services.Mall;
 using SalesApi.ViewModels.Mall;
 using SalesApi.Web.Controllers.Bases;
+using SharedSettings.Tools;
 
 namespace SalesApi.Web.Controllers.Mall
 {
@@ -277,5 +279,35 @@ namespace SalesApi.Web.Controllers.Mall
             return NoContent();
         }
 
+        [HttpPut]
+        [Route("PeriodSetPrice")]
+        public async Task<IActionResult> PeriodSetPrice(JToken jt)
+        {
+            var customerIds = jt["customerIds"].ToObject<List<int>>();
+            var start = jt["start"].ToObject<DateTime>();
+            var end = jt["end"].ToObject<DateTime>();
+            var productForMallId = jt["productForMallId"].ToObject<int>();
+            var price = jt["price"].ToObject<decimal>();
+            var startStr = GetDateString(start);
+            var endStr = GetDateString(end);
+            var orders = await _mallOrderRepository.All.Where(x =>
+                    customerIds.Contains(x.MallCustomerId) && string.CompareOrdinal(startStr, x.Date) <= 0 &&
+                    string.CompareOrdinal(endStr, x.Date) >= 0 && x.MallProductSnapshot.ProductForMallId == productForMallId)
+                .ToListAsync();
+            if (orders.Any())
+            {
+                foreach (var order in orders)
+                {
+                    order.Price = price;
+                    order.SetModification(UserName, "修改价格");
+                    _mallOrderRepository.Update(order);
+                }
+                if (!await UnitOfWork.SaveAsync())
+                {
+                    return StatusCode(500, "保存时出错");
+                }
+            }
+            return NoContent();
+        }
     }
 }
