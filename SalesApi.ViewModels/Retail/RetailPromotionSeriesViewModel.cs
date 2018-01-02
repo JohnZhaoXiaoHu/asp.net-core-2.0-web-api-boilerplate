@@ -7,7 +7,6 @@ namespace SalesApi.ViewModels.Retail
 {
     public class RetailPromotionSeriesViewModel : EntityBase
     {
-        public SalesType SalesType { get; set; }
         public int ProductForRetailId { get; set; }
 
         [Display(Name = "活动名称")]

@@ -10,7 +10,6 @@ namespace SalesApi.Models.Retail
         public int RetailDayId { get; set; }
         public int ProductForRetailId { get; set; }
         
-        public SalesType SalesType { get; set; }
         public int EquivalentBox { get; set; }
         public decimal Price { get; set; }
         public decimal InternalPrice { get; set; }

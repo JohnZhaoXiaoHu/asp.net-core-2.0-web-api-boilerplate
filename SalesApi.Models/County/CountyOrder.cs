@@ -2,7 +2,6 @@
 using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.County
 {
@@ -10,11 +9,9 @@ namespace SalesApi.Models.County
     {
         public CountyOrder()
         {
-            SalesType = SalesType.郊县;
             CountyPromotionGiftOrders = new List<CountyPromotionGiftOrder>();
         }
-
-        public SalesType SalesType { get; set; }
+        
         public int CountyProductSnapshotId { get; set; }
         public int CountyAgentId { get; set; }
         public int? CountyPromotionEventId { get; set; }

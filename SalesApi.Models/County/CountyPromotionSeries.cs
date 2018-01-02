@@ -13,10 +13,8 @@ namespace SalesApi.Models.County
         {
             CountyPromotionSeriesBonuses = new List<CountyPromotionSeriesBonus>();
             CountyPromotionEvents = new List<CountyPromotionEvent>();
-            SalesType = SalesType.郊县;
         }
-
-        public SalesType SalesType { get; set; }
+        
         public int ProductForCountyId { get; set; }
         public string Name { get; set; }
         public DateRepeatType DateRepeatType { get; set; }

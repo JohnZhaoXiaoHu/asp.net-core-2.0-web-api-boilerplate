@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Collective;
 using SalesApi.Models.County;
+using SalesApi.Models.Mall;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
@@ -76,6 +77,18 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new CountyPromotionGiftOrderConfiguration());
 
             #endregion
+
+            #region Mall
+
+            modelBuilder.ApplyConfiguration(new ProductForMallConfiguration());
+            modelBuilder.ApplyConfiguration(new MallGroupConfiguration());
+            modelBuilder.ApplyConfiguration(new MallCustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new MallPriceConfiguration());
+            modelBuilder.ApplyConfiguration(new MallDayConfiguration());
+            modelBuilder.ApplyConfiguration(new MallProductSnapshotConfiguration());
+            modelBuilder.ApplyConfiguration(new MallOrderConfiguration());
+
+            #endregion
         }
 
         #region Settings
@@ -133,6 +146,18 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<CountyOrder> CountyOrders { get; set; }
         public DbSet<CountyPromotionGiftOrder> CountyPromotionGiftOrders { get; set; }
         public DbSet<CountyPromotionGiftOrder> PromotionGiftOrders { get; set; }
+
+        #endregion
+
+        #region Mall
+
+        public DbSet<ProductForMall> ProductForMalls { get; set; }
+        public DbSet<MallGroup> MallGroups { get; set; }
+        public DbSet<MallCustomer> MallCustomers { get; set; }
+        public DbSet<MallPrice> MallPrices { get; set; }
+        public DbSet<MallDay> MallDays { get; set; }
+        public DbSet<MallProductSnapshot> MallProductSnapshots { get; set; }
+        public DbSet<MallOrder> MallOrders { get; set; }
 
         #endregion
     }

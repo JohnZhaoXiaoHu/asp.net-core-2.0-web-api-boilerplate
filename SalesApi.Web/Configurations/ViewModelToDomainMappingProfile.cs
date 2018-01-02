@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using SalesApi.Models.Collective;
 using SalesApi.Models.County;
+using SalesApi.Models.Mall;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
 using SalesApi.ViewModels.Collective;
 using SalesApi.ViewModels.County;
+using SalesApi.ViewModels.Mall;
 using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
@@ -80,6 +82,20 @@ namespace SalesApi.Web.Configurations
             CreateMap<CountyPromotionGiftOrderViewModel, CountyPromotionGiftOrder>();
 
             #endregion
+
+            #region Mall
+
+            CreateMap<ProductForMallViewModel, ProductForMall>();
+            CreateMap<MallGroupViewModel, MallGroup>();
+            CreateMap<MallCustomerViewModel, MallCustomer>();
+            CreateMap<MallDayViewModel, MallDay>();
+            CreateMap<MallProductSnapshotViewModel, MallProductSnapshot>();
+            CreateMap<MallOrderViewModel, MallOrder>();
+            CreateMap<MallPriceViewModel, MallPrice>();
+            CreateMap<MallOrderSetPriceViewModel, MallOrder>();
+
+            #endregion
+
         }
     }
 }

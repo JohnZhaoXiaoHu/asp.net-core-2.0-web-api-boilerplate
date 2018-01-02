@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using SalesApi.Models.Collective;
 using SalesApi.Models.County;
+using SalesApi.Models.Mall;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
 using SalesApi.ViewModels.Collective;
 using SalesApi.ViewModels.County;
+using SalesApi.ViewModels.Mall;
 using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
@@ -112,6 +114,24 @@ namespace SalesApi.Web.Configurations
                 .ForMember(d => d.CountyPromotionEventId, o => o.MapFrom(s => s.CountyPromotionEventBonus.CountyPromotionEventId));
             CreateMap<CountyOrder, CountyOrderWithGiftViewModel>();
 
+            #endregion
+
+            #region Mall
+
+            CreateMap<ProductForMall, ProductForMallViewModel>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name))
+                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order));
+            CreateMap<MallGroup, MallGroupViewModel>();
+            CreateMap<MallCustomer, MallCustomerViewModel>();
+            CreateMap<MallDay, MallDayViewModel>();
+            CreateMap<MallProductSnapshot, MallProductSnapshotViewModel>();
+            CreateMap<MallOrder, MallOrderViewModel>()
+                .ForMember(d => d.ProductForMallId, o => o.MapFrom(s => s.MallProductSnapshot != null ? (int?)s.MallProductSnapshot.ProductForMallId : null));
+            CreateMap<MallPrice, MallPriceViewModel>();
+            CreateMap<MallOrder, MallOrderSetPriceViewModel>()
+                .ForMember(d => d.ProductForMallId,
+                    o => o.MapFrom(s => s.MallProductSnapshot.ProductForMallId));
+            
             #endregion
         }
     }

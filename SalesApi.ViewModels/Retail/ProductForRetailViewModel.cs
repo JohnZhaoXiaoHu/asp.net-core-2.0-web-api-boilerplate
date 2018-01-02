@@ -1,19 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Infrastructure.Features.Common;
-using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.Retail
 {
     public class ProductForRetailViewModel: EntityBase
     {
         public int ProductId { get; set; }
-
-        [Display(Name = "销售类型")]
-        [Required(ErrorMessage = "销售类型是必填项")]
-        [EnumDataType(typeof(SalesType))]
-        public SalesType SalesType { get; set; }
-
+        
         [Display(Name = "折箱")]
         [Range(1, Int32.MaxValue, ErrorMessage = "{0}不可以小于{1}")]
         public int EquivalentBox { get; set; }

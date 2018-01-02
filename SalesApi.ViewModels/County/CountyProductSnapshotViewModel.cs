@@ -7,8 +7,7 @@ namespace SalesApi.ViewModels.County
     {
         public int CountyDayId { get; set; }
         public int ProductForCountyId { get; set; }
-
-        public SalesType SalesType { get; set; }
+        
         public int EquivalentBox { get; set; }
         public bool IsOrderByBox { get; set; }
         public int MinOrderCount { get; set; }

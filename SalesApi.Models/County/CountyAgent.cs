@@ -11,12 +11,10 @@ namespace SalesApi.Models.County
     {
         public CountyAgent()
         {
-            SalesType = SalesType.郊县;
             CountyAgentPrices = new List<CountyAgentPrice>();
         }
 
         public int SubAreaId { get; set; }
-        public SalesType SalesType { get; set; }
         public string No { get; set; }
         public string Name { get; set; }
         public string Pinyin { get; set; }

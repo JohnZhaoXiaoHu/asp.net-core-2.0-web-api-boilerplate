@@ -3,7 +3,6 @@ using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Settings;
-using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Retail
 {
@@ -19,7 +18,6 @@ namespace SalesApi.Models.Retail
         }
 
         public int ProductId { get; set; }
-        public SalesType SalesType { get; set; }
         public int EquivalentBox { get; set; }
         public decimal Price { get; set; }
         public decimal InternalPrice { get; set; }

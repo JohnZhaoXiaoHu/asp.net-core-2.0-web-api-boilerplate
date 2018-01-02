@@ -1,12 +1,10 @@
 ﻿using Infrastructure.Features.Common;
-using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.County
 {
     public class CountyAgentViewModel : EntityBase
     {
         public int SubAreaId { get; set; }
-        public SalesType SalesType { get; set; }
         public string No { get; set; }
         public string Name { get; set; }
         public string Pinyin { get; set; }

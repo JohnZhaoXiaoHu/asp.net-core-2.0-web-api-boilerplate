@@ -7,7 +7,6 @@ namespace SalesApi.ViewModels.County
 {
     public class CountyPromotionSeriesViewModel : EntityBase
     {
-        public SalesType SalesType { get; set; }
         public int ProductForCountyId { get; set; }
 
         [Display(Name = "活动名称")]

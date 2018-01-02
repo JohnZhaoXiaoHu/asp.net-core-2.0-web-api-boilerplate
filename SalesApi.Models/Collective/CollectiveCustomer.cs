@@ -3,7 +3,6 @@ using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Settings;
-using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Collective
 {
@@ -12,11 +11,9 @@ namespace SalesApi.Models.Collective
         public CollectiveCustomer()
         {
             CollectivePrices = new List<CollectivePrice>();
-            SalesType = SalesType.集体户;
         }
 
         public int SubAreaId { get; set; }
-        public SalesType SalesType { get; set; }
         public string No { get; set; }
         public string Name { get; set; }
         public string Pinyin { get; set; }

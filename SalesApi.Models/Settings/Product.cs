@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Collective;
 using SalesApi.Models.County;
+using SalesApi.Models.Mall;
 using SalesApi.Models.Retail;
 using SalesApi.Shared.Enums;
 
@@ -23,6 +24,7 @@ namespace SalesApi.Models.Settings
         public ProductForRetail ProductForRetail { get; set; }
         public ProductForCollective ProductForCollective { get; set; }
         public ProductForCounty ProductForCounty { get; set; }
+        public ProductForMall ProductForMall { get; set; }
     }
 
     public class ProductConfiguration : EntityBaseConfiguration<Product>

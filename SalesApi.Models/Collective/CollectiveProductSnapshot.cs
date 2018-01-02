@@ -7,15 +7,9 @@ namespace SalesApi.Models.Collective
 {
     public class CollectiveProductSnapshot : EntityBase
     {
-        public CollectiveProductSnapshot()
-        {
-            SalesType = SalesType.集体户;
-        }
-
         public int CollectiveDayId { get; set; }
         public int ProductForCollectiveId { get; set; }
         
-        public SalesType SalesType { get; set; }
         public int EquivalentBox { get; set; }
         public bool IsOrderByBox { get; set; }
         public int MinOrderCount { get; set; }

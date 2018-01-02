@@ -7,8 +7,7 @@ namespace SalesApi.ViewModels.Collective
     {
         public int CollectiveDayId { get; set; }
         public int ProductForCollectiveId { get; set; }
-
-        public SalesType SalesType { get; set; }
+        
         public int EquivalentBox { get; set; }
         public bool IsOrderByBox { get; set; }
         public int MinOrderCount { get; set; }

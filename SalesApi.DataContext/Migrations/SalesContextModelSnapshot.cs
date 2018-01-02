@@ -58,8 +58,6 @@ namespace SalesApi.DataContext.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<int>("SalesType");
-
                     b.Property<int>("SubAreaId");
 
                     b.Property<DateTime>("UpdateTime");
@@ -266,8 +264,6 @@ namespace SalesApi.DataContext.Migrations
 
                     b.Property<int>("ProductUnit");
 
-                    b.Property<int>("SalesType");
-
                     b.Property<int>("ShelfLife");
 
                     b.Property<string>("Specification")
@@ -321,8 +317,6 @@ namespace SalesApi.DataContext.Migrations
 
                     b.Property<int>("ProductId");
 
-                    b.Property<int>("SalesType");
-
                     b.Property<DateTime>("UpdateTime");
 
                     b.Property<string>("UpdateUser")
@@ -373,8 +367,6 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<string>("Pinyin")
                         .IsRequired()
                         .HasMaxLength(50);
-
-                    b.Property<int>("SalesType");
 
                     b.Property<int>("SubAreaId");
 
@@ -515,8 +507,6 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<int>("SalesType");
-
                     b.Property<DateTime>("UpdateTime");
 
                     b.Property<string>("UpdateUser")
@@ -588,8 +578,6 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<int>("ProductForCountyId");
 
                     b.Property<int>("ProductUnit");
-
-                    b.Property<int>("SalesType");
 
                     b.Property<int>("ShelfLife");
 
@@ -772,8 +760,6 @@ namespace SalesApi.DataContext.Migrations
 
                     b.Property<int>("PurchaseBase");
 
-                    b.Property<int>("SalesType");
-
                     b.Property<DateTime>("StartDate");
 
                     b.Property<int>("Step");
@@ -860,8 +846,6 @@ namespace SalesApi.DataContext.Migrations
 
                     b.Property<int>("ProductId");
 
-                    b.Property<int>("SalesType");
-
                     b.Property<DateTime>("UpdateTime");
 
                     b.Property<string>("UpdateUser")
@@ -874,6 +858,357 @@ namespace SalesApi.DataContext.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductForCounties");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallCustomer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int?>("MallGroupId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("No")
+                        .IsRequired()
+                        .HasMaxLength(10);
+
+                    b.Property<int>("Order");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Pinyin")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("SubAreaId");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MallGroupId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("No")
+                        .IsUnique();
+
+                    b.HasIndex("SubAreaId");
+
+                    b.ToTable("MallCustomers");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallDay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasMaxLength(10);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<bool>("Initialized");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Order");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Date")
+                        .IsUnique();
+
+                    b.ToTable("MallDays");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Order");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("MallGroups");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasMaxLength(10);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<int>("Gift");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LegacyOrderId")
+                        .HasMaxLength(20);
+
+                    b.Property<int>("MallCustomerId");
+
+                    b.Property<int>("MallProductSnapshotId");
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("Ordered");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MallCustomerId");
+
+                    b.HasIndex("MallProductSnapshotId");
+
+                    b.HasIndex("Date", "MallProductSnapshotId", "MallCustomerId")
+                        .IsUnique();
+
+                    b.ToTable("MallOrders");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("MallCustomerId");
+
+                    b.Property<int>("Order");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("ProductForMallId");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductForMallId");
+
+                    b.HasIndex("MallCustomerId", "ProductForMallId")
+                        .IsUnique();
+
+                    b.ToTable("MallPrices");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallProductSnapshot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Barcode")
+                        .HasMaxLength(20);
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<int>("EquivalentBox");
+
+                    b.Property<decimal>("EquivalentTon")
+                        .HasColumnType("decimal(7, 6)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("IsOrderByBox");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LegacyProductId")
+                        .HasMaxLength(5);
+
+                    b.Property<int>("MallDayId");
+
+                    b.Property<int>("MinOrderCount");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(10);
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("OrderDivisor");
+
+                    b.Property<int>("ProductForMallId");
+
+                    b.Property<int>("ProductUnit");
+
+                    b.Property<int>("ShelfLife");
+
+                    b.Property<string>("Specification")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(7, 6)");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MallDayId");
+
+                    b.HasIndex("ProductForMallId");
+
+                    b.ToTable("MallProductSnapshots");
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.ProductForMall", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<int>("EquivalentBox");
+
+                    b.Property<bool>("IsOrderByBox");
+
+                    b.Property<string>("LastAction")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("MinOrderCount");
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("OrderDivisor");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductForMalls");
                 });
 
             modelBuilder.Entity("SalesApi.Models.Overall.SalesDay", b =>
@@ -952,8 +1287,6 @@ namespace SalesApi.DataContext.Migrations
                         .HasColumnType("decimal(10, 6)");
 
                     b.Property<int>("ProductId");
-
-                    b.Property<int>("SalesType");
 
                     b.Property<DateTime>("UpdateTime");
 
@@ -1044,8 +1377,6 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<string>("Pinyin")
                         .IsRequired()
                         .HasMaxLength(50);
-
-                    b.Property<int>("SalesType");
 
                     b.Property<int>("SubAreaId");
 
@@ -1183,8 +1514,6 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<int>("ProductUnit");
 
                     b.Property<int>("RetailDayId");
-
-                    b.Property<int>("SalesType");
 
                     b.Property<int>("ShelfLife");
 
@@ -1366,8 +1695,6 @@ namespace SalesApi.DataContext.Migrations
                     b.Property<int>("ProductForRetailId");
 
                     b.Property<int>("PurchaseBase");
-
-                    b.Property<int>("SalesType");
 
                     b.Property<DateTime>("StartDate");
 
@@ -1834,6 +2161,66 @@ namespace SalesApi.DataContext.Migrations
                     b.HasOne("SalesApi.Models.Settings.Product", "Product")
                         .WithOne("ProductForCounty")
                         .HasForeignKey("SalesApi.Models.County.ProductForCounty", "ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallCustomer", b =>
+                {
+                    b.HasOne("SalesApi.Models.Mall.MallGroup", "MallGroup")
+                        .WithMany("MallCustomers")
+                        .HasForeignKey("MallGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SalesApi.Models.Settings.SubArea", "SubArea")
+                        .WithMany("MallCustomers")
+                        .HasForeignKey("SubAreaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallOrder", b =>
+                {
+                    b.HasOne("SalesApi.Models.Mall.MallCustomer", "MallCustomer")
+                        .WithMany()
+                        .HasForeignKey("MallCustomerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SalesApi.Models.Mall.MallProductSnapshot", "MallProductSnapshot")
+                        .WithMany()
+                        .HasForeignKey("MallProductSnapshotId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallPrice", b =>
+                {
+                    b.HasOne("SalesApi.Models.Mall.MallCustomer", "MallCustomer")
+                        .WithMany("MallPrices")
+                        .HasForeignKey("MallCustomerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SalesApi.Models.Mall.ProductForMall", "ProductForMall")
+                        .WithMany("MallPrices")
+                        .HasForeignKey("ProductForMallId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.MallProductSnapshot", b =>
+                {
+                    b.HasOne("SalesApi.Models.Mall.MallDay", "MallDay")
+                        .WithMany("MallProductSnapshots")
+                        .HasForeignKey("MallDayId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SalesApi.Models.Mall.ProductForMall", "ProductForMall")
+                        .WithMany("MallProductSnapshots")
+                        .HasForeignKey("ProductForMallId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SalesApi.Models.Mall.ProductForMall", b =>
+                {
+                    b.HasOne("SalesApi.Models.Settings.Product", "Product")
+                        .WithOne("ProductForMall")
+                        .HasForeignKey("SalesApi.Models.Mall.ProductForMall", "ProductId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

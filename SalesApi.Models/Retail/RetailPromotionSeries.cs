@@ -14,8 +14,7 @@ namespace SalesApi.Models.Retail
             RetailPromotionSeriesBonuses = new List<RetailPromotionSeriesBonus>();
             RetailPromotionEvents = new List<RetailPromotionEvent>();
         }
-
-        public SalesType SalesType { get; set; }
+        
         public int ProductForRetailId { get; set; }
         public string Name { get; set; }
         public DateRepeatType DateRepeatType { get; set; }

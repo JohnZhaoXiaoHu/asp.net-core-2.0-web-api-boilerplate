@@ -3,7 +3,6 @@ using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Settings;
-using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Collective
 {
@@ -11,13 +10,11 @@ namespace SalesApi.Models.Collective
     {
         public ProductForCollective()
         {
-            SalesType = SalesType.集体户;
             CollectiveProductSnapshots = new List<CollectiveProductSnapshot>();
             CollectivePrices = new List<CollectivePrice>();
         }
 
         public int ProductId { get; set; }
-        public SalesType SalesType { get; set; }
         public int EquivalentBox { get; set; }
         public bool IsOrderByBox { get; set; }
         public int MinOrderCount { get; set; }
