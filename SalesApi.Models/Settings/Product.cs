@@ -20,6 +20,8 @@ namespace SalesApi.Models.Settings
         public decimal EquivalentTon { get; set; }
         public string Barcode { get; set; }
         public decimal TaxRate { get; set; }
+        public string Pinyin { get; set; }
+        public string FullPinyin { get; set; }
 
         public ProductForRetail ProductForRetail { get; set; }
         public ProductForCollective ProductForCollective { get; set; }
@@ -38,6 +40,8 @@ namespace SalesApi.Models.Settings
             b.Property(x => x.EquivalentTon).HasColumnType("decimal(7, 6)");
             b.Property(x => x.Barcode).HasMaxLength(20);
             b.Property(x => x.TaxRate).HasColumnType("decimal(7, 6)");
+            b.Property(x => x.Pinyin).IsRequired().HasMaxLength(10);
+            b.Property(x => x.FullPinyin).IsRequired().HasMaxLength(50);
         }
     }
 }

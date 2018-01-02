@@ -45,7 +45,8 @@ namespace SalesApi.Web.Configurations
 
             CreateMap<ProductForRetail, ProductForRetailViewModel>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name))
-                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order)); ;
+                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order))
+                .ForMember(d => d.ProductPinyin, o => o.MapFrom(s => s.Product != null ? s.Product.Pinyin : null));
             CreateMap<Retailer, RetailerViewModel>();
             CreateMap<RetailPromotionSeries, RetailPromotionSeriesViewModel>();
             CreateMap<RetailPromotionSeriesBonus, RetailPromotionSeriesBonusViewModel>();
@@ -72,7 +73,8 @@ namespace SalesApi.Web.Configurations
 
             CreateMap<ProductForCollective, ProductForCollectiveViewModel>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name))
-                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order));
+                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order))
+                .ForMember(d => d.ProductPinyin, o => o.MapFrom(s => s.Product != null ? s.Product.Pinyin : null));
             CreateMap<CollectiveCustomer, CollectiveCustomerViewModel>();
             CreateMap<CollectiveDay, CollectiveDayViewModel>();
             CreateMap<CollectiveProductSnapshot, CollectiveProductSnapshotViewModel>();
@@ -89,7 +91,8 @@ namespace SalesApi.Web.Configurations
 
             CreateMap<ProductForCounty, ProductForCountyViewModel>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name))
-                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order));
+                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order))
+                .ForMember(d => d.ProductPinyin, o => o.MapFrom(s => s.Product != null ? s.Product.Pinyin : null));
             CreateMap<CountyAgent, CountyAgentViewModel>();
             CreateMap<CountyAgentPrice, CountyAgentPriceViewModel>();
             CreateMap<CountyDay, CountyDayViewModel>();
@@ -120,7 +123,8 @@ namespace SalesApi.Web.Configurations
 
             CreateMap<ProductForMall, ProductForMallViewModel>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name))
-                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order));
+                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order))
+                .ForMember(d => d.ProductPinyin, o => o.MapFrom(s => s.Product != null ? s.Product.Pinyin : null));
             CreateMap<MallGroup, MallGroupViewModel>();
             CreateMap<MallCustomer, MallCustomerViewModel>();
             CreateMap<MallDay, MallDayViewModel>();
@@ -131,7 +135,7 @@ namespace SalesApi.Web.Configurations
             CreateMap<MallOrder, MallOrderSetPriceViewModel>()
                 .ForMember(d => d.ProductForMallId,
                     o => o.MapFrom(s => s.MallProductSnapshot.ProductForMallId));
-            
+
             #endregion
         }
     }

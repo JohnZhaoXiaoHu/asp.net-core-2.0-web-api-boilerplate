@@ -35,5 +35,6 @@ namespace SalesApi.ViewModels.Retail
         public int OrderDivisor { get; set; }
 
         public string ProductName { get; set; }
+        public string ProductPinyin { get; set; }
     }
 }

@@ -14,5 +14,7 @@ namespace SalesApi.ViewModels.Settings
         public decimal EquivalentTon { get; set; }
         public string Barcode { get; set; }
         public decimal TaxRate { get; set; }
+        public string Pinyin { get; set; }
+        public string FullPinyin { get; set; }
     }
 }

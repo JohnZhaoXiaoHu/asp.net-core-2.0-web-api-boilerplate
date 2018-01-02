@@ -58,6 +58,7 @@ namespace SalesApi.Web.Controllers.Settings
             }
 
             var newItem = Mapper.Map<Product>(productVm);
+            _productRepository.SetPinyin(newItem);
             newItem.SetCreation(UserName);
             _productRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
@@ -88,6 +89,7 @@ namespace SalesApi.Web.Controllers.Settings
                 return NotFound();
             }
             Mapper.Map(productVm, dbItem);
+            _productRepository.SetPinyin(dbItem);
             dbItem.SetModification(UserName);
             _productRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
@@ -120,6 +122,7 @@ namespace SalesApi.Web.Controllers.Settings
             }
 
             Mapper.Map(toPatchVm, dbItem);
+            _productRepository.SetPinyin(dbItem);
 
             if (!await UnitOfWork.SaveAsync())
             {

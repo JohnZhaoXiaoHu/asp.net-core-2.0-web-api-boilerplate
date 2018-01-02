@@ -23,5 +23,6 @@ namespace SalesApi.ViewModels.County
         public int OrderDivisor { get; set; }
 
         public string ProductName { get; set; }
+        public string ProductPinyin { get; set; }
     }
 }

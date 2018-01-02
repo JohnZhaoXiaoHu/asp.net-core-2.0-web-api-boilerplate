@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Infrastructure.Features.Common;
-using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.Collective
 {
@@ -24,5 +23,7 @@ namespace SalesApi.ViewModels.Collective
         public int OrderDivisor { get; set; }
 
         public string ProductName { get; set; }
+
+        public string ProductPinyin { get; set; }
     }
 }
