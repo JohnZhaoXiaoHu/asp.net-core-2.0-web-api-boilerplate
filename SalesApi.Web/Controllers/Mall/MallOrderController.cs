@@ -279,9 +279,9 @@ namespace SalesApi.Web.Controllers.Mall
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("PeriodSetPrice")]
-        public async Task<IActionResult> PeriodSetPrice(JToken jt)
+        public async Task<IActionResult> PeriodSetPrice([FromBody]JObject jt)
         {
             var customerIds = jt["customerIds"].ToObject<List<int>>();
             var start = jt["start"].ToObject<DateTime>();
