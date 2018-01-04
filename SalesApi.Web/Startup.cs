@@ -88,6 +88,12 @@ namespace SalesApi.Web
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
+                options.AddPolicy(PurchaseClientSettings.CorsPolicyName, policy =>
+                {
+                    policy.WithOrigins(PurchaseClientSettings.CorsOrigin)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
         }
 

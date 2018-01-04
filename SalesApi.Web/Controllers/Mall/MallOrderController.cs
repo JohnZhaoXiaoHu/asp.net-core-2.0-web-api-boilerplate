@@ -12,7 +12,6 @@ using SalesApi.Repositories.Mall;
 using SalesApi.Services.Mall;
 using SalesApi.ViewModels.Mall;
 using SalesApi.Web.Controllers.Bases;
-using SharedSettings.Tools;
 
 namespace SalesApi.Web.Controllers.Mall
 {

@@ -42,6 +42,27 @@ namespace AuthorizationServer.Configuration
                         IdentityServerConstants.StandardScopes.Email,
                         SalesApiSettings.ApiResource.Name
                     }
+                },
+                // Purchase JavaScript Client
+                new Client
+                {
+                    ClientId = PurchaseClientSettings.Client.ClientId,
+                    ClientName = PurchaseClientSettings.Client.ClientName,
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    AccessTokenLifetime = 60 * 10,
+                    AllowOfflineAccess = true,
+                    RedirectUris =           { PurchaseClientSettings.Client.RedirectUri, PurchaseClientSettings.Client.SilentRedirectUri },
+                    PostLogoutRedirectUris = { PurchaseClientSettings.Client.PostLogoutRedirectUris },
+                    AllowedCorsOrigins =     { PurchaseClientSettings.Client.AllowedCorsOrigins },
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        SalesApiSettings.ApiResource.Name
+                    }
                 }
             };
         }
