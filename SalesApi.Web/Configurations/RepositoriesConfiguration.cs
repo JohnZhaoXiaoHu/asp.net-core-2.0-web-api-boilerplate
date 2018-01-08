@@ -5,6 +5,7 @@ using SalesApi.Repositories.Mall;
 using SalesApi.Repositories.Overall;
 using SalesApi.Repositories.Retail;
 using SalesApi.Repositories.Settings;
+using SalesApi.Repositories.Subscription;
 
 namespace SalesApi.Web.Configurations
 {
@@ -79,6 +80,14 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<IMallProductSnapshotRepository, MallProductSnapshotRepository>();
             services.AddScoped<IMallOrderRepository, MallOrderRepository>();
             services.AddScoped<IMallPriceRepository, MallPriceRepository>();
+
+            #endregion
+
+            #region Subscription
+
+            services.AddScoped<IProductForSubscriptionRepository, ProductForSubscriptionRepository>();
+            services.AddScoped<ISubscriptionDayRepository, SubscriptionDayRepository>();
+            services.AddScoped<ISubscriptionProductSnapshotRepository, SubscriptionProductSnapshotRepository>();
 
             #endregion
 

@@ -3,6 +3,7 @@ using SalesApi.Services.Collective;
 using SalesApi.Services.County;
 using SalesApi.Services.Mall;
 using SalesApi.Services.Retail;
+using SalesApi.Services.Subscription;
 
 namespace SalesApi.Web.Configurations
 {
@@ -48,6 +49,12 @@ namespace SalesApi.Web.Configurations
 
             #endregion
 
+            #region Subscription
+
+            services.AddScoped(typeof(ISubscriptionService<>), typeof(SubscriptionService<>));
+            services.AddScoped<ISubscriptionDayService, SubscriptionDayService>();
+
+            #endregion
         }
     }
 }

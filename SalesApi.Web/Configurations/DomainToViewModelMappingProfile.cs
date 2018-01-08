@@ -5,12 +5,14 @@ using SalesApi.Models.Mall;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
+using SalesApi.Models.Subscription;
 using SalesApi.ViewModels.Collective;
 using SalesApi.ViewModels.County;
 using SalesApi.ViewModels.Mall;
 using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
+using SalesApi.ViewModels.Subscription;
 
 namespace SalesApi.Web.Configurations
 {
@@ -135,6 +137,17 @@ namespace SalesApi.Web.Configurations
             CreateMap<MallOrder, MallOrderSetPriceViewModel>()
                 .ForMember(d => d.ProductForMallId,
                     o => o.MapFrom(s => s.MallProductSnapshot.ProductForMallId));
+
+            #endregion
+
+            #region Subscription
+
+            CreateMap<ProductForSubscription, ProductForSubscriptionViewModel>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product == null ? null : src.Product.Name))
+                .ForMember(d => d.Order, o => o.MapFrom(s => s.Product != null ? s.Product.Order : s.Order))
+                .ForMember(d => d.ProductPinyin, o => o.MapFrom(s => s.Product != null ? s.Product.Pinyin : null));
+            CreateMap<SubscriptionDay, SubscriptionDayViewModel>();
+            CreateMap<SubscriptionProductSnapshot, SubscriptionProductSnapshotViewModel>();
 
             #endregion
         }

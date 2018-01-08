@@ -5,6 +5,7 @@ using SalesApi.Models.Collective;
 using SalesApi.Models.County;
 using SalesApi.Models.Mall;
 using SalesApi.Models.Retail;
+using SalesApi.Models.Subscription;
 using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Settings
@@ -27,6 +28,7 @@ namespace SalesApi.Models.Settings
         public ProductForCollective ProductForCollective { get; set; }
         public ProductForCounty ProductForCounty { get; set; }
         public ProductForMall ProductForMall { get; set; }
+        public ProductForSubscription ProductForSubscription { get; set; }
     }
 
     public class ProductConfiguration : EntityBaseConfiguration<Product>

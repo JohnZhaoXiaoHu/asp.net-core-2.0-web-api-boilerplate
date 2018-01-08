@@ -6,6 +6,7 @@ using SalesApi.Models.Mall;
 using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
+using SalesApi.Models.Subscription;
 
 namespace SalesApi.DataContext.Contexts
 {
@@ -89,6 +90,14 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new MallOrderConfiguration());
 
             #endregion
+
+            #region Subscription
+
+            modelBuilder.ApplyConfiguration(new ProductForSubscriptionConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionDayConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionProductSnapshotConfiguration());
+
+            #endregion
         }
 
         #region Settings
@@ -158,6 +167,14 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<MallDay> MallDays { get; set; }
         public DbSet<MallProductSnapshot> MallProductSnapshots { get; set; }
         public DbSet<MallOrder> MallOrders { get; set; }
+
+        #endregion
+
+        #region Subscription
+
+        public DbSet<ProductForSubscription> ProductForSubscriptions { get; set; }
+        public DbSet<SubscriptionDay> SubscriptionDays { get; set; }
+        public DbSet<SubscriptionProductSnapshot> SubscriptionProductSnapshots { get; set; }
 
         #endregion
     }
