@@ -96,6 +96,10 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new ProductForSubscriptionConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionDayConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionProductSnapshotConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionPromotionSeriesConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionPromotionSeriesBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionPromotionEventConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionPromotionEventBonusConfiguration());
 
             #endregion
         }

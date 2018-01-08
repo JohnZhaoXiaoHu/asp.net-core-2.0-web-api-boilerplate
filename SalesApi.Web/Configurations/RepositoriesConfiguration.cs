@@ -88,6 +88,10 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<IProductForSubscriptionRepository, ProductForSubscriptionRepository>();
             services.AddScoped<ISubscriptionDayRepository, SubscriptionDayRepository>();
             services.AddScoped<ISubscriptionProductSnapshotRepository, SubscriptionProductSnapshotRepository>();
+            services.AddScoped<ISubscriptionPromotionSeriesRepository, SubscriptionPromotionSeriesRepository>();
+            services.AddScoped<ISubscriptionPromotionSeriesBonusRepository, SubscriptionPromotionSeriesBonusRepository>();
+            services.AddScoped<ISubscriptionPromotionEventRepository, SubscriptionPromotionEventRepository>();
+            services.AddScoped<ISubscriptionPromotionEventBonusRepository, SubscriptionPromotionEventBonusRepository>();
 
             #endregion
 

@@ -103,6 +103,11 @@ namespace SalesApi.Web.Configurations
             CreateMap<ProductForSubscriptionViewModel, ProductForSubscription>();
             CreateMap<SubscriptionDayViewModel, SubscriptionDay>();
             CreateMap<SubscriptionProductSnapshotViewModel, SubscriptionProductSnapshot>();
+            CreateMap<SubscriptionPromotionSeriesBonusViewModel, SubscriptionPromotionSeriesBonus>();
+            CreateMap<SubscriptionPromotionEventViewModel, SubscriptionPromotionEvent>();
+            CreateMap<SubscriptionPromotionEventBonusViewModel, SubscriptionPromotionEventBonus>();
+            CreateMap<SubscriptionPromotionSeriesAddViewModel, SubscriptionPromotionSeries>();
+            CreateMap<SubscriptionPromotionSeriesEditViewModel, SubscriptionPromotionSeries>();
 
             #endregion
 

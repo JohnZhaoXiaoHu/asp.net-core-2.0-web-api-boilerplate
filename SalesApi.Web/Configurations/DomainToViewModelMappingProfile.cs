@@ -148,6 +148,17 @@ namespace SalesApi.Web.Configurations
                 .ForMember(d => d.ProductPinyin, o => o.MapFrom(s => s.Product != null ? s.Product.Pinyin : null));
             CreateMap<SubscriptionDay, SubscriptionDayViewModel>();
             CreateMap<SubscriptionProductSnapshot, SubscriptionProductSnapshotViewModel>();
+            CreateMap<SubscriptionPromotionSeries, SubscriptionPromotionSeriesViewModel>();
+            CreateMap<SubscriptionPromotionSeriesBonus, SubscriptionPromotionSeriesBonusViewModel>();
+            CreateMap<SubscriptionPromotionEvent, SubscriptionPromotionEventViewModel>()
+                .ForMember(d => d.SeriesName, o => o.MapFrom(s => s.SubscriptionPromotionSeries == null ? null : s.SubscriptionPromotionSeries.Name));
+            CreateMap<SubscriptionPromotionEvent, SubscriptionPromotionEventForFullCalendarViewModel>()
+                .ForMember(d => d.Title, o => o.MapFrom(s => $"[{s.SubscriptionPromotionSeriesId}] {s.Name}"))
+                .ForMember(d => d.Start, o => o.MapFrom(s => s.Date))
+                .ForMember(d => d.End, o => o.MapFrom(s => s.Date))
+                .ForMember(d => d.AllDay, o => o.MapFrom(s => true))
+                .ForMember(d => d.Editable, o => o.MapFrom(s => false));
+            CreateMap<SubscriptionPromotionEventBonus, SubscriptionPromotionEventBonusViewModel>();
 
             #endregion
         }
