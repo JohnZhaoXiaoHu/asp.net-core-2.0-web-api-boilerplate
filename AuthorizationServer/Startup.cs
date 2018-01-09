@@ -21,13 +21,13 @@ namespace AuthorizationServer
 {
     public class Startup
     {
+        public static IConfiguration Configuration { get; private set; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-        
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -105,7 +105,7 @@ namespace AuthorizationServer
             {
                 options.AddPolicy(SalesApiSettings.CorsPolicyName, policy =>
                 {
-                    policy.WithOrigins(SalesApiSettings.CorsOrigin)
+                    policy.WithOrigins(Configuration["MLH:SalesApi:ClientBase"])
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });

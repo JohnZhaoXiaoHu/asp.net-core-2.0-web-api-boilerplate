@@ -12,7 +12,7 @@ namespace AuthorizationServer.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(SalesApiSettings.ApiResource.Name, SalesApiSettings.ApiResource.DisplayName) {
+                new ApiResource(SalesApiSettings.ApiName, SalesApiSettings.ApiDisplayName) {
                     UserClaims = { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email }
                 }
             };
@@ -25,43 +25,22 @@ namespace AuthorizationServer.Configuration
                 // Sales JavaScript Client
                 new Client
                 {
-                    ClientId = SalesApiSettings.Client.ClientId,
-                    ClientName = SalesApiSettings.Client.ClientName,
+                    ClientId = SalesApiSettings.ClientId,
+                    ClientName = SalesApiSettings.ClientName,
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     AccessTokenLifetime = 60 * 10,
                     AllowOfflineAccess = true,
-                    RedirectUris =           { SalesApiSettings.Client.RedirectUri, SalesApiSettings.Client.SilentRedirectUri },
-                    PostLogoutRedirectUris = { SalesApiSettings.Client.PostLogoutRedirectUris },
-                    AllowedCorsOrigins =     { SalesApiSettings.Client.AllowedCorsOrigins },
+                    RedirectUris =           { $"{Startup.Configuration["MLH:SalesApi:ClientBase"]}/login-callback", $"{Startup.Configuration["MLH:SalesApi:ClientBase"]}/silent-renew.html" },
+                    PostLogoutRedirectUris = { Startup.Configuration["MLH:SalesApi:ClientBase"] },
+                    AllowedCorsOrigins =     { Startup.Configuration["MLH:SalesApi:ClientBase"] },
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        SalesApiSettings.ApiResource.Name
-                    }
-                },
-                // Purchase JavaScript Client
-                new Client
-                {
-                    ClientId = PurchaseClientSettings.Client.ClientId,
-                    ClientName = PurchaseClientSettings.Client.ClientName,
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    AccessTokenLifetime = 60 * 10,
-                    AllowOfflineAccess = true,
-                    RedirectUris =           { PurchaseClientSettings.Client.RedirectUri, PurchaseClientSettings.Client.SilentRedirectUri },
-                    PostLogoutRedirectUris = { PurchaseClientSettings.Client.PostLogoutRedirectUris },
-                    AllowedCorsOrigins =     { PurchaseClientSettings.Client.AllowedCorsOrigins },
-                    AlwaysIncludeUserClaimsInIdToken = true,
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
-                        SalesApiSettings.ApiResource.Name
+                        SalesApiSettings.ApiName
                     }
                 }
             };

@@ -24,13 +24,13 @@ namespace SalesApi.Web
 {
     public class Startup
     {
+        public static IConfiguration Configuration { get; private set; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
-
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SalesContext>(options =>
@@ -64,7 +64,7 @@ namespace SalesApi.Web
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = SalesApiSettings.ApiResource.DisplayName, Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = SalesApiSettings.ApiDisplayName, Version = "v1" });
             });
 
             services.AddMvcCore()
@@ -77,20 +77,14 @@ namespace SalesApi.Web
                     options.Authority = AuthorizationServerSettings.AuthorizationServerBase;
                     options.RequireHttpsMetadata = false;
 
-                    options.ApiName = SalesApiSettings.ApiResource.Name;
+                    options.ApiName = SalesApiSettings.ApiName;
                 });
 
             services.AddCors(options =>
             {
                 options.AddPolicy(SalesApiSettings.CorsPolicyName, policy =>
                 {
-                    policy.WithOrigins(SalesApiSettings.CorsOrigin)
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-                options.AddPolicy(PurchaseClientSettings.CorsPolicyName, policy =>
-                {
-                    policy.WithOrigins(PurchaseClientSettings.CorsOrigin)
+                    policy.WithOrigins(Configuration["MLH:SalesApi:ClientBase"])
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -108,7 +102,7 @@ namespace SalesApi.Web
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", SalesApiSettings.Client.ClientName + " API v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", SalesApiSettings.ClientName + " API v1");
             });
             app.UseAuthentication();
             app.UseMvc();

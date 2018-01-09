@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using SalesApi.Shared.Settings;
 using SalesApi.Web.Configurations;
 using Serilog;
 
@@ -31,7 +30,7 @@ namespace SalesApi.Web
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseIISIntegration()
-                .UseUrls(SalesApiSettings.SalesApiServerBase)
+                .UseUrls(Startup.Configuration["MLH:SalesApi:ServerBase"])
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .Build();
