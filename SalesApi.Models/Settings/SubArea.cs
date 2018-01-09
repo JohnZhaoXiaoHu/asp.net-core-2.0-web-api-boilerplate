@@ -6,6 +6,7 @@ using SalesApi.Models.Collective;
 using SalesApi.Models.County;
 using SalesApi.Models.Mall;
 using SalesApi.Models.Retail;
+using SalesApi.Models.Subscription;
 
 namespace SalesApi.Models.Settings
 {
@@ -17,6 +18,7 @@ namespace SalesApi.Models.Settings
             CollectiveCustomers = new List<CollectiveCustomer>();
             CountyAgents = new List<CountyAgent>();
             MallCustomers = new List<MallCustomer>();
+            Milkmen = new List<Milkman>();
         }
 
         public int DeliveryVehicleId { get; set; }
@@ -28,6 +30,7 @@ namespace SalesApi.Models.Settings
         public ICollection<CollectiveCustomer> CollectiveCustomers { get; set; }
         public ICollection<CountyAgent> CountyAgents { get; set; }
         public ICollection<MallCustomer> MallCustomers { get; set; }
+        public ICollection<Milkman> Milkmen { get; set; }
     }
 
     public class SubAreaConfiguration : EntityBaseConfiguration<SubArea>

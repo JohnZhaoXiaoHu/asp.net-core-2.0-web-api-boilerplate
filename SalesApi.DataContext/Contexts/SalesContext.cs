@@ -96,10 +96,7 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new ProductForSubscriptionConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionDayConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionProductSnapshotConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionPromotionSeriesConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionPromotionSeriesBonusConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionPromotionEventConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionPromotionEventBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new MilkmanConfiguration());
 
             #endregion
         }
@@ -179,6 +176,7 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<ProductForSubscription> ProductForSubscriptions { get; set; }
         public DbSet<SubscriptionDay> SubscriptionDays { get; set; }
         public DbSet<SubscriptionProductSnapshot> SubscriptionProductSnapshots { get; set; }
+        public DbSet<Milkman> Milkmen { get; set; }
 
         #endregion
     }

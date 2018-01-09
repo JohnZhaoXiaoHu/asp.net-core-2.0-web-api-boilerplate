@@ -11,10 +11,6 @@ namespace SalesApi.Models.Subscription
         public ProductForSubscription()
         {
             SubscriptionProductSnapshots = new List<SubscriptionProductSnapshot>();
-            SubscriptionPromotionSeries = new List<SubscriptionPromotionSeries>();
-            SubscriptionPromotionSeriesBonuses = new List<SubscriptionPromotionSeriesBonus>();
-            SubscriptionPromotionEvents = new List<SubscriptionPromotionEvent>();
-            SubscriptionPromotionEventBonuses = new List<SubscriptionPromotionEventBonus>();
         }
 
         public int ProductId { get; set; }
@@ -28,10 +24,6 @@ namespace SalesApi.Models.Subscription
 
         public Product Product { get; set; }
         public ICollection<SubscriptionProductSnapshot> SubscriptionProductSnapshots { get; set; }
-        public ICollection<SubscriptionPromotionSeries> SubscriptionPromotionSeries { get; set; }
-        public ICollection<SubscriptionPromotionSeriesBonus> SubscriptionPromotionSeriesBonuses { get; set; }
-        public ICollection<SubscriptionPromotionEvent> SubscriptionPromotionEvents { get; set; }
-        public ICollection<SubscriptionPromotionEventBonus> SubscriptionPromotionEventBonuses { get; set; }
     }
 
     public class ProductForSubscriptionConfiguration : EntityBaseConfiguration<ProductForSubscription>
