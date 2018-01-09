@@ -17,7 +17,6 @@ using SalesApi.DataContext.Contexts;
 using SalesApi.Shared.Settings;
 using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Configurations;
-using SharedSettings.Settings;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SalesApi.Web
@@ -74,7 +73,7 @@ namespace SalesApi.Web
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = AuthorizationServerSettings.AuthorizationServerBase;
+                    options.Authority = Configuration["MLH:AuthorizationServer:ServerBase"];
                     options.RequireHttpsMetadata = false;
 
                     options.ApiName = SalesApiSettings.ApiName;

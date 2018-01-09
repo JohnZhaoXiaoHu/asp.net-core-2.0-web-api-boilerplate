@@ -79,8 +79,8 @@ namespace AuthorizationServer
                 .AddDeveloperSigningCredential()
 #else
                 .AddSigningCredential(new System.Security.Cryptography.X509Certificates.X509Certificate2(
-                    SharedSettings.Settings.AuthorizationServerSettings.Certificate.Path, 
-                    SharedSettings.Settings.AuthorizationServerSettings.Certificate.Password))
+                    Configuration["MLH:AuthorizationServer:SigningCredentialCertificatePath"],
+                    Configuration["MLH:AuthorizationServer:SigningCredentialCertificatePassword"]))
 #endif
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
