@@ -109,6 +109,12 @@ namespace AuthorizationServer
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
+                options.AddPolicy("purchase", policy =>
+                {
+                    policy.WithOrigins(Configuration["MLH:PurchaseApi:ClientBase"])
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
         }
 

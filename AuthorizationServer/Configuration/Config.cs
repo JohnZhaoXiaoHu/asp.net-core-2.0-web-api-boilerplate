@@ -14,6 +14,9 @@ namespace AuthorizationServer.Configuration
             {
                 new ApiResource(SalesApiSettings.ApiName, SalesApiSettings.ApiDisplayName) {
                     UserClaims = { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email }
+                },
+                new ApiResource("purchaseapi", "采购和原料库API") {
+                    UserClaims = { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email }
                 }
             };
         }
@@ -41,6 +44,27 @@ namespace AuthorizationServer.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         SalesApiSettings.ApiName
+                    }
+                },
+                // Purchase JavaScript Client
+                new Client
+                {
+                    ClientId = "purchase",
+                    ClientName = "采购和原料库",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    AccessTokenLifetime = 60 * 10,
+                    AllowOfflineAccess = true,
+                    RedirectUris =           { $"{Startup.Configuration["MLH:PurchaseApi:ClientBase"]}/others/login-callback.html", $"{Startup.Configuration["MLH:PurchaseApi:ClientBase"]}/others/silent-renew.html" },
+                    PostLogoutRedirectUris = { Startup.Configuration["MLH:PurchaseApi:ClientBase"] },
+                    AllowedCorsOrigins =     { Startup.Configuration["MLH:PurchaseApi:ClientBase"] },
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "purchaseapi"
                     }
                 }
             };
