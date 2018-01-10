@@ -20,7 +20,8 @@ namespace AuthorizationServer
                 .CreateLogger();
             try
             {
-                Log.Information("Starting Authorization Server web host");
+                Log.Information("Starting Authorization Server host");
+                
                 BuildWebHost(args).Run();
             }
             catch (Exception ex)
