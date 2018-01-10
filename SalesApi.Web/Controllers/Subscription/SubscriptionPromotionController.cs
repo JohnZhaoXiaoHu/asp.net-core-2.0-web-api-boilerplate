@@ -5,49 +5,49 @@ using Infrastructure.Features.Common;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SalesApi.Models.Subscription;
-using SalesApi.Repositories.Subscription;
+using SalesApi.Models.Subscription.Promotion;
+using SalesApi.Repositories.Subscription.Promotion;
 using SalesApi.Services.Subscription;
-using SalesApi.ViewModels.Subscription;
+using SalesApi.ViewModels.Subscription.Promotion;
 using SalesApi.Web.Controllers.Bases;
 
 namespace SalesApi.Web.Controllers.Subscription
 {
     [Route("api/sales/[controller]")]
-    public class ProductForSubscriptionController : SubscriptionController<ProductForSubscriptionController>
+    public class SubscriptionPromotionController : SubscriptionController<SubscriptionPromotionController>
     {
-        private readonly IProductForSubscriptionRepository _productForSubscriptionRepository;
-        public ProductForSubscriptionController(ISubscriptionService<ProductForSubscriptionController> subscriptionService,
-            IProductForSubscriptionRepository productForSubscriptionRepository) : base(subscriptionService)
+        private readonly ISubscriptionPromotionRepository _subscriptionPromotionRepository;
+        public SubscriptionPromotionController(ISubscriptionService<SubscriptionPromotionController> subscriptionService,
+            ISubscriptionPromotionRepository subscriptionPromotionRepository) : base(subscriptionService)
         {
-            _productForSubscriptionRepository = productForSubscriptionRepository;
+            _subscriptionPromotionRepository = subscriptionPromotionRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _productForSubscriptionRepository.AllIncluding(x => x.Product).ToListAsync();
-            var results = Mapper.Map<IEnumerable<ProductForSubscriptionViewModel>>(items);
+            var items = await _subscriptionPromotionRepository.All.ToListAsync();
+            var results = Mapper.Map<IEnumerable<SubscriptionPromotionViewModel>>(items);
             return Ok(results);
         }
 
         [HttpGet]
-        [Route("{id}", Name = "GetProductForSubscription")]
+        [Route("{id}", Name = "GetSubscriptionPromotion")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await _productForSubscriptionRepository.GetSingleAsync(id);
+            var item = await _subscriptionPromotionRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
-            var result = Mapper.Map<ProductForSubscriptionViewModel>(item);
+            var result = Mapper.Map<SubscriptionPromotionViewModel>(item);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProductForSubscriptionViewModel productForSubscriptionVm)
+        public async Task<IActionResult> Post([FromBody] SubscriptionPromotionViewModel subscriptionPromotionVm)
         {
-            if (productForSubscriptionVm == null)
+            if (subscriptionPromotionVm == null)
             {
                 return BadRequest();
             }
@@ -57,24 +57,23 @@ namespace SalesApi.Web.Controllers.Subscription
                 return BadRequest(ModelState);
             }
 
-            var newItem = Mapper.Map<ProductForSubscription>(productForSubscriptionVm);
-            _productForSubscriptionRepository.SetPrice(newItem);
+            var newItem = Mapper.Map<SubscriptionPromotion>(subscriptionPromotionVm);
             newItem.SetCreation(UserName);
-            _productForSubscriptionRepository.Add(newItem);
+            _subscriptionPromotionRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
 
-            var vm = Mapper.Map<ProductForSubscriptionViewModel>(newItem);
+            var vm = Mapper.Map<SubscriptionPromotionViewModel>(newItem);
 
-            return CreatedAtRoute("GetProductForSubscription", new { id = vm.Id }, vm);
+            return CreatedAtRoute("GetSubscriptionPromotion", new { id = vm.Id }, vm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ProductForSubscriptionViewModel productForSubscriptionVm)
+        public async Task<IActionResult> Put(int id, [FromBody] SubscriptionPromotionViewModel subscriptionPromotionVm)
         {
-            if (productForSubscriptionVm == null)
+            if (subscriptionPromotionVm == null)
             {
                 return BadRequest();
             }
@@ -83,36 +82,35 @@ namespace SalesApi.Web.Controllers.Subscription
             {
                 return BadRequest(ModelState);
             }
-            var dbItem = await _productForSubscriptionRepository.GetSingleAsync(id);
+            var dbItem = await _subscriptionPromotionRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            Mapper.Map(productForSubscriptionVm, dbItem);
-            _productForSubscriptionRepository.SetPrice(dbItem);
+            Mapper.Map(subscriptionPromotionVm, dbItem);
             dbItem.SetModification(UserName);
-            _productForSubscriptionRepository.Update(dbItem);
+            _subscriptionPromotionRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-            var vm = Mapper.Map<ProductForSubscriptionViewModel>(dbItem);
+            var vm = Mapper.Map<SubscriptionPromotionViewModel>(dbItem);
             return Ok(vm);
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<ProductForSubscriptionViewModel> patchDoc)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<SubscriptionPromotionViewModel> patchDoc)
         {
             if (patchDoc == null)
             {
                 return BadRequest();
             }
-            var dbItem = await _productForSubscriptionRepository.GetSingleAsync(id);
+            var dbItem = await _subscriptionPromotionRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            var toPatchVm = Mapper.Map<ProductForSubscriptionViewModel>(dbItem);
+            var toPatchVm = Mapper.Map<SubscriptionPromotionViewModel>(dbItem);
             patchDoc.ApplyTo(toPatchVm, ModelState);
 
             TryValidateModel(toPatchVm);
@@ -134,12 +132,12 @@ namespace SalesApi.Web.Controllers.Subscription
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _productForSubscriptionRepository.GetSingleAsync(id);
+            var model = await _subscriptionPromotionRepository.GetSingleAsync(id);
             if (model == null)
             {
                 return NotFound();
             }
-            _productForSubscriptionRepository.Delete(model);
+            _subscriptionPromotionRepository.Delete(model);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "删除时出错");
@@ -151,8 +149,8 @@ namespace SalesApi.Web.Controllers.Subscription
         [Route("NotDeleted")]
         public async Task<IActionResult> GetNotDeleted()
         {
-            var items = await _productForSubscriptionRepository.AllIncluding(x => x.Product).Where(x => !x.Deleted).ToListAsync();
-            var results = Mapper.Map<IEnumerable<ProductForSubscriptionViewModel>>(items);
+            var items = await _subscriptionPromotionRepository.All.Where(x => !x.Deleted).ToListAsync();
+            var results = Mapper.Map<IEnumerable<SubscriptionPromotionViewModel>>(items);
             return Ok(results);
         }
     }
