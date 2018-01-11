@@ -2,6 +2,7 @@
 using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Subscription.Promotion
 {
@@ -13,6 +14,7 @@ namespace SalesApi.Models.Subscription.Promotion
         }
 
         public string Name { get; set; }
+        public SubscriptionPromotionType PromotionType { get; set; }
         public int? StartDate { get; set; }
         public int? EndDate { get; set; }
         public int MonthSpan { get; set; }

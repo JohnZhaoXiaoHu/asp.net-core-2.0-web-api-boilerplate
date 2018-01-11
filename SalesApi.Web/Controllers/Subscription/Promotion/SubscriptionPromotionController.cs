@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Subscription.Promotion;
 using SalesApi.Repositories.Subscription.Promotion;
 using SalesApi.Services.Subscription;
+using SalesApi.Shared.Enums;
 using SalesApi.ViewModels.Subscription.Promotion;
 using SalesApi.Web.Controllers.Bases;
 
@@ -153,5 +156,14 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
             var results = Mapper.Map<IEnumerable<SubscriptionPromotionViewModel>>(items);
             return Ok(results);
         }
+
+        [HttpGet]
+        [Route("SubscriptionPromotionType")]
+        public IActionResult GetSubscriptionPromotionType()
+        {
+            var types = Enum.GetValues(typeof(SubscriptionPromotionType)).OfType<SubscriptionPromotionType>().Select(x => new KeyValuePair<string, SubscriptionPromotionType>(x.ToString(), x)).ToList();
+            return Ok(types);
+        }
+
     }
 }
