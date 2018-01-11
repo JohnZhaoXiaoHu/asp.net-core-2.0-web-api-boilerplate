@@ -154,6 +154,7 @@ namespace SalesApi.Web.Configurations
             CreateMap<SubscriptionPromotion, SubscriptionPromotionViewModel>();
             CreateMap<SubscriptionPromotionMonth, SubscriptionPromotionMonthViewModel>();
             CreateMap<SubscriptionPromotionMonthBonus, SubscriptionPromotionMonthBonusViewModel>();
+            CreateMap<SubscriptionPromotionMonth, SubscriptionPromotionMonthWithBonusViewModel>();
 
             #endregion
         }

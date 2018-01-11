@@ -11,7 +11,7 @@ using SalesApi.Services.Subscription;
 using SalesApi.ViewModels.Subscription.Promotion;
 using SalesApi.Web.Controllers.Bases;
 
-namespace SalesApi.Web.Controllers.Subscription
+namespace SalesApi.Web.Controllers.Subscription.Promotion
 {
     [Route("api/sales/[controller]")]
     public class SubscriptionPromotionController : SubscriptionController<SubscriptionPromotionController>
