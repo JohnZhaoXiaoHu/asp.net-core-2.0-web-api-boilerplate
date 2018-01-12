@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
 using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.Subscription.Promotion
@@ -13,6 +13,6 @@ namespace SalesApi.ViewModels.Subscription.Promotion
         public int ProductForSubscriptionId { get; set; }
         public int DayBase { get; set; }
 
-        public DbSet<SubscriptionPromotionMonthAddViewModel> SubscriptionPromotionMonths { get; set; }
+        public List<SubscriptionPromotionMonthAddViewModel> SubscriptionPromotionMonths { get; set; }
     }
 }

@@ -48,7 +48,7 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SubscriptionPromotionViewModel subscriptionPromotionVm)
+        public async Task<IActionResult> Post([FromBody] SubscriptionPromotionAddViewModel subscriptionPromotionVm)
         {
             if (subscriptionPromotionVm == null)
             {
@@ -62,6 +62,18 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
 
             var newItem = Mapper.Map<SubscriptionPromotion>(subscriptionPromotionVm);
             newItem.SetCreation(UserName);
+            foreach (var promotionMonth in newItem.SubscriptionPromotionMonths)
+            {
+                promotionMonth.SetCreation(UserName);
+                foreach (var bonus in promotionMonth.SubscriptionPromotionMonthBonuses)
+                {
+                    bonus.SetCreation(UserName);
+                    foreach (var deliveryDate in bonus.SubscriptionPromotionMonthBonusDeliveryDates)
+                    {
+                        deliveryDate.SetCreation(UserName);
+                    }
+                }
+            }
             _subscriptionPromotionRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
