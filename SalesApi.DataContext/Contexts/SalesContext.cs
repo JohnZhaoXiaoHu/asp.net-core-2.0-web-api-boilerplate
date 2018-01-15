@@ -98,10 +98,9 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new SubscriptionDayConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionProductSnapshotConfiguration());
             modelBuilder.ApplyConfiguration(new MilkmanConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionPromotionConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionPromotionMonthConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionPromotionMonthBonusConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionPromotionMonthBonusDeliveryDateConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionMonthPromotionConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionMonthPromotionBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionMonthPromotionBonusDateConfiguration());
 
             #endregion
         }
@@ -182,10 +181,9 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<SubscriptionDay> SubscriptionDays { get; set; }
         public DbSet<SubscriptionProductSnapshot> SubscriptionProductSnapshots { get; set; }
         public DbSet<Milkman> Milkmen { get; set; }
-        public DbSet<SubscriptionPromotion> SubscriptionPromotions { get; set; }
-        public DbSet<SubscriptionPromotionMonth> SubscriptionPromotionMonths { get; set; }
-        public DbSet<SubscriptionPromotionMonthBonus> SubscriptionPromotionMonthBonuses { get; set; }
-        public DbSet<SubscriptionPromotionMonthBonusDeliveryDate> SubscriptionPromotionMonthBonusDeliveryDates { get; set; }
+        public DbSet<SubscriptionMonthPromotion> SubscriptionMonthPromotions { get; set; }
+        public DbSet<SubscriptionMonthPromotionBonus> SubscriptionMonthPromotionBonuses { get; set; }
+        public DbSet<SubscriptionMonthPromotionBonusDate> SubscriptionMonthPromotionBonusDates { get; set; }
 
         #endregion
     }

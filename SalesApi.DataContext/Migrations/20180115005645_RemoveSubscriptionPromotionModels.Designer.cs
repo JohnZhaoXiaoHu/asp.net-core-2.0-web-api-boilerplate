@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20180115005645_RemoveSubscriptionPromotionModels")]
+    partial class RemoveSubscriptionPromotionModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2097,133 +2098,6 @@ namespace SalesApi.DataContext.Migrations
                     b.ToTable("ProductForSubscriptions");
                 });
 
-            modelBuilder.Entity("SalesApi.Models.Subscription.Promotion.SubscriptionMonthPromotion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("DayBase");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<int?>("EndDate");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Month");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("ProductForSubscriptionId");
-
-                    b.Property<int>("PromotionType");
-
-                    b.Property<int?>("StartDate");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Year");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductForSubscriptionId");
-
-                    b.ToTable("SubscriptionMonthPromotions");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Subscription.Promotion.SubscriptionMonthPromotionBonus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("PresetDayBonusCount");
-
-                    b.Property<int>("ProductForSubscriptionId");
-
-                    b.Property<int>("SubscriptionMonthPromotionId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubscriptionMonthPromotionId", "ProductForSubscriptionId", "PresetDayBonusCount")
-                        .IsUnique();
-
-                    b.ToTable("SubscriptionMonthPromotionBonuses");
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Subscription.Promotion.SubscriptionMonthPromotionBonusDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<int>("DayBonusCount");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("SubscriptionMonthPromotionBonusId");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubscriptionMonthPromotionBonusId", "Date")
-                        .IsUnique();
-
-                    b.ToTable("SubscriptionMonthPromotionBonusDates");
-                });
-
             modelBuilder.Entity("SalesApi.Models.Subscription.SubscriptionDay", b =>
                 {
                     b.Property<int>("Id")
@@ -2738,30 +2612,6 @@ namespace SalesApi.DataContext.Migrations
                     b.HasOne("SalesApi.Models.Settings.Product", "Product")
                         .WithOne("ProductForSubscription")
                         .HasForeignKey("SalesApi.Models.Subscription.ProductForSubscription", "ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Subscription.Promotion.SubscriptionMonthPromotion", b =>
-                {
-                    b.HasOne("SalesApi.Models.Subscription.ProductForSubscription", "ProductForSubscription")
-                        .WithMany()
-                        .HasForeignKey("ProductForSubscriptionId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Subscription.Promotion.SubscriptionMonthPromotionBonus", b =>
-                {
-                    b.HasOne("SalesApi.Models.Subscription.Promotion.SubscriptionMonthPromotion", "SubscriptionMonthPromotion")
-                        .WithMany("SubscriptionMonthPromotionBonuses")
-                        .HasForeignKey("SubscriptionMonthPromotionId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SalesApi.Models.Subscription.Promotion.SubscriptionMonthPromotionBonusDate", b =>
-                {
-                    b.HasOne("SalesApi.Models.Subscription.Promotion.SubscriptionMonthPromotionBonus", "SubscriptionMonthPromotionBonus")
-                        .WithMany("SubscriptionMonthPromotionBonusDates")
-                        .HasForeignKey("SubscriptionMonthPromotionBonusId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

@@ -6,30 +6,31 @@ using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Subscription.Promotion
 {
-    public class SubscriptionPromotion : EntityBase
+    public class SubscriptionMonthPromotion: EntityBase
     {
-        public SubscriptionPromotion()
+        public SubscriptionMonthPromotion()
         {
-            SubscriptionPromotionMonths = new List<SubscriptionPromotionMonth>();
+            SubscriptionMonthPromotionBonuses = new List<SubscriptionMonthPromotionBonus>();
         }
 
+        public int Year { get; set; }
+        public int Month { get; set; }
         public string Name { get; set; }
         public SubscriptionPromotionType PromotionType { get; set; }
         public int? StartDate { get; set; }
         public int? EndDate { get; set; }
-        public int MonthSpan { get; set; }
         public int ProductForSubscriptionId { get; set; }
         public int DayBase { get; set; }
 
         public ProductForSubscription ProductForSubscription { get; set; }
-        public ICollection<SubscriptionPromotionMonth> SubscriptionPromotionMonths { get; set; }
+        public ICollection<SubscriptionMonthPromotionBonus> SubscriptionMonthPromotionBonuses { get; set; }
     }
 
-    public class SubscriptionPromotionConfiguration : EntityBaseConfiguration<SubscriptionPromotion>
+    public class SubscriptionMonthPromotionConfiguration : EntityBaseConfiguration<SubscriptionMonthPromotion>
     {
-        public override void ConfigureDerived(EntityTypeBuilder<SubscriptionPromotion> b)
+        public override void ConfigureDerived(EntityTypeBuilder<SubscriptionMonthPromotion> b)
         {
-            b.Property(x => x.Name).IsRequired().HasMaxLength(50);
+            b.Property(x => x.Name).HasMaxLength(50);
             b.HasOne(x => x.ProductForSubscription).WithMany().HasForeignKey(x => x.ProductForSubscriptionId)
                 .OnDelete(DeleteBehavior.Restrict);
         }

@@ -151,11 +151,9 @@ namespace SalesApi.Web.Configurations
             CreateMap<SubscriptionDay, SubscriptionDayViewModel>();
             CreateMap<SubscriptionProductSnapshot, SubscriptionProductSnapshotViewModel>();
             CreateMap<Milkman, MilkmanViewModel>();
-            CreateMap<SubscriptionPromotion, SubscriptionPromotionViewModel>();
-            CreateMap<SubscriptionPromotionMonth, SubscriptionPromotionMonthViewModel>();
-            CreateMap<SubscriptionPromotionMonthBonus, SubscriptionPromotionMonthBonusViewModel>();
-            CreateMap<SubscriptionPromotionMonth, SubscriptionPromotionMonthWithBonusViewModel>();
-            CreateMap<SubscriptionPromotionMonthBonusDeliveryDate, SubscriptionPromotionMonthBonusDeliveryDateViewModel>();
+            CreateMap<SubscriptionMonthPromotion, SubscriptionMonthPromotionViewModel>();
+            CreateMap<SubscriptionMonthPromotionBonus, SubscriptionMonthPromotionBonusViewModel>();
+            CreateMap<SubscriptionMonthPromotionBonusDate, SubscriptionMonthPromotionBonusDateViewModel>();
 
             #endregion
         }

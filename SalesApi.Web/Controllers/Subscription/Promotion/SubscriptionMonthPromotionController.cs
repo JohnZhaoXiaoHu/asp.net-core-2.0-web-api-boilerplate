@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,40 +16,40 @@ using SalesApi.Web.Controllers.Bases;
 namespace SalesApi.Web.Controllers.Subscription.Promotion
 {
     [Route("api/sales/[controller]")]
-    public class SubscriptionPromotionController : SubscriptionController<SubscriptionPromotionController>
+    public class SubscriptionMonthPromotionController : SubscriptionController<SubscriptionMonthPromotionController>
     {
-        private readonly ISubscriptionPromotionRepository _subscriptionPromotionRepository;
-        public SubscriptionPromotionController(ISubscriptionService<SubscriptionPromotionController> subscriptionService,
-            ISubscriptionPromotionRepository subscriptionPromotionRepository) : base(subscriptionService)
+        private readonly ISubscriptionMonthPromotionRepository _subscriptionMonthPromotionRepository;
+        public SubscriptionMonthPromotionController(ISubscriptionService<SubscriptionMonthPromotionController> subscriptionService,
+            ISubscriptionMonthPromotionRepository subscriptionMonthPromotionRepository) : base(subscriptionService)
         {
-            _subscriptionPromotionRepository = subscriptionPromotionRepository;
+            _subscriptionMonthPromotionRepository = subscriptionMonthPromotionRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _subscriptionPromotionRepository.All.ToListAsync();
-            var results = Mapper.Map<IEnumerable<SubscriptionPromotionViewModel>>(items);
+            var items = await _subscriptionMonthPromotionRepository.All.ToListAsync();
+            var results = Mapper.Map<IEnumerable<SubscriptionMonthPromotionViewModel>>(items);
             return Ok(results);
         }
 
         [HttpGet]
-        [Route("{id}", Name = "GetSubscriptionPromotion")]
+        [Route("{id}", Name = "GetSubscriptionMonthPromotion")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await _subscriptionPromotionRepository.GetSingleAsync(id);
+            var item = await _subscriptionMonthPromotionRepository.GetSingleAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
-            var result = Mapper.Map<SubscriptionPromotionViewModel>(item);
+            var result = Mapper.Map<SubscriptionMonthPromotionViewModel>(item);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SubscriptionPromotionAddViewModel subscriptionPromotionVm)
+        public async Task<IActionResult> Post([FromBody] SubscriptionMonthPromotionViewModel subscriptionMonthPromotionVm)
         {
-            if (subscriptionPromotionVm == null)
+            if (subscriptionMonthPromotionVm == null)
             {
                 return BadRequest();
             }
@@ -60,35 +59,23 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
                 return BadRequest(ModelState);
             }
 
-            var newItem = Mapper.Map<SubscriptionPromotion>(subscriptionPromotionVm);
+            var newItem = Mapper.Map<SubscriptionMonthPromotion>(subscriptionMonthPromotionVm);
             newItem.SetCreation(UserName);
-            foreach (var promotionMonth in newItem.SubscriptionPromotionMonths)
-            {
-                promotionMonth.SetCreation(UserName);
-                foreach (var bonus in promotionMonth.SubscriptionPromotionMonthBonuses)
-                {
-                    bonus.SetCreation(UserName);
-                    foreach (var deliveryDate in bonus.SubscriptionPromotionMonthBonusDeliveryDates)
-                    {
-                        deliveryDate.SetCreation(UserName);
-                    }
-                }
-            }
-            _subscriptionPromotionRepository.Add(newItem);
+            _subscriptionMonthPromotionRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
 
-            var vm = Mapper.Map<SubscriptionPromotionViewModel>(newItem);
+            var vm = Mapper.Map<SubscriptionMonthPromotionViewModel>(newItem);
 
-            return CreatedAtRoute("GetSubscriptionPromotion", new { id = vm.Id }, vm);
+            return CreatedAtRoute("GetSubscriptionMonthPromotion", new { id = vm.Id }, vm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] SubscriptionPromotionViewModel subscriptionPromotionVm)
+        public async Task<IActionResult> Put(int id, [FromBody] SubscriptionMonthPromotionViewModel subscriptionMonthPromotionVm)
         {
-            if (subscriptionPromotionVm == null)
+            if (subscriptionMonthPromotionVm == null)
             {
                 return BadRequest();
             }
@@ -97,35 +84,35 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
             {
                 return BadRequest(ModelState);
             }
-            var dbItem = await _subscriptionPromotionRepository.GetSingleAsync(id);
+            var dbItem = await _subscriptionMonthPromotionRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            Mapper.Map(subscriptionPromotionVm, dbItem);
+            Mapper.Map(subscriptionMonthPromotionVm, dbItem);
             dbItem.SetModification(UserName);
-            _subscriptionPromotionRepository.Update(dbItem);
+            _subscriptionMonthPromotionRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-            var vm = Mapper.Map<SubscriptionPromotionViewModel>(dbItem);
+            var vm = Mapper.Map<SubscriptionMonthPromotionViewModel>(dbItem);
             return Ok(vm);
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<SubscriptionPromotionViewModel> patchDoc)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<SubscriptionMonthPromotionViewModel> patchDoc)
         {
             if (patchDoc == null)
             {
                 return BadRequest();
             }
-            var dbItem = await _subscriptionPromotionRepository.GetSingleAsync(id);
+            var dbItem = await _subscriptionMonthPromotionRepository.GetSingleAsync(id);
             if (dbItem == null)
             {
                 return NotFound();
             }
-            var toPatchVm = Mapper.Map<SubscriptionPromotionViewModel>(dbItem);
+            var toPatchVm = Mapper.Map<SubscriptionMonthPromotionViewModel>(dbItem);
             patchDoc.ApplyTo(toPatchVm, ModelState);
 
             TryValidateModel(toPatchVm);
@@ -147,12 +134,12 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _subscriptionPromotionRepository.GetSingleAsync(id);
+            var model = await _subscriptionMonthPromotionRepository.GetSingleAsync(id);
             if (model == null)
             {
                 return NotFound();
             }
-            _subscriptionPromotionRepository.Delete(model);
+            _subscriptionMonthPromotionRepository.Delete(model);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "删除时出错");
@@ -164,14 +151,14 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
         [Route("NotDeleted")]
         public async Task<IActionResult> GetNotDeleted()
         {
-            var items = await _subscriptionPromotionRepository.All.Where(x => !x.Deleted).ToListAsync();
-            var results = Mapper.Map<IEnumerable<SubscriptionPromotionViewModel>>(items);
+            var items = await _subscriptionMonthPromotionRepository.All.Where(x => !x.Deleted).ToListAsync();
+            var results = Mapper.Map<IEnumerable<SubscriptionMonthPromotionViewModel>>(items);
             return Ok(results);
         }
 
         [HttpGet]
         [Route("SubscriptionPromotionType")]
-        public IActionResult GetSubscriptionPromotionType()
+        public IActionResult GetSubscriptionMonthPromotionType()
         {
             var types = Enum.GetValues(typeof(SubscriptionPromotionType)).OfType<SubscriptionPromotionType>().Select(x => new KeyValuePair<string, SubscriptionPromotionType>(x.ToString(), x)).ToList();
             return Ok(types);

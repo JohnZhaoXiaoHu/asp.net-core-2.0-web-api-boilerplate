@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20180115011723_AddNewSubscriptionPromotionModels")]
+    partial class AddNewSubscriptionPromotionModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2157,6 +2158,8 @@ namespace SalesApi.DataContext.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<int>("DayBonusCount");
+
                     b.Property<bool>("Deleted");
 
                     b.Property<string>("LastAction")
@@ -2164,8 +2167,6 @@ namespace SalesApi.DataContext.Migrations
                         .HasMaxLength(50);
 
                     b.Property<int>("Order");
-
-                    b.Property<int>("PresetDayBonusCount");
 
                     b.Property<int>("ProductForSubscriptionId");
 
@@ -2179,7 +2180,7 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionMonthPromotionId", "ProductForSubscriptionId", "PresetDayBonusCount")
+                    b.HasIndex("SubscriptionMonthPromotionId", "ProductForSubscriptionId", "DayBonusCount")
                         .IsUnique();
 
                     b.ToTable("SubscriptionMonthPromotionBonuses");
