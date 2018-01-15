@@ -1,4 +1,5 @@
-﻿using Infrastructure.Features.Common;
+﻿using System.Collections.Generic;
+using Infrastructure.Features.Common;
 
 namespace SalesApi.ViewModels.Subscription.Promotion
 {
@@ -7,5 +8,7 @@ namespace SalesApi.ViewModels.Subscription.Promotion
         public int SubscriptionMonthPromotionId { get; set; }
         public int ProductForSubscriptionId { get; set; }
         public int PresetDayBonusCount { get; set; }
+
+        public List<SubscriptionMonthPromotionBonusDateViewModel> SubscriptionMonthPromotionBonusDates { get; set; }
     }
 }

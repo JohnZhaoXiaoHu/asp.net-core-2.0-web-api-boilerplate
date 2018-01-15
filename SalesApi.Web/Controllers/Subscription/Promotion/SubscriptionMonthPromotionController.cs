@@ -19,10 +19,14 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
     public class SubscriptionMonthPromotionController : SubscriptionController<SubscriptionMonthPromotionController>
     {
         private readonly ISubscriptionMonthPromotionRepository _subscriptionMonthPromotionRepository;
+        private readonly ISubscriptionMonthPromotionBonusDateRepository _subscriptionMonthPromotionBonusDateRepository;
+
         public SubscriptionMonthPromotionController(ISubscriptionService<SubscriptionMonthPromotionController> subscriptionService,
-            ISubscriptionMonthPromotionRepository subscriptionMonthPromotionRepository) : base(subscriptionService)
+            ISubscriptionMonthPromotionRepository subscriptionMonthPromotionRepository,
+            ISubscriptionMonthPromotionBonusDateRepository subscriptionMonthPromotionBonusDateRepository) : base(subscriptionService)
         {
             _subscriptionMonthPromotionRepository = subscriptionMonthPromotionRepository;
+            _subscriptionMonthPromotionBonusDateRepository = subscriptionMonthPromotionBonusDateRepository;
         }
 
         [HttpGet]
@@ -162,6 +166,17 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
         {
             var types = Enum.GetValues(typeof(SubscriptionPromotionType)).OfType<SubscriptionPromotionType>().Select(x => new KeyValuePair<string, SubscriptionPromotionType>(x.ToString(), x)).ToList();
             return Ok(types);
+        }
+
+        [HttpGet("ByYearAndMonth/{year}/{month}")]
+        public async Task<IActionResult> GetByYearAndMonth(int year, int month)
+        {
+            var items = await _subscriptionMonthPromotionRepository.AllIncluding(x => x.SubscriptionMonthPromotionBonuses).ToListAsync();
+            var ids = items.Select(x => x.Id).ToList();
+            await _subscriptionMonthPromotionBonusDateRepository.All.Where(x =>
+                ids.Contains(x.SubscriptionMonthPromotionBonus.SubscriptionMonthPromotionId)).LoadAsync();
+            var results = Mapper.Map<IEnumerable<SubscriptionMonthPromotionViewModel>>(items);
+            return Ok(results);
         }
 
     }

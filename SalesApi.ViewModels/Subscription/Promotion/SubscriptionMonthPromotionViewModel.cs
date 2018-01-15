@@ -1,4 +1,5 @@
-﻿using Infrastructure.Features.Common;
+﻿using System.Collections.Generic;
+using Infrastructure.Features.Common;
 using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.Subscription.Promotion
@@ -13,5 +14,7 @@ namespace SalesApi.ViewModels.Subscription.Promotion
         public int? EndDate { get; set; }
         public int ProductForSubscriptionId { get; set; }
         public int DayBase { get; set; }
+
+        public List<SubscriptionMonthPromotionBonusViewModel> SubscriptionMonthPromotionBonuses { get; set; }
     }
 }
