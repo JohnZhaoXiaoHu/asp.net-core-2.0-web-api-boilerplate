@@ -24,7 +24,7 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
 
         public SubscriptionMonthPromotionController(ISubscriptionService<SubscriptionMonthPromotionController> subscriptionService,
             ISubscriptionMonthPromotionRepository subscriptionMonthPromotionRepository,
-            ISubscriptionMonthPromotionBonusDateRepository subscriptionMonthPromotionBonusDateRepository, 
+            ISubscriptionMonthPromotionBonusDateRepository subscriptionMonthPromotionBonusDateRepository,
             ISubscriptionMonthPromotionBonusRepository subscriptionMonthPromotionBonusRepository) : base(subscriptionService)
         {
             _subscriptionMonthPromotionRepository = subscriptionMonthPromotionRepository;
@@ -183,10 +183,19 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
             return Ok(types);
         }
 
+        [HttpGet("ByYear/{year}")]
+        public async Task<IActionResult> GetByYear(int year)
+        {
+            var items = await _subscriptionMonthPromotionRepository.All.Where(x => x.Year == year).ToListAsync();
+            var results = Mapper.Map<IEnumerable<SubscriptionMonthPromotionViewModel>>(items);
+            return Ok(results);
+        }
+
         [HttpGet("ByYearAndMonth/{year}/{month}")]
         public async Task<IActionResult> GetByYearAndMonth(int year, int month)
         {
-            var items = await _subscriptionMonthPromotionRepository.AllIncluding(x => x.SubscriptionMonthPromotionBonuses).ToListAsync();
+            var items = await _subscriptionMonthPromotionRepository.AllIncluding(x => x.SubscriptionMonthPromotionBonuses)
+                .Where(x => x.Year == year && x.Month == month).ToListAsync();
             var ids = items.Select(x => x.Id).ToList();
             await _subscriptionMonthPromotionBonusDateRepository.All.Where(x =>
                 ids.Contains(x.SubscriptionMonthPromotionBonus.SubscriptionMonthPromotionId)).LoadAsync();
