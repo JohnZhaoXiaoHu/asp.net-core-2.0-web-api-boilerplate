@@ -7,6 +7,7 @@ using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
 using SalesApi.Models.Subscription;
+using SalesApi.Models.Subscription.Orders;
 using SalesApi.Models.Subscription.Promotion;
 
 namespace SalesApi.DataContext.Contexts
@@ -101,6 +102,9 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new SubscriptionMonthPromotionConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionMonthPromotionBonusConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionMonthPromotionBonusDateConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionOrderBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionOrderDateConfiguration());
 
             #endregion
         }
@@ -184,6 +188,9 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<SubscriptionMonthPromotion> SubscriptionMonthPromotions { get; set; }
         public DbSet<SubscriptionMonthPromotionBonus> SubscriptionMonthPromotionBonuses { get; set; }
         public DbSet<SubscriptionMonthPromotionBonusDate> SubscriptionMonthPromotionBonusDates { get; set; }
+        public DbSet<SubscriptionOrder> SubscriptionOrders { get; set; }
+        public DbSet<SubscriptionOrderDate> SubscriptionOrderDates { get; set; }
+        public DbSet<SubscriptionOrderBonus> SubscriptionOrderBonuses { get; set; }
 
         #endregion
     }
