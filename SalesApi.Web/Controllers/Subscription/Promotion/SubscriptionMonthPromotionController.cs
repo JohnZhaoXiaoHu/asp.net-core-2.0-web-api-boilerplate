@@ -19,14 +19,17 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
     public class SubscriptionMonthPromotionController : SubscriptionController<SubscriptionMonthPromotionController>
     {
         private readonly ISubscriptionMonthPromotionRepository _subscriptionMonthPromotionRepository;
+        private readonly ISubscriptionMonthPromotionBonusRepository _subscriptionMonthPromotionBonusRepository;
         private readonly ISubscriptionMonthPromotionBonusDateRepository _subscriptionMonthPromotionBonusDateRepository;
 
         public SubscriptionMonthPromotionController(ISubscriptionService<SubscriptionMonthPromotionController> subscriptionService,
             ISubscriptionMonthPromotionRepository subscriptionMonthPromotionRepository,
-            ISubscriptionMonthPromotionBonusDateRepository subscriptionMonthPromotionBonusDateRepository) : base(subscriptionService)
+            ISubscriptionMonthPromotionBonusDateRepository subscriptionMonthPromotionBonusDateRepository, 
+            ISubscriptionMonthPromotionBonusRepository subscriptionMonthPromotionBonusRepository) : base(subscriptionService)
         {
             _subscriptionMonthPromotionRepository = subscriptionMonthPromotionRepository;
             _subscriptionMonthPromotionBonusDateRepository = subscriptionMonthPromotionBonusDateRepository;
+            _subscriptionMonthPromotionBonusRepository = subscriptionMonthPromotionBonusRepository;
         }
 
         [HttpGet]
@@ -65,6 +68,14 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
 
             var newItem = Mapper.Map<SubscriptionMonthPromotion>(subscriptionMonthPromotionVm);
             newItem.SetCreation(UserName);
+            foreach (var bonus in newItem.SubscriptionMonthPromotionBonuses)
+            {
+                bonus.SetCreation(UserName);
+                foreach (var date in bonus.SubscriptionMonthPromotionBonusDates)
+                {
+                    date.SetCreation(UserName);
+                }
+            }
             _subscriptionMonthPromotionRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
@@ -138,11 +149,15 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _subscriptionMonthPromotionRepository.GetSingleAsync(id);
+            var model = await _subscriptionMonthPromotionRepository.GetSingleAsync(x => x.Id == id, x => x.SubscriptionMonthPromotionBonuses);
             if (model == null)
             {
                 return NotFound();
             }
+            var dates = await _subscriptionMonthPromotionBonusDateRepository.All
+                .Where(x => x.SubscriptionMonthPromotionBonus.SubscriptionMonthPromotionId == id).ToListAsync();
+            _subscriptionMonthPromotionBonusDateRepository.DeleteRange(dates);
+            _subscriptionMonthPromotionBonusRepository.DeleteRange(model.SubscriptionMonthPromotionBonuses);
             _subscriptionMonthPromotionRepository.Delete(model);
             if (!await UnitOfWork.SaveAsync())
             {
