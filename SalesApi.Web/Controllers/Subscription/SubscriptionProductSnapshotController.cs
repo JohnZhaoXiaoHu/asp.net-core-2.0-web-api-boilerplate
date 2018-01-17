@@ -27,7 +27,7 @@ namespace SalesApi.Web.Controllers.Subscription
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _subscriptionProductSnapshotRepository.All.ToListAsync();
+            var items = await _subscriptionProductSnapshotRepository.AllIncluding(x => x.ProductForSubscription).ToListAsync();
             var results = Mapper.Map<IEnumerable<SubscriptionProductSnapshotViewModel>>(items);
             return Ok(results);
         }
@@ -151,7 +151,8 @@ namespace SalesApi.Web.Controllers.Subscription
         public async Task<IActionResult> GetByDate(DateTime? date = null)
         {
             var dateStr = GetDateString(date);
-            var items = await _subscriptionProductSnapshotRepository.All.Where(x => x.SubscriptionDay.Date == dateStr).OrderBy(x => x.ProductForSubscription.Product.Order).ToListAsync();
+            var items = await _subscriptionProductSnapshotRepository.AllIncluding(x => x.ProductForSubscription)
+                .Where(x => x.SubscriptionDay.Date == dateStr).OrderBy(x => x.ProductForSubscription.Product.Order).ToListAsync();
             var vms = Mapper.Map<IEnumerable<SubscriptionProductSnapshotViewModel>>(items);
             return Ok(vms);
         }

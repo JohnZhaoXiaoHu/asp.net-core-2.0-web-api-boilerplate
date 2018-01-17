@@ -29,6 +29,7 @@ namespace SalesApi.Web.Controllers.Bases
 
         protected DateTime Now => DateTime.Now;
         protected string UserName => User.Identity.Name ?? "Anonymous";
+        protected DateTime Today => DateTime.Now.Date;
         protected DateTime Tomorrow => DateTime.Now.AddDays(1).Date;
 
         #endregion

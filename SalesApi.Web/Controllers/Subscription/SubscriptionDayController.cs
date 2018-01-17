@@ -157,6 +157,13 @@ namespace SalesApi.Web.Controllers.Subscription
         }
 
         [HttpGet]
+        [Route("Today")]
+        public IActionResult GetToday()
+        {
+            return Ok(Now.Date);
+        }
+
+        [HttpGet]
         [Route("ByDate/{date?}")]
         public async Task<IActionResult> GetByDate(DateTime? date = null)
         {
@@ -174,7 +181,7 @@ namespace SalesApi.Web.Controllers.Subscription
         [Route("Initialize")]
         public async Task<IActionResult> Initialize()
         {
-            await _subscriptionDayService.Initialzie(Tomorrow, UserName);
+            await _subscriptionDayService.Initialzie(Today, UserName);
             await UnitOfWork.SaveChangesAsync();
             return NoContent();
         }
