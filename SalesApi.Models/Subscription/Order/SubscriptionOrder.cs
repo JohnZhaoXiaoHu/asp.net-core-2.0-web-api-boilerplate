@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesApi.Models.Subscription.Promotion;
 
-namespace SalesApi.Models.Subscription.Orders
+namespace SalesApi.Models.Subscription.Order
 {
     public class SubscriptionOrder: EntityBase
     {
@@ -26,7 +26,7 @@ namespace SalesApi.Models.Subscription.Orders
         public SubscriptionProductSnapshot SubscriptionProductSnapshot { get; set; }
         public SubscriptionMonthPromotion SubscriptionMonthPromotion { get; set; }
         public ICollection<SubscriptionOrderDate> SubscriptionOrderDates { get; set; }
-        public ICollection<SubscriptionOrderBonus> SubscriptionOrderBonuses { get; set; }
+        public ICollection<SubscriptionOrderBonusDate> SubscriptionOrderBonusDates { get; set; }
     }
 
     public class SubscriptionOrderConfiguration : EntityBaseConfiguration<SubscriptionOrder>

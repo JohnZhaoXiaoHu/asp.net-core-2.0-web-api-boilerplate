@@ -3,7 +3,7 @@ using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace SalesApi.Models.Subscription.Orders
+namespace SalesApi.Models.Subscription.Order
 {
     public class SubscriptionOrderDate: EntityBase
     {

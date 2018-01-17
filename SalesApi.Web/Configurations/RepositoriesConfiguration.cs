@@ -6,6 +6,7 @@ using SalesApi.Repositories.Overall;
 using SalesApi.Repositories.Retail;
 using SalesApi.Repositories.Settings;
 using SalesApi.Repositories.Subscription;
+using SalesApi.Repositories.Subscription.Order;
 using SalesApi.Repositories.Subscription.Promotion;
 
 namespace SalesApi.Web.Configurations
@@ -93,6 +94,9 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<ISubscriptionMonthPromotionRepository, SubscriptionMonthPromotionRepository>();
             services.AddScoped<ISubscriptionMonthPromotionBonusRepository, SubscriptionMonthPromotionBonusRepository>();
             services.AddScoped<ISubscriptionMonthPromotionBonusDateRepository, SubscriptionMonthPromotionBonusDateRepository>();
+            services.AddScoped<ISubscriptionOrderRepository, SubscriptionOrderRepository>();
+            services.AddScoped<ISubscriptionOrderDateRepository, SubscriptionOrderDateRepository>();
+            services.AddScoped<ISubscriptionOrderBonusDateRepository, SubscriptionOrderBonusDateRepository>();
 
             #endregion
 

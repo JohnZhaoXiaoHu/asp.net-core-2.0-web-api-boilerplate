@@ -6,6 +6,7 @@ using SalesApi.Models.Overall;
 using SalesApi.Models.Retail;
 using SalesApi.Models.Settings;
 using SalesApi.Models.Subscription;
+using SalesApi.Models.Subscription.Order;
 using SalesApi.Models.Subscription.Promotion;
 using SalesApi.ViewModels.Collective;
 using SalesApi.ViewModels.County;
@@ -14,6 +15,7 @@ using SalesApi.ViewModels.Overall;
 using SalesApi.ViewModels.Retail;
 using SalesApi.ViewModels.Settings;
 using SalesApi.ViewModels.Subscription;
+using SalesApi.ViewModels.Subscription.Order;
 using SalesApi.ViewModels.Subscription.Promotion;
 
 namespace SalesApi.Web.Configurations
@@ -109,6 +111,9 @@ namespace SalesApi.Web.Configurations
             CreateMap<SubscriptionMonthPromotionViewModel, SubscriptionMonthPromotion>();
             CreateMap<SubscriptionMonthPromotionBonusViewModel, SubscriptionMonthPromotionBonus>();
             CreateMap<SubscriptionMonthPromotionBonusDateViewModel, SubscriptionMonthPromotionBonusDate>();
+            CreateMap<SubscriptionOrderViewModel, SubscriptionOrder>();
+            CreateMap<SubscriptionOrderDateViewModel, SubscriptionOrderDate>();
+            CreateMap<SubscriptionOrderBonusDateViewModel, SubscriptionOrderBonusDate>();
 
             #endregion
 
