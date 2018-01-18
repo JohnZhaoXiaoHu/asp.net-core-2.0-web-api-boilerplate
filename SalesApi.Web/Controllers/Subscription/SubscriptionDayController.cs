@@ -185,5 +185,14 @@ namespace SalesApi.Web.Controllers.Subscription
             await UnitOfWork.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpPut]
+        [Route("Confirm")]
+        public async Task<IActionResult> Confirm()
+        {
+            await _subscriptionDayService.Confirm(Today, UserName);
+            await UnitOfWork.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

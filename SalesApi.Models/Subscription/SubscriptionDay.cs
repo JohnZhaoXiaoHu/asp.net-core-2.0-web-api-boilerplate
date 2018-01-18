@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SalesApi.Shared.Enums;
 
 namespace SalesApi.Models.Subscription
 {
@@ -12,7 +13,7 @@ namespace SalesApi.Models.Subscription
         }
 
         public string Date { get; set; }
-        public bool Initialized { get; set; }
+        public SubscriptionDayStatus Status { get; set; }
 
         public ICollection<SubscriptionProductSnapshot> SubscriptionProductSnapshots { get; set; }
     }

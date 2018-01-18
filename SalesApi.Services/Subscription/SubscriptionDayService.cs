@@ -8,12 +8,14 @@ using SalesApi.Models.Subscription;
 using SalesApi.Models.Settings;
 using SalesApi.Repositories.Subscription;
 using SalesApi.Repositories.Settings;
+using SalesApi.Shared.Enums;
 
 namespace SalesApi.Services.Subscription
 {
     public interface ISubscriptionDayService
     {
         Task Initialzie(DateTime date, string userName);
+        Task Confirm(DateTime date, string userName);
     }
 
     public class SubscriptionDayService : ISubscriptionDayService
@@ -43,11 +45,11 @@ namespace SalesApi.Services.Subscription
             var productForSubscriptions = await _productForSubscriptionRepository.All.Where(x => !x.Deleted).ToListAsync();
             if (item != null)
             {
-                if (item.Initialized)
+                if (item.Status >= SubscriptionDayStatus.已初始化)
                 {
                     throw new Exception("该专送日已经初始化, 操作失败");
                 }
-                item.Initialized = true;
+                item.Status = SubscriptionDayStatus.已初始化;
                 item.SetModification(userName, "初始化");
                 InitializeSubscriptionProducts(userName, item, productForSubscriptions, products);
                 _collectiveDayRepository.Update(item);
@@ -57,11 +59,31 @@ namespace SalesApi.Services.Subscription
                 item = new SubscriptionDay
                 {
                     Date = dateStr,
-                    Initialized = true
+                    Status = SubscriptionDayStatus.已初始化
                 };
                 item.SetCreation(userName, "初始化");
                 InitializeSubscriptionProducts(userName, item, productForSubscriptions, products);
                 _collectiveDayRepository.Add(item);
+            }
+        }
+
+        public async Task Confirm(DateTime date, string userName)
+        {
+            var dateStr = date.ToString("yyyy-MM-dd");
+            var item = await _collectiveDayRepository.GetSingleAsync(x => x.Date == dateStr, x => x.SubscriptionProductSnapshots);
+            if (item != null)
+            {
+                if (item.Status >= SubscriptionDayStatus.已报货)
+                {
+                    throw new Exception("该专送日已报货, 操作失败");
+                }
+                item.Status = SubscriptionDayStatus.已报货;
+                item.SetModification(userName, "报货");
+                _collectiveDayRepository.Update(item);
+            }
+            else
+            {
+                throw new Exception("该专送日还未初始化 操作失败");
             }
         }
 

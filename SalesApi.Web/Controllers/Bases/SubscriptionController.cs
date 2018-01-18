@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Subscription;
 using SalesApi.Repositories.Subscription;
 using SalesApi.Services.Subscription;
+using SalesApi.Shared.Enums;
 
 namespace SalesApi.Web.Controllers.Bases
 {
@@ -25,7 +26,7 @@ namespace SalesApi.Web.Controllers.Bases
         {
             var dateStr = !date.HasValue ? Now.AddDays(1).Date.ToString("yyyy-MM-dd") : date.Value.ToString("yyyy-MM-dd");
             var item = await SubscriptionDayRepository.GetSingleAsync(x => x.Date == dateStr);
-            return item != null && item.Initialized;
+            return item != null && item.Status >= SubscriptionDayStatus.已初始化;
         }
 
         [NonAction]
