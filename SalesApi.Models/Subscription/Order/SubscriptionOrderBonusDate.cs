@@ -9,7 +9,6 @@ namespace SalesApi.Models.Subscription.Order
     {
         public int SubscriptionOrderId { get; set; }
         public int SubscriptionMonthPromotionBonusDateId { get; set; }
-        public int DayBonusCount { get; set; }
 
         public SubscriptionOrder SubscriptionOrder { get; set; }
         public SubscriptionMonthPromotionBonusDate SubscriptionMonthPromotionBonusDate { get; set; }

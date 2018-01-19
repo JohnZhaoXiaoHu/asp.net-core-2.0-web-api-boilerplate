@@ -6,6 +6,5 @@ namespace SalesApi.ViewModels.Subscription.Order
     {
         public int SubscriptionOrderId { get; set; }
         public int SubscriptionMonthPromotionBonusDateId { get; set; }
-        public int DayBonusCount { get; set; }
     }
 }

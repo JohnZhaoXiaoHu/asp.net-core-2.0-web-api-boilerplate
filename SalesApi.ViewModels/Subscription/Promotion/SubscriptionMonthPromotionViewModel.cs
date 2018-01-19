@@ -17,5 +17,7 @@ namespace SalesApi.ViewModels.Subscription.Promotion
         public int DayBase { get; set; }
 
         public List<SubscriptionMonthPromotionBonusViewModel> SubscriptionMonthPromotionBonuses { get; set; }
+
+        public string Description { get; set; }
     }
 }

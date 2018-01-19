@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SalesApi.Shared.Enums
+﻿namespace SalesApi.Shared.Enums
 {
     public enum SubscriptionPromotionType
     {
