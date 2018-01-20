@@ -2111,8 +2111,6 @@ namespace SalesApi.DataContext.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<int>("DayBonusCount");
-
                     b.Property<bool>("Deleted");
 
                     b.Property<string>("LastAction")
