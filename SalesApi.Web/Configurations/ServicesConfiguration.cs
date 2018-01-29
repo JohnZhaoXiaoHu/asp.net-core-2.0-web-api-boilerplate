@@ -53,6 +53,7 @@ namespace SalesApi.Web.Configurations
 
             services.AddScoped(typeof(ISubscriptionService<>), typeof(SubscriptionService<>));
             services.AddScoped<ISubscriptionDayService, SubscriptionDayService>();
+            services.AddScoped<ISubscriptionOrderService, SubscriptionOrderService>();
 
             #endregion
         }

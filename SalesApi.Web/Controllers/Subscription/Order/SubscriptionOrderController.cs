@@ -5,6 +5,7 @@ using Infrastructure.Features.Common;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using SalesApi.Models.Subscription.Order;
 using SalesApi.Repositories.Subscription.Order;
 using SalesApi.Services.Subscription;
@@ -17,10 +18,15 @@ namespace SalesApi.Web.Controllers.Subscription.Order
     public class SubscriptionOrderController : SubscriptionController<SubscriptionOrderController>
     {
         private readonly ISubscriptionOrderRepository _subscriptionOrderRepository;
-        public SubscriptionOrderController(ISubscriptionService<SubscriptionOrderController> subscriptionService,
-            ISubscriptionOrderRepository subscriptionOrderRepository) : base(subscriptionService)
+        private readonly ISubscriptionOrderService _subscriptionOrderService;
+
+        public SubscriptionOrderController(
+            ISubscriptionService<SubscriptionOrderController> subscriptionService,
+            ISubscriptionOrderRepository subscriptionOrderRepository, 
+            ISubscriptionOrderService subscriptionOrderService) : base(subscriptionService)
         {
             _subscriptionOrderRepository = subscriptionOrderRepository;
+            _subscriptionOrderService = subscriptionOrderService;
         }
 
         [HttpGet]
@@ -45,29 +51,44 @@ namespace SalesApi.Web.Controllers.Subscription.Order
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SubscriptionOrderViewModel subscriptionOrderVm)
+        public async Task<IActionResult> Post([FromBody] JToken jObj)
         {
-            if (subscriptionOrderVm == null)
+            var orderVms = jObj["orders"].ToObject<List<SubscriptionOrderAddViewModel>>();
+            var months = jObj["months"].ToObject<List<SubscriptionOrderMonthAddViewModel>>();
+            if (!orderVms.Any())
             {
                 return BadRequest();
             }
 
-            if (!ModelState.IsValid)
+            if (!TryValidateModel(orderVms))
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
             }
 
-            var newItem = Mapper.Map<SubscriptionOrder>(subscriptionOrderVm);
-            newItem.SetCreation(UserName);
-            _subscriptionOrderRepository.Add(newItem);
+            _subscriptionOrderService.AddSubscriptionOrder(orderVms, months, UserName);
+            //var newItem = Mapper.Map<SubscriptionOrder>(subscriptionOrderVm);
+            //newItem.SetCreation(UserName);
+            //foreach (var orderDate in newItem.SubscriptionOrderDates)
+            //{
+            //    orderDate.SetCreation(UserName);
+            //}
+            //foreach (var bonusDate in newItem.SubscriptionOrderBonusDates)
+            //{
+            //    bonusDate.SetCreation(UserName);
+            //}
+            //_subscriptionOrderRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
 
-            var vm = Mapper.Map<SubscriptionOrderViewModel>(newItem);
+            //var vm = Mapper.Map<SubscriptionOrderViewModel>(newItem);
 
-            return CreatedAtRoute("GetSubscriptionOrder", new { id = vm.Id }, vm);
+            //return CreatedAtRoute("GetSubscriptionOrder", new { id = vm.Id }, vm);
+            return NoContent();
         }
 
         [HttpPut("{id}")]
