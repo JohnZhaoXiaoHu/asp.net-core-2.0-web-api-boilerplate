@@ -1,4 +1,5 @@
-﻿using Infrastructure.Features.Common;
+﻿using System;
+using Infrastructure.Features.Common;
 
 namespace SalesApi.ViewModels.Subscription.Order
 {
@@ -11,5 +12,7 @@ namespace SalesApi.ViewModels.Subscription.Order
         public int? SubscriptionMonthPromotionId { get; set; }
         public int PresetDayCount { get; set; }
         public int PresetDayGift { get; set; } // 批条
+
+        public DateTime? PaidTime { get; set; }
     }
 }

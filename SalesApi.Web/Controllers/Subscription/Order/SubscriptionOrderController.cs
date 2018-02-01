@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using SalesApi.Models.Subscription.Order;
 using SalesApi.Repositories.Subscription.Order;
 using SalesApi.Services.Subscription;
 using SalesApi.ViewModels.Subscription.Order;
@@ -64,6 +64,16 @@ namespace SalesApi.Web.Controllers.Subscription.Order
                 {
                     return BadRequest(ModelState);
                 }
+            }
+            var orderDates = orderVms.SelectMany(x => x.SubscriptionOrderDates).Select(x => x.Date).Distinct().ToList();
+            var minOrderDate = orderDates.Min();
+            if (minOrderDate <= Today)
+            {
+                throw new Exception("订单日期不得小于明天");
+            }
+            if (minOrderDate <= Tomorrow && await HasSubscriptionDayBeenConfirmed())
+            {
+                throw new Exception("今日专送已报货，订单不得小于后天");
             }
             _subscriptionOrderService.AddSubscriptionOrder(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -21,6 +22,8 @@ namespace SalesApi.Models.Subscription.Order
         public int PresetDayCount { get; set; }
         public int PresetDayBonus { get; set; }
         public int PresetDayGift { get; set; } // 批条
+        
+        public DateTime? PaidTime { get; set; }
 
         public Milkman Milkman { get; set; }
         public SubscriptionProductSnapshot SubscriptionProductSnapshot { get; set; }

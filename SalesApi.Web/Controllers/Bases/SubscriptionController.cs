@@ -30,6 +30,14 @@ namespace SalesApi.Web.Controllers.Bases
         }
 
         [NonAction]
+        protected async Task<bool> HasSubscriptionDayBeenConfirmed(DateTime? date = null)
+        {
+            var dateStr = !date.HasValue ? Now.AddDays(1).Date.ToString("yyyy-MM-dd") : date.Value.ToString("yyyy-MM-dd");
+            var item = await SubscriptionDayRepository.GetSingleAsync(x => x.Date == dateStr);
+            return item != null && item.Status >= SubscriptionDayStatus.已报货;
+        }
+
+        [NonAction]
         protected async Task<SubscriptionDay> GetLatestInitializedSubscriptionDay()
         {
             var item = await SubscriptionDayRepository.All.OrderByDescending(x => x.Date).FirstOrDefaultAsync();
