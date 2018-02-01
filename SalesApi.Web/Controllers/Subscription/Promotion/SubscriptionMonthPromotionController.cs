@@ -78,6 +78,7 @@ namespace SalesApi.Web.Controllers.Subscription.Promotion
                 bonus.SetCreation(UserName);
                 foreach (var date in bonus.SubscriptionMonthPromotionBonusDates)
                 {
+                    date.Date = date.Date.ToLocalTime();
                     date.SetCreation(UserName);
                 }
             }

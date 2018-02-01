@@ -17,6 +17,7 @@ namespace SalesApi.Models.Subscription.Order
     {
         public override void ConfigureDerived(EntityTypeBuilder<SubscriptionOrderDate> b)
         {
+            b.Property(x => x.Date).HasColumnType("date");
             b.HasIndex(x => new {x.SubscriptionOrderId, x.Date}).IsUnique();
             b.HasOne(x => x.SubscriptionOrder).WithMany(x => x.SubscriptionOrderDates)
                 .HasForeignKey(x => x.SubscriptionOrderId).OnDelete(DeleteBehavior.Restrict);

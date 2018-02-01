@@ -54,12 +54,10 @@ namespace SalesApi.Web.Controllers.Subscription.Order
         public async Task<IActionResult> Post([FromBody] JToken jObj)
         {
             var orderVms = jObj["orders"].ToObject<List<SubscriptionOrderAddViewModel>>();
-            var months = jObj["months"].ToObject<List<SubscriptionOrderMonthAddViewModel>>();
             if (!orderVms.Any())
             {
                 return BadRequest();
             }
-
             if (!TryValidateModel(orderVms))
             {
                 if (!ModelState.IsValid)
@@ -67,27 +65,11 @@ namespace SalesApi.Web.Controllers.Subscription.Order
                     return BadRequest(ModelState);
                 }
             }
-
-            _subscriptionOrderService.AddSubscriptionOrder(orderVms, months, UserName);
-            //var newItem = Mapper.Map<SubscriptionOrder>(subscriptionOrderVm);
-            //newItem.SetCreation(UserName);
-            //foreach (var orderDate in newItem.SubscriptionOrderDates)
-            //{
-            //    orderDate.SetCreation(UserName);
-            //}
-            //foreach (var bonusDate in newItem.SubscriptionOrderBonusDates)
-            //{
-            //    bonusDate.SetCreation(UserName);
-            //}
-            //_subscriptionOrderRepository.Add(newItem);
+            _subscriptionOrderService.AddSubscriptionOrder(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-
-            //var vm = Mapper.Map<SubscriptionOrderViewModel>(newItem);
-
-            //return CreatedAtRoute("GetSubscriptionOrder", new { id = vm.Id }, vm);
             return NoContent();
         }
 

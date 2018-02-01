@@ -19,7 +19,7 @@ namespace SalesApi.Models.Subscription.Promotion
     {
         public override void ConfigureDerived(EntityTypeBuilder<SubscriptionMonthPromotionBonusDate> b)
         {
-
+            b.Property(x => x.Date).HasColumnType("date");
             b.HasIndex(x => new { x.SubscriptionMonthPromotionBonusId, x.Date }).IsUnique();
             b.HasOne(x => x.SubscriptionMonthPromotionBonus)
                 .WithMany(x => x.SubscriptionMonthPromotionBonusDates)

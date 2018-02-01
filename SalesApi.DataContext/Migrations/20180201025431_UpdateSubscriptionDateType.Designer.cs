@@ -12,9 +12,10 @@ using System;
 namespace SalesApi.DataContext.Migrations
 {
     [DbContext(typeof(SalesContext))]
-    partial class SalesContextModelSnapshot : ModelSnapshot
+    [Migration("20180201025431_UpdateSubscriptionDateType")]
+    partial class UpdateSubscriptionDateType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2171,8 +2172,7 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionOrderId", "Date")
-                        .IsUnique();
+                    b.HasIndex("SubscriptionOrderId");
 
                     b.ToTable("SubscriptionOrderDates");
                 });
@@ -2348,8 +2348,7 @@ namespace SalesApi.DataContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionMonthPromotionBonusId", "Date")
-                        .IsUnique();
+                    b.HasIndex("SubscriptionMonthPromotionBonusId");
 
                     b.ToTable("SubscriptionMonthPromotionBonusDates");
                 });
