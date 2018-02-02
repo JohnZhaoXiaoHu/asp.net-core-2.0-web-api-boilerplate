@@ -105,6 +105,7 @@ namespace SalesApi.DataContext.Contexts
             modelBuilder.ApplyConfiguration(new SubscriptionOrderConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionOrderBonusConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionOrderDateConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionOrderModifiedBonusDateConfiguration());
 
             #endregion
         }
@@ -191,6 +192,7 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<SubscriptionOrder> SubscriptionOrders { get; set; }
         public DbSet<SubscriptionOrderDate> SubscriptionOrderDates { get; set; }
         public DbSet<SubscriptionOrderBonusDate> SubscriptionOrderBonuses { get; set; }
+        public DbSet<SubscriptionOrderModifiedBonusDate> SubscriptionOrderModifiedBonusDates { get; set; }
 
         #endregion
     }

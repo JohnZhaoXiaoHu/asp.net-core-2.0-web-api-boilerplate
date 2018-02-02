@@ -12,6 +12,8 @@ namespace SalesApi.Models.Subscription.Order
         public SubscriptionOrder()
         {
             SubscriptionOrderDates = new List<SubscriptionOrderDate>();
+            SubscriptionOrderBonusDates = new List<SubscriptionOrderBonusDate>();
+            SubscriptionOrderModifiedBonusDates = new List<SubscriptionOrderModifiedBonusDate>();
         }
 
         public int Year { get; set; }
@@ -30,6 +32,7 @@ namespace SalesApi.Models.Subscription.Order
         public SubscriptionMonthPromotion SubscriptionMonthPromotion { get; set; }
         public ICollection<SubscriptionOrderDate> SubscriptionOrderDates { get; set; }
         public ICollection<SubscriptionOrderBonusDate> SubscriptionOrderBonusDates { get; set; }
+        public ICollection<SubscriptionOrderModifiedBonusDate> SubscriptionOrderModifiedBonusDates { get; set; }
     }
 
     public class SubscriptionOrderConfiguration : EntityBaseConfiguration<SubscriptionOrder>

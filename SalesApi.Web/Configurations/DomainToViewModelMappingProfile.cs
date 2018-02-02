@@ -159,6 +159,7 @@ namespace SalesApi.Web.Configurations
             CreateMap<SubscriptionOrder, SubscriptionOrderViewModel>();
             CreateMap<SubscriptionOrderDate, SubscriptionOrderDateViewModel>();
             CreateMap<SubscriptionOrderBonusDate, SubscriptionOrderBonusDateViewModel>();
+            CreateMap<SubscriptionOrderModifiedBonusDate, SubscriptionOrderModifiedBonusDateViewModel>();
 
             #endregion
         }

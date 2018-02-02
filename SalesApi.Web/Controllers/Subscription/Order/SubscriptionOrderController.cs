@@ -75,7 +75,7 @@ namespace SalesApi.Web.Controllers.Subscription.Order
             {
                 throw new Exception("今日专送已报货，订单不得小于后天");
             }
-            _subscriptionOrderService.AddSubscriptionOrder(orderVms, UserName);
+            _subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");

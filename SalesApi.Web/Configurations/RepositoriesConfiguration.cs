@@ -97,6 +97,7 @@ namespace SalesApi.Web.Configurations
             services.AddScoped<ISubscriptionOrderRepository, SubscriptionOrderRepository>();
             services.AddScoped<ISubscriptionOrderDateRepository, SubscriptionOrderDateRepository>();
             services.AddScoped<ISubscriptionOrderBonusDateRepository, SubscriptionOrderBonusDateRepository>();
+            services.AddScoped<ISubscriptionOrderModifiedBonusDateRepository, SubscriptionOrderModifiedBonusDateRepository>();
 
             #endregion
 

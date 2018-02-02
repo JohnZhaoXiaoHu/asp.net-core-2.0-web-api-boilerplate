@@ -10,7 +10,7 @@ namespace SalesApi.Services.Subscription
 {
     public interface ISubscriptionOrderService
     {
-        void AddSubscriptionOrder(List<SubscriptionOrderAddViewModel> vms, string userName);
+        void AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName);
     }
 
     public class SubscriptionOrderService: ISubscriptionOrderService
@@ -22,7 +22,7 @@ namespace SalesApi.Services.Subscription
             _subscriptionOrderRepository = subscriptionOrderRepository;
         }
 
-        public void AddSubscriptionOrder(List<SubscriptionOrderAddViewModel> vms, string userName)
+        public void AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName)
         {
             var now = DateTime.Now;
             var orders = Mapper.Map<List<SubscriptionOrder>>(vms);
