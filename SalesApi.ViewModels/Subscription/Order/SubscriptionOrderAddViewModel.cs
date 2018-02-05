@@ -16,5 +16,6 @@ namespace SalesApi.ViewModels.Subscription.Order
 
         public List<SubscriptionOrderDateViewModel> SubscriptionOrderDates { get; set; }
         public List<SubscriptionOrderBonusDateViewModel> SubscriptionOrderBonusDates { get; set; }
+        public List<SubscriptionOrderModifiedBonusDateAddViewModel> SubscriptionOrderModifiedBonusDates { get; set; }
     }
 }
