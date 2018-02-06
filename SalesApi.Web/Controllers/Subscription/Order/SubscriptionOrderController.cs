@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using SalesApi.Repositories.Subscription.Order;
+using SalesApi.Repositories.Subscription.Promotion;
 using SalesApi.Services.Subscription;
 using SalesApi.ViewModels.Subscription.Order;
 using SalesApi.Web.Controllers.Bases;
@@ -19,14 +20,16 @@ namespace SalesApi.Web.Controllers.Subscription.Order
     {
         private readonly ISubscriptionOrderRepository _subscriptionOrderRepository;
         private readonly ISubscriptionOrderService _subscriptionOrderService;
+        private readonly ISubscriptionMonthPromotionBonusDateRepository _subscriptionMonthPromotionBonusDateRepository;
 
         public SubscriptionOrderController(
             ISubscriptionService<SubscriptionOrderController> subscriptionService,
             ISubscriptionOrderRepository subscriptionOrderRepository, 
-            ISubscriptionOrderService subscriptionOrderService) : base(subscriptionService)
+            ISubscriptionOrderService subscriptionOrderService, ISubscriptionMonthPromotionBonusDateRepository subscriptionMonthPromotionBonusDateRepository) : base(subscriptionService)
         {
             _subscriptionOrderRepository = subscriptionOrderRepository;
             _subscriptionOrderService = subscriptionOrderService;
+            _subscriptionMonthPromotionBonusDateRepository = subscriptionMonthPromotionBonusDateRepository;
         }
 
         [HttpGet]
@@ -65,16 +68,17 @@ namespace SalesApi.Web.Controllers.Subscription.Order
                     return BadRequest(ModelState);
                 }
             }
-            var orderDates = orderVms.SelectMany(x => x.SubscriptionOrderDates).Select(x => x.Date).Distinct().ToList();
-            var minOrderDate = orderDates.Min();
-            if (minOrderDate <= Today)
+            var hasDayBeenConfirmed = await HasSubscriptionDayBeenConfirmed();
+            var bonusDateIds = orderVms.SelectMany(x => x.SubscriptionOrderBonusDates)
+                .Select(x => x.SubscriptionMonthPromotionBonusDateId).Distinct().ToList();
+            var promotionBonusDates = await _subscriptionMonthPromotionBonusDateRepository.All
+                .Where(x => bonusDateIds.Contains(x.Id)).ToListAsync();
+            if (promotionBonusDates.Any())
             {
-                throw new Exception("订单日期不得小于明天");
+                var bonusDates = promotionBonusDates.Select(x => x.Date).ToList();
+                _subscriptionOrderService.ValidateOrderBonusDates(bonusDates, Today, Tomorrow, hasDayBeenConfirmed);
             }
-            if (minOrderDate <= Tomorrow && await HasSubscriptionDayBeenConfirmed())
-            {
-                throw new Exception("今日专送已报货，订单不得小于后天");
-            }
+            _subscriptionOrderService.ValidateOrderDatesAndModifiedBonusDates(orderVms, Today, Tomorrow, hasDayBeenConfirmed);
             _subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
