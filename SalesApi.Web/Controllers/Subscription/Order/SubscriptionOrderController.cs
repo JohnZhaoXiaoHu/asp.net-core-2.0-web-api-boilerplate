@@ -69,6 +69,7 @@ namespace SalesApi.Web.Controllers.Subscription.Order
                 }
             }
             var hasDayBeenConfirmed = await HasSubscriptionDayBeenConfirmed();
+
             var bonusDateIds = orderVms.SelectMany(x => x.SubscriptionOrderBonusDates)
                 .Select(x => x.SubscriptionMonthPromotionBonusDateId).Distinct().ToList();
             var promotionBonusDates = await _subscriptionMonthPromotionBonusDateRepository.All
@@ -78,7 +79,9 @@ namespace SalesApi.Web.Controllers.Subscription.Order
                 var bonusDates = promotionBonusDates.Select(x => x.Date).ToList();
                 _subscriptionOrderService.ValidateOrderBonusDates(bonusDates, Today, Tomorrow, hasDayBeenConfirmed);
             }
+
             _subscriptionOrderService.ValidateOrderDatesAndModifiedBonusDates(orderVms, Today, Tomorrow, hasDayBeenConfirmed);
+            await _subscriptionOrderService.ValidateDayCountAsync(orderVms, promotionBonusDates);
             _subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
