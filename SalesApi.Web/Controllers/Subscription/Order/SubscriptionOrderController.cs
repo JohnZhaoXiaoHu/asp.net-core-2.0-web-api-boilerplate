@@ -81,7 +81,7 @@ namespace SalesApi.Web.Controllers.Subscription.Order
             }
 
             _subscriptionOrderService.ValidateOrderDatesAndModifiedBonusDates(orderVms, Today, Tomorrow, hasDayBeenConfirmed);
-            await _subscriptionOrderService.ValidateDayCountAsync(orderVms, promotionBonusDates);
+            // await _subscriptionOrderService.ValidateDayCountAsync(orderVms, promotionBonusDates);
             _subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
