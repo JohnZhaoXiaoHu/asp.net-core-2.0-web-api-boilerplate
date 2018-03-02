@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Features.Common;
@@ -24,7 +23,7 @@ namespace SalesApi.Web.Controllers.Subscription.Order
 
         public SubscriptionOrderController(
             ISubscriptionService<SubscriptionOrderController> subscriptionService,
-            ISubscriptionOrderRepository subscriptionOrderRepository, 
+            ISubscriptionOrderRepository subscriptionOrderRepository,
             ISubscriptionOrderService subscriptionOrderService, ISubscriptionMonthPromotionBonusDateRepository subscriptionMonthPromotionBonusDateRepository) : base(subscriptionService)
         {
             _subscriptionOrderRepository = subscriptionOrderRepository;
@@ -57,6 +56,7 @@ namespace SalesApi.Web.Controllers.Subscription.Order
         public async Task<IActionResult> Post([FromBody] JToken jObj)
         {
             var orderVms = jObj["orders"].ToObject<List<SubscriptionOrderAddViewModel>>();
+            var milkmanId = jObj["milkmanId"].ToObject<int>();
             if (!orderVms.Any())
             {
                 return BadRequest();
@@ -81,7 +81,11 @@ namespace SalesApi.Web.Controllers.Subscription.Order
             }
 
             _subscriptionOrderService.ValidateOrderDatesAndModifiedBonusDates(orderVms, Today, Tomorrow, hasDayBeenConfirmed);
-            // await _subscriptionOrderService.ValidateDayCountAsync(orderVms, promotionBonusDates);
+            var invalidateDates = await _subscriptionOrderService.ValidateDayCountAsync(milkmanId, orderVms);
+            if (invalidateDates.Any())
+            {
+                return BadRequest(new { Error = invalidateDates });
+            }
             _subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {

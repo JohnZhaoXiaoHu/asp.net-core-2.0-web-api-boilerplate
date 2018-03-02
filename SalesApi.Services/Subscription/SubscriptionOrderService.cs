@@ -6,7 +6,6 @@ using AutoMapper;
 using Infrastructure.Features.Common;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Models.Subscription.Order;
-using SalesApi.Models.Subscription.Promotion;
 using SalesApi.Repositories.Subscription;
 using SalesApi.Repositories.Subscription.Order;
 using SalesApi.Repositories.Subscription.Promotion;
@@ -19,7 +18,7 @@ namespace SalesApi.Services.Subscription
         void AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName);
         void ValidateOrderDatesAndModifiedBonusDates(List<SubscriptionOrderAddViewModel> vms, DateTime today, DateTime tomorrow, bool hasSubscriptionDayBeenConfirmed);
         void ValidateOrderBonusDates(List<DateTime> dates, DateTime today, DateTime tomorrow, bool hasSubscriptionDayBeenConfirmed);
-        Task ValidateDayCountAsync(List<SubscriptionOrderAddViewModel> vms);
+        Task<List<SubscriptionOrderValidationViewModel>> ValidateDayCountAsync(int milkmanId, List<SubscriptionOrderAddViewModel> orderVms);
     }
 
     public class SubscriptionOrderService : ISubscriptionOrderService
@@ -29,19 +28,25 @@ namespace SalesApi.Services.Subscription
         private readonly ISubscriptionMonthPromotionBonusDateRepository _subscriptionMonthPromotionBonusDateRepository;
         private readonly ISubscriptionOrderModifiedBonusDateRepository _subscriptionOrderModifiedBonusDateRepository;
         private readonly ISubscriptionProductSnapshotRepository _subscriptionProductSnapshotRepository;
+        private readonly IProductForSubscriptionRepository _productForSubscriptionRepository;
+        private readonly ISubscriptionOrderBonusDateRepository _subscriptionOrderBonusDateRepository;
 
         public SubscriptionOrderService(
             ISubscriptionOrderRepository subscriptionOrderRepository,
             ISubscriptionOrderDateRepository subscriptionOrderDateRepository,
             ISubscriptionMonthPromotionBonusDateRepository subscriptionMonthPromotionBonusDateRepository,
             ISubscriptionOrderModifiedBonusDateRepository subscriptionOrderModifiedBonusDateRepository,
-            ISubscriptionProductSnapshotRepository subscriptionProductSnapshotRepository)
+            ISubscriptionProductSnapshotRepository subscriptionProductSnapshotRepository,
+            IProductForSubscriptionRepository productForSubscriptionRepository,
+            ISubscriptionOrderBonusDateRepository subscriptionOrderBonusDateRepository)
         {
             _subscriptionOrderRepository = subscriptionOrderRepository;
             _subscriptionOrderDateRepository = subscriptionOrderDateRepository;
             _subscriptionMonthPromotionBonusDateRepository = subscriptionMonthPromotionBonusDateRepository;
             _subscriptionOrderModifiedBonusDateRepository = subscriptionOrderModifiedBonusDateRepository;
             _subscriptionProductSnapshotRepository = subscriptionProductSnapshotRepository;
+            _productForSubscriptionRepository = productForSubscriptionRepository;
+            _subscriptionOrderBonusDateRepository = subscriptionOrderBonusDateRepository;
         }
 
         public void ValidateOrderDatesAndModifiedBonusDates(List<SubscriptionOrderAddViewModel> vms, DateTime today, DateTime tomorrow, bool hasSubscriptionDayBeenConfirmed)
@@ -58,14 +63,17 @@ namespace SalesApi.Services.Subscription
             }
             var modifiedBonusDates = vms.SelectMany(x => x.SubscriptionOrderModifiedBonusDates).Select(x => x.Date)
                 .Distinct().ToList();
-            var minModifiedBonusDate = modifiedBonusDates.Min();
-            if (minModifiedBonusDate <= today)
+            if (modifiedBonusDates.Any())
             {
-                throw new Exception("手动赠品派送日期不得小于明天");
-            }
-            if (minModifiedBonusDate <= tomorrow && hasSubscriptionDayBeenConfirmed)
-            {
-                throw new Exception("今日专送已报货，手动赠品派送日期不得小于后天");
+                var minModifiedBonusDate = modifiedBonusDates.Min();
+                if (minModifiedBonusDate <= today)
+                {
+                    throw new Exception("手动赠品派送日期不得小于明天");
+                }
+                if (minModifiedBonusDate <= tomorrow && hasSubscriptionDayBeenConfirmed)
+                {
+                    throw new Exception("今日专送已报货，手动赠品派送日期不得小于后天");
+                }
             }
         }
 
@@ -82,54 +90,114 @@ namespace SalesApi.Services.Subscription
             }
         }
 
-        public async Task ValidateDayCountAsync(List<SubscriptionOrderAddViewModel> vms)
+        public async Task<List<SubscriptionOrderValidationViewModel>> ValidateDayCountAsync(int milkmanId, List<SubscriptionOrderAddViewModel> orderVms)
         {
             // dates
-            var vmOrderDates = vms.SelectMany(x => x.SubscriptionOrderDates).Select(x => x.Date).ToList();
-            var vmModifiedBonusDates = vms.SelectMany(x => x.SubscriptionOrderModifiedBonusDates).Select(x => x.Date)
+            foreach (var orderVm in orderVms)
+            {
+                foreach (var orderDate in orderVm.SubscriptionOrderDates)
+                {
+                    orderDate.Date = orderDate.Date.ToLocalTime();
+                }
+                foreach (var modifiedBonusDate in orderVm.SubscriptionOrderModifiedBonusDates)
+                {
+                    modifiedBonusDate.Date = modifiedBonusDate.Date.ToLocalTime();
+                }
+            }
+            var vmOrderDates = orderVms.SelectMany(x => x.SubscriptionOrderDates).Select(x => x.Date).ToList();
+            var vmModifiedBonusOrders = orderVms.SelectMany(x => x.SubscriptionOrderModifiedBonusDates).ToList();
+            var vmModifiedBonusDates = vmModifiedBonusOrders.Select(x => x.Date)
                 .Distinct().ToList();
             var vmOrderAndModifiedDates = vmOrderDates.Concat(vmModifiedBonusDates).ToList();
-            var vmBonusDateIds = vms.SelectMany(x => x.SubscriptionOrderBonusDates)
+            var vmPromotionDateIds = orderVms.SelectMany(x => x.SubscriptionOrderBonusDates)
                 .Select(x => x.SubscriptionMonthPromotionBonusDateId).Distinct().ToList();
-            var promotionBonusDateModels = await _subscriptionMonthPromotionBonusDateRepository.AllIncluding(x => x.SubscriptionMonthPromotionBonus)
-                .Where(x => vmBonusDateIds.Contains(x.Id)).ToListAsync();
-            var bonusDates = promotionBonusDateModels.Select(x => x.Date).ToList();
-            var allDates = vmOrderAndModifiedDates.Concat(bonusDates).Distinct().OrderBy(x => x).ToList();
+            var promotionOrdersForVm = await _subscriptionMonthPromotionBonusDateRepository.AllIncluding(x => x.SubscriptionMonthPromotionBonus)
+                .Where(x => vmPromotionDateIds.Contains(x.Id)).ToListAsync();
+            var vmPromotionDates = promotionOrdersForVm.Select(x => x.Date).ToList();
+            var allDates = vmOrderAndModifiedDates.Concat(vmPromotionDates).Distinct().OrderBy(x => x).ToList();
+
+            // db models
+            var dbOrders = await _subscriptionOrderDateRepository.AllIncluding(x => x.SubscriptionOrder)
+                .Where(x => x.SubscriptionOrder.MilkmanId == milkmanId && allDates.Contains(x.Date)).ToListAsync();
+            var dbPromotionOrders = await _subscriptionOrderBonusDateRepository.GetWithGrandPromotionInformation(milkmanId, allDates);
+            var dbModifiedBonusOrders = await _subscriptionOrderModifiedBonusDateRepository.All
+                .Where(x => x.SubscriptionOrder.MilkmanId == milkmanId && allDates.Contains(x.Date)).ToListAsync();
 
             // products
+            var vmPromotionProductIds = promotionOrdersForVm
+                .Select(x => x.SubscriptionMonthPromotionBonus.ProductForSubscriptionId).ToList();
+
+            var dbOrderProductSnapshotIds =
+                dbOrders.Select(x => x.SubscriptionOrder.SubscriptionProductSnapshotId).ToList();
+            var dbModifiedBonusProductSnapshotIds =
+                dbModifiedBonusOrders.Select(x => x.SubscriptionProductSnapshotId).ToList();
+            var dbPromotionProductIds = dbPromotionOrders
+                .Select(x => x.SubscriptionMonthPromotionBonus.ProductForSubscriptionId).ToList();
+
+            var dbProductSnapshotIds = dbOrderProductSnapshotIds.Concat(dbModifiedBonusProductSnapshotIds).Distinct().ToList();
+            var productIds = vmPromotionProductIds.Concat(dbPromotionProductIds).Distinct().ToList();
+
+            var dbProductSnapshots = await _subscriptionProductSnapshotRepository.All
+                .Where(x => dbProductSnapshotIds.Contains(x.Id)).ToListAsync();
+
+            var allProductIds = productIds.Concat(dbProductSnapshots.Select(x => x.ProductForSubscriptionId)).Distinct().ToList();
+            var allProducts = await _productForSubscriptionRepository.AllIncluding(x => x.Product).Where(x => allProductIds.Contains(x.Id))
+                .ToListAsync();
+
             var todayStr = DateTime.Now.Date.ToString("yyyy-MM-dd");
             var todayProductSnapshots = await _subscriptionProductSnapshotRepository.All
                 .Where(x => x.SubscriptionDay.Date == todayStr).ToListAsync();
 
-            // db models
-            var dbOrders = await _subscriptionOrderDateRepository.AllIncluding(x => x.SubscriptionOrder)
-                .Where(x => allDates.Contains(x.Date)).ToListAsync();
-            var dbBonusOrders = await _subscriptionMonthPromotionBonusDateRepository.AllIncluding(x => x.SubscriptionMonthPromotionBonus)
-                .Where(x => allDates.Contains(x.Date)).ToListAsync();
-            var dbModifiedBonusOrders = await _subscriptionOrderModifiedBonusDateRepository.All
-                .Where(x => allDates.Contains(x.Date)).ToListAsync();
-
             // validation by date then by product
+            var errors = new List<SubscriptionOrderValidationViewModel>();
             foreach (var date in allDates)
             {
-                var vmDateOrders = vms.SelectMany(x => x.SubscriptionOrderDates).Where(x => x.Date == date)
-                    .ToList();
-                var dateOrderProductSnapshotIds = vms.Where(x => x.SubscriptionOrderDates.Any(y => y.Date == date))
-                    .Select(x => x.SubscriptionProductSnapshotId).ToList();
+                foreach (var productId in allProductIds)
+                {
+                    int count;
+                    var vmDatePromotionOrders = promotionOrdersForVm.Where(x => x.Date == date && x.SubscriptionMonthPromotionBonus.ProductForSubscriptionId == productId).ToList();
+                    var dbDatePromotionOrders = dbPromotionOrders.Where(x => x.Date == date && x.SubscriptionMonthPromotionBonus.ProductForSubscriptionId == productId).ToList();
+                    count = vmDatePromotionOrders.Sum(x => x.DayBonusCount) +
+                            dbDatePromotionOrders.Sum(x => x.DayBonusCount);
 
-                var dbDateOrders = dbOrders.Where(x => x.Date == date).ToList();
-                var dbOrderProductSnapshotIds = dbDateOrders.Select(x => x.SubscriptionOrder.SubscriptionProductSnapshotId)
-                    .ToList();
+                    var todayProductSnapshot = todayProductSnapshots.SingleOrDefault(x => x.ProductForSubscriptionId == productId);
+                    if (todayProductSnapshot != null) // 可能有order 和 modifiedBonusOrder
+                    {
+                        var todayProductSnapshotId = todayProductSnapshot.Id;
+                        var vmDateOrders = orderVms.Where(x => x.SubscriptionProductSnapshotId == todayProductSnapshotId)
+                            .SelectMany(x => x.SubscriptionOrderDates).Where(x => x.Date == date).ToList();
+                        foreach (var vmDateOrder in vmDateOrders)
+                        {
+                            var parentOrder = orderVms.Single(x => x.SubscriptionOrderDates.Contains(vmDateOrder));
+                            count += parentOrder.PresetDayCount + parentOrder.PresetDayGift;
+                        }
+                        var vmDateModifiedOrders = vmModifiedBonusOrders.Where(x => x.Date == date && x.SubscriptionProductSnapshotId == todayProductSnapshotId).ToList();
+                        count += vmDateModifiedOrders.Sum(x => x.DayCount);
+                    }
+                    var productSnapshotIdsForDb =
+                        dbProductSnapshots.Where(x => x.ProductForSubscriptionId == productId).Select(x => x.Id).ToList();
+                    if (productSnapshotIdsForDb.Any())
+                    {
+                        var dbDateOrders = dbOrders.Where(x => x.Date == date && productSnapshotIdsForDb.Contains(x.SubscriptionOrder.SubscriptionProductSnapshotId)).ToList();
+                        count += dbDateOrders.Sum(x => x.SubscriptionOrder.PresetDayCount + x.SubscriptionOrder.PresetDayGift);
+                        var dbDateModifiedBonusOrders = dbModifiedBonusOrders.Where(x => x.Date == date && productSnapshotIdsForDb.Contains(x.SubscriptionProductSnapshotId)).ToList();
+                        count += dbDateModifiedBonusOrders.Sum(x => x.DayCount);
+                    }
 
-                var dbDateBonusOrders = dbBonusOrders.Where(x => x.Date == date).ToList();
-                // this is subscription for product id.
-                var dbDateBonusOrderProductIds = dbDateBonusOrders
-                    .Select(x => x.SubscriptionMonthPromotionBonus.ProductForSubscriptionId).ToList();
-
-                var dbDateModifiedBonusOrders = dbModifiedBonusOrders.Where(x => x.Date == date).ToList();
-                var dbDateModifiedBonusOrderProductISnaphostds =
-                    dbDateModifiedBonusOrders.Select(x => x.SubscriptionProductSnapshotId).ToList();
+                    if (count < 0)
+                    {
+                        var product = allProducts.Single(x => x.Id == productId);
+                        errors.Add(new SubscriptionOrderValidationViewModel
+                        {
+                            Date = date,
+                            DayCount = count,
+                            ProductForSubscriptionId = productId,
+                            ProductName = product.Product.Name
+                        });
+                    }
+                }
             }
+            return errors;
         }
 
         public void AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName)
