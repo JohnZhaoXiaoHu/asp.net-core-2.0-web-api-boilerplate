@@ -2,7 +2,7 @@
 
 namespace SalesApi.ViewModels.Subscription.Order
 {
-    public class SubscriptionOrderValidationViewModel
+    public class SubscriptionOrderDayCountErrorViewModel
     {
         public DateTime Date { get; set; }
         public int ProductForSubscriptionId { get; set; }

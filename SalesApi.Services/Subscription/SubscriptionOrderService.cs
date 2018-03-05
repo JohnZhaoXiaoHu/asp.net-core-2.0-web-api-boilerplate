@@ -18,7 +18,7 @@ namespace SalesApi.Services.Subscription
         void AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName);
         void ValidateOrderDatesAndModifiedBonusDates(List<SubscriptionOrderAddViewModel> vms, DateTime today, DateTime tomorrow, bool hasSubscriptionDayBeenConfirmed);
         void ValidateOrderBonusDates(List<DateTime> dates, DateTime today, DateTime tomorrow, bool hasSubscriptionDayBeenConfirmed);
-        Task<List<SubscriptionOrderValidationViewModel>> ValidateDayCountAsync(int milkmanId, List<SubscriptionOrderAddViewModel> orderVms);
+        Task<List<SubscriptionOrderDayCountErrorViewModel>> ValidateDayCountAsync(int milkmanId, List<SubscriptionOrderAddViewModel> orderVms);
     }
 
     public class SubscriptionOrderService : ISubscriptionOrderService
@@ -90,7 +90,7 @@ namespace SalesApi.Services.Subscription
             }
         }
 
-        public async Task<List<SubscriptionOrderValidationViewModel>> ValidateDayCountAsync(int milkmanId, List<SubscriptionOrderAddViewModel> orderVms)
+        public async Task<List<SubscriptionOrderDayCountErrorViewModel>> ValidateDayCountAsync(int milkmanId, List<SubscriptionOrderAddViewModel> orderVms)
         {
             // dates
             foreach (var orderVm in orderVms)
@@ -151,7 +151,7 @@ namespace SalesApi.Services.Subscription
                 .Where(x => x.SubscriptionDay.Date == todayStr).ToListAsync();
 
             // validation by date then by product
-            var errors = new List<SubscriptionOrderValidationViewModel>();
+            var errors = new List<SubscriptionOrderDayCountErrorViewModel>();
             foreach (var date in allDates)
             {
                 foreach (var productId in allProductIds)
@@ -189,7 +189,7 @@ namespace SalesApi.Services.Subscription
                     if (count < 0)
                     {
                         var product = allProducts.Single(x => x.Id == productId);
-                        errors.Add(new SubscriptionOrderValidationViewModel
+                        errors.Add(new SubscriptionOrderDayCountErrorViewModel
                         {
                             Date = date,
                             DayCount = count,
