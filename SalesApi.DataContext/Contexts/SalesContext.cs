@@ -191,7 +191,7 @@ namespace SalesApi.DataContext.Contexts
         public DbSet<SubscriptionMonthPromotionBonusDate> SubscriptionMonthPromotionBonusDates { get; set; }
         public DbSet<SubscriptionOrder> SubscriptionOrders { get; set; }
         public DbSet<SubscriptionOrderDate> SubscriptionOrderDates { get; set; }
-        public DbSet<SubscriptionOrderBonusDate> SubscriptionOrderBonuses { get; set; }
+        public DbSet<SubscriptionOrderBonusDate> SubscriptionOrderBonusDates { get; set; }
         public DbSet<SubscriptionOrderModifiedBonusDate> SubscriptionOrderModifiedBonusDates { get; set; }
 
         #endregion

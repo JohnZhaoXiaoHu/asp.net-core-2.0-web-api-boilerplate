@@ -84,7 +84,7 @@ namespace SalesApi.Web.Controllers.Subscription.Order
             var invalidateDates = await _subscriptionOrderService.ValidateDayCountAsync(milkmanId, orderVms);
             if (invalidateDates.Any())
             {
-                return BadRequest(new { Error = invalidateDates });
+                return BadRequest(invalidateDates);
             }
             _subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())

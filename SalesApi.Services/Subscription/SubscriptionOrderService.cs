@@ -124,8 +124,10 @@ namespace SalesApi.Services.Subscription
                 .Where(x => x.SubscriptionOrder.MilkmanId == milkmanId && allDates.Contains(x.Date)).ToListAsync();
 
             // products
+            var vmOrderProductSnapshotIds = orderVms.Select(x => x.SubscriptionProductSnapshotId).Distinct().ToList();
             var vmPromotionProductIds = promotionOrdersForVm
                 .Select(x => x.SubscriptionMonthPromotionBonus.ProductForSubscriptionId).ToList();
+            var vmModifiedBonusProductSnapshotIds = vmModifiedBonusOrders.Select(x => x.SubscriptionProductSnapshotId).ToList();
 
             var dbOrderProductSnapshotIds =
                 dbOrders.Select(x => x.SubscriptionOrder.SubscriptionProductSnapshotId).ToList();
@@ -134,13 +136,13 @@ namespace SalesApi.Services.Subscription
             var dbPromotionProductIds = dbPromotionOrders
                 .Select(x => x.SubscriptionMonthPromotionBonus.ProductForSubscriptionId).ToList();
 
-            var dbProductSnapshotIds = dbOrderProductSnapshotIds.Concat(dbModifiedBonusProductSnapshotIds).Distinct().ToList();
+            var productSnapshotIds = vmOrderProductSnapshotIds.Concat(vmModifiedBonusProductSnapshotIds)
+                .Concat(dbOrderProductSnapshotIds).Concat(dbModifiedBonusProductSnapshotIds).Distinct().ToList();
+            var productSnapshots = await _subscriptionProductSnapshotRepository.All
+                .Where(x => productSnapshotIds.Contains(x.Id)).ToListAsync();
+
             var productIds = vmPromotionProductIds.Concat(dbPromotionProductIds).Distinct().ToList();
-
-            var dbProductSnapshots = await _subscriptionProductSnapshotRepository.All
-                .Where(x => dbProductSnapshotIds.Contains(x.Id)).ToListAsync();
-
-            var allProductIds = productIds.Concat(dbProductSnapshots.Select(x => x.ProductForSubscriptionId)).Distinct().ToList();
+            var allProductIds = productIds.Concat(productSnapshots.Select(x => x.ProductForSubscriptionId)).Distinct().ToList();
             var allProducts = await _productForSubscriptionRepository.AllIncluding(x => x.Product).Where(x => allProductIds.Contains(x.Id))
                 .ToListAsync();
 
@@ -175,7 +177,7 @@ namespace SalesApi.Services.Subscription
                         count += vmDateModifiedOrders.Sum(x => x.DayCount);
                     }
                     var productSnapshotIdsForDb =
-                        dbProductSnapshots.Where(x => x.ProductForSubscriptionId == productId).Select(x => x.Id).ToList();
+                        productSnapshots.Where(x => x.ProductForSubscriptionId == productId).Select(x => x.Id).ToList();
                     if (productSnapshotIdsForDb.Any())
                     {
                         var dbDateOrders = dbOrders.Where(x => x.Date == date && productSnapshotIdsForDb.Contains(x.SubscriptionOrder.SubscriptionProductSnapshotId)).ToList();
