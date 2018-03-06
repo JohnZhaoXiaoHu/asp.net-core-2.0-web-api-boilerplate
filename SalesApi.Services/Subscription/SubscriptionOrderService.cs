@@ -15,7 +15,7 @@ namespace SalesApi.Services.Subscription
 {
     public interface ISubscriptionOrderService
     {
-        List<SubscriptionOrder> AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName);
+        DateTime AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName);
         void ValidateOrderDatesAndModifiedBonusDates(List<SubscriptionOrderAddViewModel> vms, DateTime today, DateTime tomorrow, bool hasSubscriptionDayBeenConfirmed);
         void ValidateOrderBonusDates(List<DateTime> dates, DateTime today, DateTime tomorrow, bool hasSubscriptionDayBeenConfirmed);
         Task<List<SubscriptionOrderDayCountErrorViewModel>> ValidateDayCountAsync(int milkmanId, List<SubscriptionOrderAddViewModel> orderVms);
@@ -202,7 +202,7 @@ namespace SalesApi.Services.Subscription
             return errors;
         }
 
-        public List<SubscriptionOrder> AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName)
+        public DateTime AddSubscriptionOrders(List<SubscriptionOrderAddViewModel> vms, string userName)
         {
             var now = DateTime.Now;
             var orders = Mapper.Map<List<SubscriptionOrder>>(vms);
@@ -227,7 +227,7 @@ namespace SalesApi.Services.Subscription
                 }
             }
             _subscriptionOrderRepository.AddRange(orders);
-            return orders;
+            return now;
         }
     }
 }

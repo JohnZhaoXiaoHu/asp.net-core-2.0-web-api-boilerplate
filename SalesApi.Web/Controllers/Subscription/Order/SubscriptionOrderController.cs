@@ -87,13 +87,12 @@ namespace SalesApi.Web.Controllers.Subscription.Order
             {
                 return BadRequest(invalidateDates);
             }
-            var orders =_subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
+            var createTime =_subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-            var result = Mapper.Map<List<SubscriptionOrder>, List<SubscriptionOrderViewModel>>(orders);
-            return Ok(result);
+            return Ok(createTime);
         }
 
         [HttpPut("{id}")]
