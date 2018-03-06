@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
+using SalesApi.Models.Subscription.Order;
 using SalesApi.Repositories.Subscription.Order;
 using SalesApi.Repositories.Subscription.Promotion;
 using SalesApi.Services.Subscription;
@@ -86,12 +87,13 @@ namespace SalesApi.Web.Controllers.Subscription.Order
             {
                 return BadRequest(invalidateDates);
             }
-            _subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
+            var orders =_subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");
             }
-            return NoContent();
+            var result = Mapper.Map<List<SubscriptionOrder>, List<SubscriptionOrderViewModel>>(orders);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
