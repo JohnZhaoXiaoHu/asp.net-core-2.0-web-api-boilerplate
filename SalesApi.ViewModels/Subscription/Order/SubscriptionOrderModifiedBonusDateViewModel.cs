@@ -9,5 +9,6 @@ namespace SalesApi.ViewModels.Subscription.Order
         public int SubscriptionProductSnapshotId { get; set; }
         public DateTime Date { get; set; }
         public int DayCount { get; set; }
+        public string ProductName { get; set; }
     }
 }

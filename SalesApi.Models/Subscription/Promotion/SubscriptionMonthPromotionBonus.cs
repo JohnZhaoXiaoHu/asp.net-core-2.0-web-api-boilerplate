@@ -17,6 +17,7 @@ namespace SalesApi.Models.Subscription.Promotion
         public int PresetDayBonusCount { get; set; }
 
         public SubscriptionMonthPromotion SubscriptionMonthPromotion { get; set; }
+        public ProductForSubscription ProductForSubscription { get; set; }
         public ICollection<SubscriptionMonthPromotionBonusDate> SubscriptionMonthPromotionBonusDates { get; set; }
     }
 
@@ -26,6 +27,7 @@ namespace SalesApi.Models.Subscription.Promotion
         {
             b.HasOne(x => x.SubscriptionMonthPromotion).WithMany(x => x.SubscriptionMonthPromotionBonuses)
                 .HasForeignKey(x => x.SubscriptionMonthPromotionId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(x => x.ProductForSubscription).WithMany().HasForeignKey(x => x.ProductForSubscriptionId).OnDelete(DeleteBehavior.Restrict);
             b.HasIndex(x => new { x.SubscriptionMonthPromotionId, x.ProductForSubscriptionId, x.PresetDayBonusCount }).IsUnique();
         }
     }

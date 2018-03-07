@@ -156,10 +156,21 @@ namespace SalesApi.Web.Configurations
             CreateMap<SubscriptionMonthPromotion, SubscriptionMonthPromotionViewModel>();
             CreateMap<SubscriptionMonthPromotionBonus, SubscriptionMonthPromotionBonusViewModel>();
             CreateMap<SubscriptionMonthPromotionBonusDate, SubscriptionMonthPromotionBonusDateViewModel>();
-            CreateMap<SubscriptionOrder, SubscriptionOrderViewModel>();
+            CreateMap<SubscriptionOrder, SubscriptionOrderViewModel>()
+                .ForMember(d => d.MilkmanName, o => o.MapFrom(s => s.Milkman.Name))
+                .ForMember(d => d.MilkmanNo, o => o.MapFrom(s => s.Milkman.No))
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.SubscriptionProductSnapshot.Name));
             CreateMap<SubscriptionOrderDate, SubscriptionOrderDateViewModel>();
-            CreateMap<SubscriptionOrderBonusDate, SubscriptionOrderBonusDateViewModel>();
-            CreateMap<SubscriptionOrderModifiedBonusDate, SubscriptionOrderModifiedBonusDateViewModel>();
+            CreateMap<SubscriptionOrderBonusDate, SubscriptionOrderBonusDateViewModel>()
+                .ForMember(d => d.Date, o => o.MapFrom(s => s.SubscriptionMonthPromotionBonusDate.Date))
+                .ForMember(d => d.DayBonusCount, o => o.MapFrom(s => s.SubscriptionMonthPromotionBonusDate.DayBonusCount))
+                .ForMember(d => d.ProductForSubscriptionId, o => o.MapFrom(s => s.SubscriptionMonthPromotionBonusDate.SubscriptionMonthPromotionBonus.ProductForSubscriptionId))
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.SubscriptionMonthPromotionBonusDate.SubscriptionMonthPromotionBonus.ProductForSubscription.Product.Name))
+                .ForMember(d => d.SubscriptionMonthPromotion, o => o.MapFrom(s => s.SubscriptionMonthPromotionBonusDate.SubscriptionMonthPromotionBonus.SubscriptionMonthPromotion));
+            CreateMap<SubscriptionMonthPromotion, SubscriptionMonthPromotionSimpleViewModel>()
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.ProductForSubscription.Product.Name));
+            CreateMap<SubscriptionOrderModifiedBonusDate, SubscriptionOrderModifiedBonusDateViewModel>()
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.SubscriptionProductSnapshot != null ? s.SubscriptionProductSnapshot.Name : null));
 
             #endregion
         }

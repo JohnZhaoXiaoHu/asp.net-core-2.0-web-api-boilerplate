@@ -44,6 +44,7 @@ namespace SalesApi.Models.Subscription.Order
                 .OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.SubscriptionMonthPromotion).WithMany().HasForeignKey(x => x.SubscriptionMonthPromotionId)
                 .OnDelete(DeleteBehavior.Restrict);
+            b.HasIndex(x => x.CreateTime);
         }
     }
 }

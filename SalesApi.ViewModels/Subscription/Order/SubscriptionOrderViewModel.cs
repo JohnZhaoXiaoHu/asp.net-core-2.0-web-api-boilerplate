@@ -16,6 +16,10 @@ namespace SalesApi.ViewModels.Subscription.Order
 
         public DateTime? PaidTime { get; set; }
 
+        public string MilkmanName { get; set; }
+        public string MilkmanNo { get; set; }
+        public string ProductName { get; set; }
+
         public List<SubscriptionOrderDateViewModel> SubscriptionOrderDates { get; set; }
         public List<SubscriptionOrderBonusDateViewModel> SubscriptionOrderBonusDates { get; set; }
         public List<SubscriptionOrderModifiedBonusDateViewModel> SubscriptionOrderModifiedBonusDates { get; set; }
