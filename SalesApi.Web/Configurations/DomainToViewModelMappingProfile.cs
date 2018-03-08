@@ -159,7 +159,8 @@ namespace SalesApi.Web.Configurations
             CreateMap<SubscriptionOrder, SubscriptionOrderViewModel>()
                 .ForMember(d => d.MilkmanName, o => o.MapFrom(s => s.Milkman.Name))
                 .ForMember(d => d.MilkmanNo, o => o.MapFrom(s => s.Milkman.No))
-                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.SubscriptionProductSnapshot.Name));
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.SubscriptionProductSnapshot.Name))
+                .ForMember(d => d.Price, o => o.MapFrom(s => s.SubscriptionProductSnapshot.Price));
             CreateMap<SubscriptionOrderDate, SubscriptionOrderDateViewModel>();
             CreateMap<SubscriptionOrderBonusDate, SubscriptionOrderBonusDateViewModel>()
                 .ForMember(d => d.Date, o => o.MapFrom(s => s.SubscriptionMonthPromotionBonusDate.Date))

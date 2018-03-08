@@ -51,14 +51,22 @@ namespace SalesApi.Web.Controllers.Subscription.Order
             }
             var hasDayBeenConfirmed = await HasSubscriptionDayBeenConfirmed();
 
-            var bonusDateIds = orderVms.SelectMany(x => x.SubscriptionOrderBonusDates)
-                .Select(x => x.SubscriptionMonthPromotionBonusDateId).Distinct().ToList();
-            var promotionBonusDates = await _subscriptionMonthPromotionBonusDateRepository.All
-                .Where(x => bonusDateIds.Contains(x.Id)).ToListAsync();
+            var monthPromotionIds = orderVms.Select(x => x.SubscriptionMonthPromotionId).Distinct().ToList();
+            var promotionBonusDates = await _subscriptionMonthPromotionBonusDateRepository.AllIncluding(x => x.SubscriptionMonthPromotionBonus)
+                .Where(x => monthPromotionIds.Contains(x.SubscriptionMonthPromotionBonus.SubscriptionMonthPromotion.Id)).ToListAsync();
             if (promotionBonusDates.Any())
             {
                 var bonusDates = promotionBonusDates.Select(x => x.Date).ToList();
                 _subscriptionOrderService.ValidateOrderBonusDates(bonusDates, Today, Tomorrow, hasDayBeenConfirmed);
+                foreach (var orderVm in orderVms)
+                {
+                    if (orderVm.SubscriptionMonthPromotionId.HasValue)
+                    {
+                        orderVm.SubscriptionOrderBonusDates = promotionBonusDates.Where(x => x.SubscriptionMonthPromotionBonus.SubscriptionMonthPromotionId == orderVm.SubscriptionMonthPromotionId)
+                        .Select(x => new SubscriptionOrderBonusDateViewModel { SubscriptionMonthPromotionBonusDateId = x.Id })
+                        .ToList();
+                    }
+                }
             }
 
             _subscriptionOrderService.ValidateOrderDatesAndModifiedBonusDates(orderVms, Today, Tomorrow, hasDayBeenConfirmed);
@@ -67,7 +75,7 @@ namespace SalesApi.Web.Controllers.Subscription.Order
             {
                 return BadRequest(invalidateDates);
             }
-            var createTime =_subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
+            var createTime = _subscriptionOrderService.AddSubscriptionOrders(orderVms, UserName);
             if (!await UnitOfWork.SaveAsync())
             {
                 return StatusCode(500, "保存时出错");

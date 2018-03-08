@@ -40,6 +40,7 @@ namespace SalesApi.Repositories.Subscription.Order
                 .Include(x => x.SubscriptionOrderModifiedBonusDates)
                     .ThenInclude(y => y.SubscriptionProductSnapshot)
                 .Where(x => x.CreateTime == createTime)
+                .OrderBy(x => x.Id)
                 .ToListAsync();
             return orders;
         }
