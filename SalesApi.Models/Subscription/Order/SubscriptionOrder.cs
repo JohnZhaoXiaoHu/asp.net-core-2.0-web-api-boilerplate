@@ -24,6 +24,7 @@ namespace SalesApi.Models.Subscription.Order
         public int PresetDayCount { get; set; }
         public int PresetDayBonus { get; set; }
         public int PresetDayGift { get; set; } // 批条
+        public bool IsInternal { get; set; }
         
         public DateTime? PaidTime { get; set; }
 

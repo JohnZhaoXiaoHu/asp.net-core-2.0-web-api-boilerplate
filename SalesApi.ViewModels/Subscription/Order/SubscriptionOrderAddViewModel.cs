@@ -13,6 +13,7 @@ namespace SalesApi.ViewModels.Subscription.Order
         public int? SubscriptionMonthPromotionId { get; set; }
         public int PresetDayCount { get; set; }
         public int PresetDayGift { get; set; } // 批条
+        public bool IsInternal { get; set; }
 
         public List<SubscriptionOrderDateViewModel> SubscriptionOrderDates { get; set; }
         public List<SubscriptionOrderBonusDateViewModel> SubscriptionOrderBonusDates { get; set; }
