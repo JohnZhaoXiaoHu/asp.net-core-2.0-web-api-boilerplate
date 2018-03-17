@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using SalesApi.Infrastructure.Abstractions.DomainModels;
 using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.Settings
 {
-    public class ProductCreationViewModel
+    public class ProductCreationViewModel: IOrder
     {
         public string Name { get; set; }
         public string FullName { get; set; }
@@ -13,6 +14,7 @@ namespace SalesApi.ViewModels.Settings
         public decimal EquivalentTon { get; set; }
         public string Barcode { get; set; }
         public decimal TaxRate { get; set; }
+        public int Order { get; set; }
     }
 
     public class ProductCreationValidator : AbstractValidator<ProductCreationViewModel>

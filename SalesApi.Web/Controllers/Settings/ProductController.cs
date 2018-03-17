@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SalesApi.Infrastructure.DomainModels;
 using SalesApi.Infrastructure.IRepositories.Settings;
 using SalesApi.Infrastructure.Services;
+using SalesApi.Shared.Enums;
 using SalesApi.ViewModels.Settings;
 using SalesApi.Web.Controllers.Bases;
 
@@ -149,6 +151,15 @@ namespace SalesApi.Web.Controllers.Settings
             var items = await _productRepository.All.Where(x => !x.Deleted).ToListAsync();
             var results = Mapper.Map<IEnumerable<ProductViewModel>>(items);
             return Ok(results);
+        }
+
+        [HttpGet]
+        [Route("ProductUnits")]
+        public IActionResult GetProductUnits()
+        {
+            var items = Enum.GetValues(typeof(ProductUnit)).Cast<ProductUnit>()
+                .Select(x => new KeyValuePair<string, int>(x.ToString(), (int)x));
+            return Ok(items);
         }
 
     }
