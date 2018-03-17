@@ -1,6 +1,5 @@
-# A real project using asp.net core 2.0 web (api) and identity server 4.
-## And also an asp.net core 2.0 web api boilerplate  
-You need to setup these environment variables:  
+# An asp.net core 2.0 web api boilerplate using identity server 4
+You need to setup these environment variables:   
 * **MLH:AuthorizationServer:ServerBase**, this is the authorization server base. such as http://localhost:5000.   
 * **MLH:AuthorizationServer:SigningCredentialCertificatePath**, this is the authorization server certificate path. such as "E:/xxx.pfx".  
 * **MLH:AuthorizationServer:SigningCredentialCertificatePassword**, this is the authorization server certificate password. such as "12345678"  
