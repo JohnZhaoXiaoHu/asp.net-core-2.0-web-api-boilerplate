@@ -1,11 +1,10 @@
-﻿using Infrastructure.Features.Common;
+﻿using SalesApi.Infrastructure.Abstractions.DomainModels;
 using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.Settings
 {
     public class ProductViewModel: EntityBase
     {
-        public string LegacyProductId { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
         public string Specification { get; set; }
@@ -14,7 +13,5 @@ namespace SalesApi.ViewModels.Settings
         public decimal EquivalentTon { get; set; }
         public string Barcode { get; set; }
         public decimal TaxRate { get; set; }
-        public string Pinyin { get; set; }
-        public string FullPinyin { get; set; }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
 using AutoMapper;
-using FluentValidation.AspNetCore;
-using Infrastructure.Features.Data;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,9 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using SalesApi.DataContext.Contexts;
+using SalesApi.Infrastructure.Abstractions.Data;
+using SalesApi.Infrastructure.Contexts;
+using SalesApi.Infrastructure.Services;
 using SalesApi.Shared.Settings;
-using SalesApi.ViewModels.Retail;
 using SalesApi.Web.Configurations;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -33,7 +31,7 @@ namespace SalesApi.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SalesContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("SalesApi.Web")));
 
             services.AddMvc(options =>
             {
@@ -45,7 +43,7 @@ namespace SalesApi.Web
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             })
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RetailPromotionSeriesAddViewModelValidator>());
+            .AddFluetValidations();
 
             services.AddAutoMapper();
 

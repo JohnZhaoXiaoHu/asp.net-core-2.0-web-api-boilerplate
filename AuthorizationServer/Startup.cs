@@ -15,7 +15,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SalesApi.Shared.Settings;
 using Serilog;
-using SharedSettings.Policies;
 
 namespace AuthorizationServer
 {

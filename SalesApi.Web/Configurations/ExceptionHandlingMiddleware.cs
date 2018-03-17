@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
 using SalesApi.Shared.Settings;
-using SharedSettings.Models;
+using SalesApi.Shared.UsefulModels;
 
 namespace SalesApi.Web.Configurations
 {

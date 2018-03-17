@@ -5,7 +5,12 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MLH:AuthorizationServer:ServerBase": "http://localhost:5000",
+        "MLH:AuthorizationServer:SigningCredentialCertificatePath": "D:\\Projects\\dotnet\\MLH\\Certificates\\mlhsales.pfx",
+        "MLH:AuthorizationServer:SigningCredentialCertificatePassword": "Bx@steel",
+        "MLH:SalesApi:ServerBase": "http://localhost:5100",
+        "MLH:SalesApi:ClientBase": "http://localhost:4200"
       },
       "applicationUrl": "http://localhost:5100/"
     }

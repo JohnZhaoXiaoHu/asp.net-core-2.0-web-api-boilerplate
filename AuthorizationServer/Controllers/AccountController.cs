@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AuthorizationServer.Configuration;
 using AuthorizationServer.Extensions;
 using AuthorizationServer.Models;
 using AuthorizationServer.Models.AccountViewModels;
@@ -19,7 +20,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SharedSettings.Policies;
 
 namespace AuthorizationServer.Controllers
 {

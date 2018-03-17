@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Infrastructure.Features.Common;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SalesApi.Models.Settings;
-using SalesApi.Repositories.Settings;
+using SalesApi.Infrastructure.DomainModels;
+using SalesApi.Infrastructure.IRepositories.Settings;
+using SalesApi.Infrastructure.Services;
 using SalesApi.ViewModels.Settings;
 using SalesApi.Web.Controllers.Bases;
 
@@ -45,7 +44,7 @@ namespace SalesApi.Web.Controllers.Settings
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProductViewModel productVm)
+        public async Task<IActionResult> Post([FromBody] ProductCreationViewModel productVm)
         {
             if (productVm == null)
             {
@@ -58,8 +57,6 @@ namespace SalesApi.Web.Controllers.Settings
             }
 
             var newItem = Mapper.Map<Product>(productVm);
-            _productRepository.SetPinyin(newItem);
-            newItem.SetCreation(UserName);
             _productRepository.Add(newItem);
             if (!await UnitOfWork.SaveAsync())
             {
@@ -72,7 +69,7 @@ namespace SalesApi.Web.Controllers.Settings
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ProductViewModel productVm)
+        public async Task<IActionResult> Put(int id, [FromBody] ProductModificationViewModel productVm)
         {
             if (productVm == null)
             {
@@ -89,8 +86,6 @@ namespace SalesApi.Web.Controllers.Settings
                 return NotFound();
             }
             Mapper.Map(productVm, dbItem);
-            _productRepository.SetPinyin(dbItem);
-            dbItem.SetModification(UserName);
             _productRepository.Update(dbItem);
             if (!await UnitOfWork.SaveAsync())
             {
@@ -101,7 +96,7 @@ namespace SalesApi.Web.Controllers.Settings
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<ProductViewModel> patchDoc)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<ProductModificationViewModel> patchDoc)
         {
             if (patchDoc == null)
             {
@@ -112,7 +107,7 @@ namespace SalesApi.Web.Controllers.Settings
             {
                 return NotFound();
             }
-            var toPatchVm = Mapper.Map<ProductViewModel>(dbItem);
+            var toPatchVm = Mapper.Map<ProductModificationViewModel>(dbItem);
             patchDoc.ApplyTo(toPatchVm, ModelState);
 
             TryValidateModel(toPatchVm);
@@ -122,7 +117,6 @@ namespace SalesApi.Web.Controllers.Settings
             }
 
             Mapper.Map(toPatchVm, dbItem);
-            _productRepository.SetPinyin(dbItem);
 
             if (!await UnitOfWork.SaveAsync())
             {
