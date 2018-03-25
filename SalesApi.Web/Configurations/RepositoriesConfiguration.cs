@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SalesApi.Infrastructure.IRepositories.Settings;
+using SalesApi.Core.IRepositories.Settings;
 using SalesApi.Repositories.Settings;
 
 namespace SalesApi.Web.Configurations

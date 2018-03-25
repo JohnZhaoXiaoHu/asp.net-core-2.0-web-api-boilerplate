@@ -1,9 +1,9 @@
 ﻿using SalesApi.Core.Abstractions.DomainModels;
 using SalesApi.Shared.Enums;
 
-namespace SalesApi.ViewModels.Settings
+namespace SalesApi.Core.DomainModels
 {
-    public class ProductModificationViewModel: IDeleted, IOrder
+    public class Product : EntityBase
     {
         public string Name { get; set; }
         public string FullName { get; set; }
@@ -13,7 +13,5 @@ namespace SalesApi.ViewModels.Settings
         public decimal EquivalentTon { get; set; }
         public string Barcode { get; set; }
         public decimal TaxRate { get; set; }
-        public bool Deleted { get; set; }
-        public int Order { get; set; }
     }
 }

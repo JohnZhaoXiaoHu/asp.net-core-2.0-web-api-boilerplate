@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SalesApi.Infrastructure\SalesApi.Infrastructure.csproj" />
+    <ProjectReference Include="..\SalesApi.Core\SalesApi.Core.csproj" />
     <ProjectReference Include="..\SalesApi.Repositories\SalesApi.Repositories.csproj" />
     <ProjectReference Include="..\SalesApi.Shared\SalesApi.Shared.csproj" />
   </ItemGroup>

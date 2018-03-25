@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
-using SalesApi.Infrastructure.Contexts;
+using SalesApi.Core.Contexts;
 using SalesApi.Shared.Enums;
 using System;
 
@@ -21,7 +21,7 @@ namespace SalesApi.Web.Migrations
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SalesApi.Infrastructure.DomainModels.Product", b =>
+            modelBuilder.Entity("SalesApi.Core.DomainModels.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();

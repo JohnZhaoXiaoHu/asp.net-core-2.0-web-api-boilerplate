@@ -1,6 +1,6 @@
-﻿using SalesApi.Infrastructure.Abstractions.Data;
-using SalesApi.Infrastructure.DomainModels;
-using SalesApi.Infrastructure.IRepositories.Settings;
+﻿using SalesApi.Core.Abstractions.Data;
+using SalesApi.Core.DomainModels;
+using SalesApi.Core.IRepositories.Settings;
 
 namespace SalesApi.Repositories.Settings
 {

@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesApi.Shared", "SalesApi.Shared\SalesApi.Shared.csproj", "{87345A55-B2AC-476B-A2AC-B0FBA89197C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesApi.Infrastructure", "SalesApi.Infrastructure\SalesApi.Infrastructure.csproj", "{595EB205-8A35-4F5C-8A03-0B9F33ABF5FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesApi.Core", "SalesApi.Core\SalesApi.Core.csproj", "{595EB205-8A35-4F5C-8A03-0B9F33ABF5FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

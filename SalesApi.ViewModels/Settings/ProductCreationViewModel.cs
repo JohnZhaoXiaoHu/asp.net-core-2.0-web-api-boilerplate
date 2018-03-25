@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SalesApi.Infrastructure.Abstractions.DomainModels;
+using SalesApi.Core.Abstractions.DomainModels;
 using SalesApi.Shared.Enums;
 
 namespace SalesApi.ViewModels.Settings

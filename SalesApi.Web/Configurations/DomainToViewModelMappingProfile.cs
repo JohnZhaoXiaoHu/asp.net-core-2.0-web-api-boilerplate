@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SalesApi.Infrastructure.DomainModels;
+using SalesApi.Core.DomainModels;
 using SalesApi.ViewModels.Settings;
 
 namespace SalesApi.Web.Configurations

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SalesApi.Infrastructure.IServices.Settings;
+using SalesApi.Core.IServices.Settings;
 using SalesApi.Services.Settings;
 
 namespace SalesApi.Web.Configurations

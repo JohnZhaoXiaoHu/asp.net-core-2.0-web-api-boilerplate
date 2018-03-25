@@ -2,8 +2,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SalesApi.Infrastructure.Abstractions.Data;
-using SalesApi.Infrastructure.Services;
+using SalesApi.Core.Abstractions.Data;
+using SalesApi.Core.Services;
 
 namespace SalesApi.Web.Controllers.Bases
 {

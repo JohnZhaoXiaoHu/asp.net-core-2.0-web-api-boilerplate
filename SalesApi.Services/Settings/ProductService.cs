@@ -1,5 +1,5 @@
-﻿using SalesApi.Infrastructure.IRepositories.Settings;
-using SalesApi.Infrastructure.IServices.Settings;
+﻿using SalesApi.Core.IRepositories.Settings;
+using SalesApi.Core.IServices.Settings;
 
 namespace SalesApi.Services.Settings
 {

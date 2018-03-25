@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SalesApi.Infrastructure.Contexts;
+using SalesApi.Core.Contexts;
 
 namespace SalesApi.Web.Configurations
 {
