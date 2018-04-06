@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SalesApi.Core.IRepositories.Settings;
-using SalesApi.Repositories.Settings;
+using SalesApi.Core.IRepositories;
+using SalesApi.Repositories;
 
 namespace SalesApi.Web.Configurations
 {
@@ -9,6 +9,8 @@ namespace SalesApi.Web.Configurations
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
         }
     }
 }

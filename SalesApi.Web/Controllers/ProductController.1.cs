@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Core.DomainModels;
-using SalesApi.Core.IRepositories.Settings;
+using SalesApi.Core.IRepositories;
 using SalesApi.Core.Services;
 using SalesApi.Shared.Enums;
-using SalesApi.ViewModels.Settings;
+using SalesApi.ViewModels;
 using SalesApi.Web.Controllers.Bases;
 
-namespace SalesApi.Web.Controllers.Settings
+namespace SalesApi.Web.Controllers
 {
     [Route("api/sales/[controller]")]
-    public class ProductController : SalesController<ProductController>
+    public class ProductController : SalesBaseController<ProductController>
     {
         private readonly IProductRepository _productRepository;
         public ProductController(ICoreService<ProductController> coreService,

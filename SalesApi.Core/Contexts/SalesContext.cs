@@ -15,8 +15,12 @@ namespace SalesApi.Core.Contexts
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new VehicleConfiguration());
+            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }

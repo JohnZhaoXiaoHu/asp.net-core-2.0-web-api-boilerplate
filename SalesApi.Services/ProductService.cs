@@ -1,7 +1,7 @@
-﻿using SalesApi.Core.IRepositories.Settings;
-using SalesApi.Core.IServices.Settings;
+﻿using SalesApi.Core.IRepositories;
+using SalesApi.Core.IServices;
 
-namespace SalesApi.Services.Settings
+namespace SalesApi.Services
 {
     public class ProductService : IProductService
     {

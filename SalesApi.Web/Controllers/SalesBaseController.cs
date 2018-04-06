@@ -7,14 +7,14 @@ using SalesApi.Core.Services;
 
 namespace SalesApi.Web.Controllers.Bases
 {
-    public abstract class SalesController<T> : Controller
+    public abstract class SalesBaseController<T> : Controller
     {
         protected readonly IUnitOfWork UnitOfWork;
         protected readonly ILogger<T> Logger;
         protected readonly IMapper Mapper;
         protected readonly ICoreService<T> CoreService;
 
-        protected SalesController(ICoreService<T> coreService)
+        protected SalesBaseController(ICoreService<T> coreService)
         {
             CoreService = coreService;
             UnitOfWork = coreService.UnitOfWork;

@@ -1,8 +1,8 @@
 ﻿using SalesApi.Core.Abstractions.Data;
 using SalesApi.Core.DomainModels;
-using SalesApi.Core.IRepositories.Settings;
+using SalesApi.Core.IRepositories;
 
-namespace SalesApi.Repositories.Settings
+namespace SalesApi.Repositories
 {
     public class ProductRepository : EntityBaseRepository<Product>, IProductRepository
     {

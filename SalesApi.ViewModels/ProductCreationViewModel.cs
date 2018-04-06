@@ -2,7 +2,7 @@
 using SalesApi.Core.Abstractions.DomainModels;
 using SalesApi.Shared.Enums;
 
-namespace SalesApi.ViewModels.Settings
+namespace SalesApi.ViewModels
 {
     public class ProductCreationViewModel: IOrder
     {

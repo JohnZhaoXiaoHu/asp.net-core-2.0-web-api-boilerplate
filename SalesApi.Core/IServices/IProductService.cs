@@ -1,4 +1,4 @@
-﻿namespace SalesApi.Core.IServices.Settings
+﻿namespace SalesApi.Core.IServices
 {
     public interface IProductService
     {

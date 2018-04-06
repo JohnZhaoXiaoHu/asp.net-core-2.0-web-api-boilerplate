@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SalesApi.Core.DomainModels;
-using SalesApi.ViewModels.Settings;
+using SalesApi.ViewModels;
 
 namespace SalesApi.Web.Configurations
 {
@@ -11,6 +11,8 @@ namespace SalesApi.Web.Configurations
         public DomainToViewModelMappingProfile()
         {
             CreateMap<Product, ProductViewModel>();
+            CreateMap<Vehicle, VehicleViewModel>();
+            CreateMap<Customer, CustomerViewModel>();
         }
     }
 }
