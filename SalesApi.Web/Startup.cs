@@ -39,16 +39,18 @@ namespace SalesApi.Web
 
             services.AddMvc(options =>
             {
+                options.ReturnHttpNotAcceptable = true;
+                // the default formatter is the first one in the list.
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
 
-                // set authorize on all controllers or routes
+                // set authorization on all controllers or routes
                 var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             })
-            .AddFluetValidations(); 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            .AddFluetValidations();
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(factory =>
             {
