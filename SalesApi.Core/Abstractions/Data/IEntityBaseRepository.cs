@@ -9,18 +9,14 @@ namespace SalesApi.Core.Abstractions.Data
 {
     public interface IEntityBaseRepository<T> where T : class, IEntityBase, new()
     {
-        IQueryable<T> All { get; }
-        IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties);
-
-        int Count();
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includeProperties);
+        Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
         Task<int> CountAsync();
-        T GetSingle(int id);
         Task<T> GetSingleAsync(int id);
-        T GetSingle(Expression<Func<T, bool>> predicate);
         Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate);
-        T GetSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
         Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
-        IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);

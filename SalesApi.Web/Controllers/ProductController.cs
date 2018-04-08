@@ -27,7 +27,7 @@ namespace SalesApi.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _productRepository.All.ToListAsync();
+            var items = await _productRepository.GetAllAsync();
             var results = Mapper.Map<IEnumerable<ProductViewModel>>(items);
             return Ok(results);
         }
@@ -55,7 +55,7 @@ namespace SalesApi.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return UnprocessableEntity(ModelState);
             }
 
             var newItem = Mapper.Map<Product>(productVm);
@@ -80,7 +80,7 @@ namespace SalesApi.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return UnprocessableEntity(ModelState);
             }
             var dbItem = await _productRepository.GetSingleAsync(id);
             if (dbItem == null)
@@ -115,7 +115,7 @@ namespace SalesApi.Web.Controllers
             TryValidateModel(toPatchVm);
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return UnprocessableEntity(ModelState);
             }
 
             Mapper.Map(toPatchVm, dbItem);
@@ -148,7 +148,7 @@ namespace SalesApi.Web.Controllers
         [Route("NotDeleted")]
         public async Task<IActionResult> GetNotDeleted()
         {
-            var items = await _productRepository.All.Where(x => !x.Deleted).ToListAsync();
+            var items = await _productRepository.FilterAsync(x => !x.Deleted);
             var results = Mapper.Map<IEnumerable<ProductViewModel>>(items);
             return Ok(results);
         }

@@ -35,7 +35,7 @@ namespace SalesApi.Web.Controllers
         [HttpGet(Name = "GetAllVehicles")]
         public async Task<IActionResult> GetAll()
         {
-            var items = await _vehicleRepository.All.ToListAsync();
+            var items = await _vehicleRepository.GetAllAsync();
             var results = Mapper.Map<IEnumerable<VehicleViewModel>>(items);
             results = results.Select(CreateLinksForVehicle);
             var wrapper = new LinkedCollectionResourceWrapperViewModel<VehicleViewModel>(results);
@@ -65,7 +65,7 @@ namespace SalesApi.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return UnprocessableEntity(ModelState);
             }
 
             var newItem = Mapper.Map<Vehicle>(vehicleVm);
@@ -90,7 +90,7 @@ namespace SalesApi.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return UnprocessableEntity(ModelState);
             }
             var dbItem = await _vehicleRepository.GetSingleAsync(id);
             if (dbItem == null)
@@ -125,7 +125,7 @@ namespace SalesApi.Web.Controllers
             TryValidateModel(toPatchVm);
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return UnprocessableEntity(ModelState);
             }
 
             Mapper.Map(toPatchVm, dbItem);
@@ -158,7 +158,7 @@ namespace SalesApi.Web.Controllers
         [Route("NotDeleted")]
         public async Task<IActionResult> GetNotDeleted()
         {
-            var items = await _vehicleRepository.All.Where(x => !x.Deleted).ToListAsync();
+            var items = await _vehicleRepository.FilterAsync(x => !x.Deleted);
             var results = Mapper.Map<IEnumerable<VehicleViewModel>>(items);
             return Ok(results);
         }
