@@ -29,4 +29,4 @@ You can use migration commands both in Visual Studio 2017 or through "dotnet ef"
 * Swagger
 
 ## Features:
-* The VehicleController Implemented HATEOAS architecture style.
+* The VehicleController and CustomerController Implemented HATEOAS architecture style in different ways.
