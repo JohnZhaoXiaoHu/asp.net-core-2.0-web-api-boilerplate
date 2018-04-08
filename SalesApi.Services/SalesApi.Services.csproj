@@ -9,10 +9,4 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SalesApi.Core\SalesApi.Core.csproj" />
-    <ProjectReference Include="..\SalesApi.Repositories\SalesApi.Repositories.csproj" />
-    <ProjectReference Include="..\SalesApi.Shared\SalesApi.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

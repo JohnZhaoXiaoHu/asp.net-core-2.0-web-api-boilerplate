@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Sales.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5100/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Dave:AuthorizationServer:ServerBase": "http://localhost:5000",
+        "Dave:SalesApi:ServerBase": "http://localhost:5100",
+        "Dave:SalesApi:ClientBase": "http://localhost:4200"
+      },
+      "applicationUrl": "http://localhost:5100/"
+    }
+  }
+}

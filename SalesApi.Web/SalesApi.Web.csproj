@@ -24,21 +24,13 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.1.1" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.1-dev-00771" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\SalesApi.Core\SalesApi.Core.csproj" />
-    <ProjectReference Include="..\SalesApi.Repositories\SalesApi.Repositories.csproj" />
-    <ProjectReference Include="..\SalesApi.Services\SalesApi.Services.csproj" />
-    <ProjectReference Include="..\SalesApi.Shared\SalesApi.Shared.csproj" />
-    <ProjectReference Include="..\SalesApi.ViewModels\SalesApi.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

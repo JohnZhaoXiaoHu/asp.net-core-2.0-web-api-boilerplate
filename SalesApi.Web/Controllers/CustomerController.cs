@@ -8,10 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesApi.Core.Abstractions.Hateoas;
 using SalesApi.Core.DomainModels;
+using SalesApi.Core.Helpers;
 using SalesApi.Core.IRepositories;
 using SalesApi.Core.Services;
-using SalesApi.Shared.Enums;
-using SalesApi.Shared.Helpers;
 using SalesApi.ViewModels;
 using SalesApi.Web.Controllers.Bases;
 

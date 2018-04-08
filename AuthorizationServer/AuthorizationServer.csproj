@@ -30,11 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SalesApi.Shared\SalesApi.Shared.csproj" />
+    <Folder Include="logs\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="logs\" />
+    <ProjectReference Include="..\ApiSettings\ApiSettings.csproj" />
   </ItemGroup>
 
 </Project>

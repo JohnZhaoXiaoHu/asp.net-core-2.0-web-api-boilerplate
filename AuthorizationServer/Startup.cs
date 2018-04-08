@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using ApiSettings;
 using AuthorizationServer.Configuration;
 using AuthorizationServer.Data;
 using AuthorizationServer.Extensions;
@@ -13,8 +14,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SalesApi.Shared.Settings;
-using Serilog;
 
 namespace AuthorizationServer
 {
@@ -29,7 +28,7 @@ namespace AuthorizationServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Configuration.GetConnectionString("AuthorizationConnection");
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -77,8 +76,8 @@ namespace AuthorizationServer
                 .AddDeveloperSigningCredential()
 #else
                 .AddSigningCredential(new System.Security.Cryptography.X509Certificates.X509Certificate2(
-                    Configuration["MLH:AuthorizationServer:SigningCredentialCertificatePath"],
-                    Configuration["MLH:AuthorizationServer:SigningCredentialCertificatePassword"]))
+                    Configuration["Dave:AuthorizationServer:SigningCredentialCertificatePath"],
+                    Configuration["Dave:AuthorizationServer:SigningCredentialCertificatePassword"]))
 #endif
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
@@ -103,13 +102,7 @@ namespace AuthorizationServer
             {
                 options.AddPolicy(SalesApiSettings.CorsPolicyName, policy =>
                 {
-                    policy.WithOrigins(Configuration["MLH:SalesApi:ClientBase"])
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-                options.AddPolicy("purchase", policy =>
-                {
-                    policy.WithOrigins(Configuration["MLH:PurchaseApi:ClientBase"])
+                    policy.WithOrigins(Configuration["Dave:SalesApi:ClientBase"])
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
