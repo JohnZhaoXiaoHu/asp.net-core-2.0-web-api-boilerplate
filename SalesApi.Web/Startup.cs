@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json.Serialization;
 using SalesApi.Core.Abstractions.Data;
 using SalesApi.Core.Contexts;
 using SalesApi.Core.Services;
@@ -48,6 +49,10 @@ namespace SalesApi.Web
                     .RequireAuthenticatedUser()
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
+            })
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             })
             .AddFluetValidations();
 

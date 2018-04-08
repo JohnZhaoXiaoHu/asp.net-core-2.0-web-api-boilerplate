@@ -21,72 +21,60 @@ namespace SalesApi.Core.Abstractions.Data
         }
         #endregion
 
-        public virtual IQueryable<T> All => Context.Set<T>();
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await Context.Set<T>().ToListAsync();
+        }
 
-        public virtual IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        public virtual async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = Context.Set<T>();
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
             }
-            return query;
+            return await query.ToListAsync();
         }
 
-        public virtual int Count()
+        public virtual async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
-            return Context.Set<T>().Count();
+            IQueryable<T> query = Context.Set<T>();
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            return await query.Where(predicate).ToListAsync();
         }
 
-        public async Task<int> CountAsync()
+
+        public virtual async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await Context.Set<T>().Where(predicate).ToListAsync();
+        }
+
+        public virtual async Task<int> CountAsync()
         {
             return await Context.Set<T>().CountAsync();
         }
 
-        public T GetSingle(int id)
-        {
-            return Context.Set<T>().FirstOrDefault(x => x.Id == id);
-        }
-
-        public async Task<T> GetSingleAsync(int id)
+        public virtual async Task<T> GetSingleAsync(int id)
         {
             return await Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public T GetSingle(Expression<Func<T, bool>> predicate)
-        {
-            return Context.Set<T>().FirstOrDefault(predicate);
-        }
-
-        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate)
+        public virtual async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate)
         {
             return await Context.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
-        public T GetSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public virtual async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = Context.Set<T>();
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
             }
-            return query.Where(predicate).FirstOrDefault();
-        }
-
-        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
-        {
-            IQueryable<T> query = Context.Set<T>();
-            foreach (var includeProperty in includeProperties)
-            {
-                query = query.Include(includeProperty);
-            }
-
             return await query.Where(predicate).FirstOrDefaultAsync();
-        }
-
-        public virtual IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
-        {
-            return Context.Set<T>().Where(predicate);
         }
 
         public virtual void Add(T entity)
@@ -98,7 +86,6 @@ namespace SalesApi.Core.Abstractions.Data
         {
             EntityEntry<T> dbEntityEntry = Context.Entry(entity);
             dbEntityEntry.State = EntityState.Modified;
-
             dbEntityEntry.Property(x => x.Id).IsModified = false;
         }
 
@@ -128,12 +115,12 @@ namespace SalesApi.Core.Abstractions.Data
                 Context.Entry<T>(entity).State = EntityState.Deleted;
             }
         }
-        public void Attach(T entity)
+        public virtual void Attach(T entity)
         {
             Context.Set<T>().Attach(entity);
         }
 
-        public void AttachRange(IEnumerable<T> entities)
+        public virtual void AttachRange(IEnumerable<T> entities)
         {
             foreach (var entity in entities)
             {
@@ -141,12 +128,12 @@ namespace SalesApi.Core.Abstractions.Data
             }
         }
 
-        public void Detach(T entity)
+        public virtual void Detach(T entity)
         {
             Context.Entry<T>(entity).State = EntityState.Detached;
         }
 
-        public void DetachRange(IEnumerable<T> entities)
+        public virtual void DetachRange(IEnumerable<T> entities)
         {
             foreach (var entity in entities)
             {
@@ -154,11 +141,11 @@ namespace SalesApi.Core.Abstractions.Data
             }
         }
 
-        public void AttachAsModified(T entity)
+        public virtual void AttachAsModified(T entity)
         {
             Attach(entity);
             Update(entity);
         }
-        
+
     }
 }

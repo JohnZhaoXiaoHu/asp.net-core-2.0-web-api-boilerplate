@@ -1,9 +1,11 @@
 ﻿using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using SalesApi.Core.Abstractions.Data;
 using SalesApi.Core.Services;
+using SalesApi.Web.Helpers;
 
 namespace SalesApi.Web.Controllers.Bases
 {
@@ -24,9 +26,18 @@ namespace SalesApi.Web.Controllers.Bases
 
         #region Current Information
 
-        protected DateTime Now => DateTime.Now;
+        protected DateTimeOffset Now => DateTime.Now;
         protected string UserName => User.Identity.Name ?? "Anonymous";
-        protected DateTime Today => DateTime.Now.Date;
+        protected DateTimeOffset Today => DateTime.Now.Date;
+
+        #endregion
+
+        #region HTTP Status Codes
+
+        protected UnprocessableEntityObjectResult UnprocessableEntity(ModelStateDictionary modelState)
+        {
+            return new UnprocessableEntityObjectResult(modelState);
+        }
 
         #endregion
     }
