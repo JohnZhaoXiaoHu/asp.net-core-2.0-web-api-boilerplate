@@ -88,16 +88,13 @@ namespace Sales.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
                 ListAllRegisteredServices(app);
-                app.UseDatabaseErrorPage();
             }
             else
             {
                 app.InitializeDatabase();
-                app.UseExceptionHandlingMiddleware();
             }
+            app.UseExceptionHandlingMiddleware();
             app.UseCors(SalesApiSettings.CorsPolicyName);
             app.UseStaticFiles();
             app.UseSwagger();

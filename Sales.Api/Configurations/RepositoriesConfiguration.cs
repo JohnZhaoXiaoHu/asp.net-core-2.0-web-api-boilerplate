@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Sales.Core.Interfaces;
 using Sales.Infrastructure.Data;
+using Sales.Infrastructure.Repositories;
 
 namespace Sales.Api.Configurations
 {
