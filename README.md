@@ -27,3 +27,6 @@ You can use migration commands both in Visual Studio 2017 or through "dotnet ef"
 * Serilog (Write to Console, RollingFile, MSSql Server)
 * Fluent Validation
 * Swagger
+
+## Features:
+* The VehicleController Implemented HATEOAS architecture style.

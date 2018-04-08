@@ -123,7 +123,6 @@ namespace SalesApi.Core.Abstractions.Data
         public virtual void DeleteWhere(Expression<Func<T, bool>> predicate)
         {
             IEnumerable<T> entities = Context.Set<T>().Where(predicate);
-
             foreach (var entity in entities)
             {
                 Context.Entry<T>(entity).State = EntityState.Deleted;
