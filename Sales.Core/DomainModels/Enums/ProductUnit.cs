@@ -1,4 +1,4 @@
-﻿namespace Sales.Core.Enums
+﻿namespace Sales.Core.DomainModels.Enums
 {
     public enum ProductUnit
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sales.Core.Bases;
 
-namespace Sales.Core.Bases.Tree
+namespace Sales.Infrastructure.Extensions
 {
     public static class TreeExtensions
     {

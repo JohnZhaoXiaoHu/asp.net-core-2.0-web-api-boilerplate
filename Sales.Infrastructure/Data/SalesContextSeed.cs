@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Sales.Core.DomainModels;
-using Sales.Core.Enums;
+using Sales.Core.DomainModels.Enums;
 
 namespace Sales.Infrastructure.Data
 {

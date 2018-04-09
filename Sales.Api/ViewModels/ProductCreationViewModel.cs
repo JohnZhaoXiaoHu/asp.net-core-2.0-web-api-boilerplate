@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Sales.Core.Enums;
+using Sales.Core.DomainModels.Enums;
 using Sales.Core.Interfaces;
 
 namespace Sales.Api.ViewModels

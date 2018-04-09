@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using Sales.Core.Bases.Pagination;
+using Sales.Infrastructure.UsefulModels.Pagination;
 
-namespace Sales.Core.Extensions
+namespace Sales.Infrastructure.Extensions
 {
     public static class QueryableExtensions
     {
@@ -54,7 +54,7 @@ namespace Sales.Core.Extensions
             return source;
         }
 
-        public static IQueryable<object> ShapeData<TSource>(this IQueryable<TSource> source,
+        public static IQueryable<object> ToDynamicQueryable<TSource>(this IQueryable<TSource> source,
             string fields,
            Dictionary<string, PropertyMappingValue> mappingDictionary)
         {

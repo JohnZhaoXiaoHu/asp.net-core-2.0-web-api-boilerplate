@@ -1,5 +1,5 @@
 ﻿using Sales.Core.Bases;
-using Sales.Core.Enums;
+using Sales.Core.DomainModels.Enums;
 
 namespace Sales.Api.ViewModels
 {

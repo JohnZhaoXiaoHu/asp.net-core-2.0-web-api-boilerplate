@@ -5,6 +5,7 @@ using ApiSettings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
+using Sales.Api.ViewModels;
 using Sales.Infrastructure.UsefulModels;
 
 namespace Sales.Api.Configurations

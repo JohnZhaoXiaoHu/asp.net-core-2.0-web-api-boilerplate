@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sales.Core.Bases;
 
-namespace Sales.Infrastructure.Data
+namespace Sales.Infrastructure.EntityConfigurations
 {
     public abstract class EntityBaseConfiguration<T> : IEntityTypeConfiguration<T> where T : EntityBase
     {

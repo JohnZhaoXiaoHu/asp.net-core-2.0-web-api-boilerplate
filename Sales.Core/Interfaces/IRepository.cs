@@ -8,14 +8,10 @@ namespace Sales.Core.Interfaces
 {
     public interface IRepository<T> where T : EntityBase
     {
-        T GetById(int id);
         Task<T> GetByIdAsync(int id);
-        T GetById(int id, params Expression<Func<T, object>>[] includes);
         Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes);
 
-        T GetSingle(Expression<Func<T, bool>> criteria);
         Task<T> GetSingleAsync(Expression<Func<T, bool>> criteria);
-        T GetSingle(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] includes);
         Task<T> GetSingleAsync(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] includes);
 
         IEnumerable<T> ListAll();

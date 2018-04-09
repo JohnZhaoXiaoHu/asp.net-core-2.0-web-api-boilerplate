@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
 
-namespace Sales.Core.Extensions
+namespace Sales.Infrastructure.Extensions
 {
     public static class EnumerableExtensions
     {

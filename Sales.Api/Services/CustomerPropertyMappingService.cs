@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Sales.Api.ServiceInterfaces;
 using Sales.Api.ViewModels;
-using Sales.Core.Bases.Pagination;
 using Sales.Core.DomainModels;
+using Sales.Infrastructure.UsefulModels.Pagination;
 
 namespace Sales.Api.Services
 {

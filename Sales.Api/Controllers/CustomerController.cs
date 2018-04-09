@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Api.ViewModels;
-using Sales.Core.Bases.Hateoas;
 using Sales.Core.DomainModels;
-using Sales.Core.Extensions;
 using Sales.Core.Interfaces;
+using Sales.Infrastructure.Extensions;
+using Sales.Infrastructure.Interfaces;
 using Sales.Infrastructure.Services;
+using Sales.Infrastructure.UsefulModels.Hateoas;
 
 namespace Sales.Api.Controllers
 {
@@ -17,12 +18,12 @@ namespace Sales.Api.Controllers
     [Route("api/sales/[controller]")]
     public class CustomerController : SalesControllerBase<CustomerController>
     {
-        private readonly IRepository<Customer> _customerRepository;
+        private readonly IEnhancedRepository<Customer> _customerRepository;
         private readonly IUrlHelper _urlHelper;
 
         public CustomerController(
             ICoreService<CustomerController> coreService,
-            IRepository<Customer> customerRepository,
+            IEnhancedRepository<Customer> customerRepository,
             IUrlHelper urlHelper) : base(coreService)
         {
             _customerRepository = customerRepository;

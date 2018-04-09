@@ -1,4 +1,4 @@
-namespace Sales.Core.Bases.Hateoas
+namespace Sales.Infrastructure.UsefulModels.Hateoas
 {
     public class LinkViewModel
     {

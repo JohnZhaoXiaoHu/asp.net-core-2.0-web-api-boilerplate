@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Sales.Core.Bases.Pagination
+namespace Sales.Infrastructure.UsefulModels.Pagination
 {
     public class PropertyMappingValue
     {        

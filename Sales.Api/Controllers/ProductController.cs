@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Api.ViewModels;
 using Sales.Core.DomainModels;
-using Sales.Core.Enums;
-using Sales.Core.Interfaces;
+using Sales.Core.DomainModels.Enums;
+using Sales.Infrastructure.Interfaces;
 using Sales.Infrastructure.Services;
+using Sales.Infrastructure.UsefulModels.Pagination;
 
 namespace Sales.Api.Controllers
 {
     [Route("api/sales/[controller]")]
+    [AllowAnonymous]
     public class ProductController : SalesControllerBase<ProductController>
     {
-        private readonly IRepository<Product> _productRepository;
+        private readonly IEnhancedRepository<Product> _productRepository;
         public ProductController(ICoreService<ProductController> coreService,
-            IRepository<Product> productRepository) : base(coreService)
+            IEnhancedRepository<Product> productRepository) : base(coreService)
         {
             _productRepository = productRepository;
         }
@@ -26,6 +29,14 @@ namespace Sales.Api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var items = await _productRepository.ListAllAsync();
+            var results = Mapper.Map<IEnumerable<ProductViewModel>>(items);
+            return Ok(results);
+        }
+
+        [HttpGet("Paged")]
+        public async Task<IActionResult> GetPaged(PaginationBase parameters)
+        {
+            var items = await _productRepository.GetPaginatedAsync(new PaginationParameters<Product>(parameters, x => x.Id));
             var results = Mapper.Map<IEnumerable<ProductViewModel>>(items);
             return Ok(results);
         }

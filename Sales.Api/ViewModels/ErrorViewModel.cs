@@ -1,4 +1,4 @@
-﻿namespace Sales.Infrastructure.UsefulModels
+﻿namespace Sales.Api.ViewModels
 {
     public class ErrorViewModel
     {

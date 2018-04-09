@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Api.ViewModels;
-using Sales.Core.Bases.Hateoas;
 using Sales.Core.DomainModels;
-using Sales.Core.Interfaces;
+using Sales.Infrastructure.Interfaces;
 using Sales.Infrastructure.Services;
+using Sales.Infrastructure.UsefulModels.Hateoas;
 
 namespace Sales.Api.Controllers
 {
@@ -16,12 +16,12 @@ namespace Sales.Api.Controllers
     [Route("api/sales/[controller]")]
     public class VehicleController : SalesControllerBase<VehicleController>
     {
-        private readonly IRepository<Vehicle> _vehicleRepository;
+        private readonly IEnhancedRepository<Vehicle> _vehicleRepository;
         private readonly IUrlHelper _urlHelper;
 
         public VehicleController(
             ICoreService<VehicleController> coreService,
-            IRepository<Vehicle> vehicleRepository,
+            IEnhancedRepository<Vehicle> vehicleRepository,
             IUrlHelper urlHelper) : base(coreService)
         {
             _vehicleRepository = vehicleRepository;

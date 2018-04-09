@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Sales.Core.Bases.Tree;
+using Sales.Core.Bases;
 
-namespace Sales.Infrastructure.Data
+namespace Sales.Infrastructure.EntityConfigurations
 {
     public abstract class TreeEntityBaseConfiguration<T> : EntityBaseConfiguration<T> where T : TreeEntity<T>
     {

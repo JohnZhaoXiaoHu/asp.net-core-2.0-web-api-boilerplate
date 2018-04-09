@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sales.Core.Interfaces;
 
-namespace Sales.Core.Bases.Tree
+namespace Sales.Core.Bases
 {
     public class TreeEntity<T> : EntityBase, ITreeEntity<T> where T : TreeEntity<T>
     {
