@@ -28,7 +28,7 @@ namespace AuthorizationServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("AuthorizationConnection");
+            var connectionString = Configuration["AuthorizationServer:DefaultConnection"];
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -51,7 +51,7 @@ namespace AuthorizationServer
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 // User settings
-                options.User.RequireUniqueEmail = false;                
+                options.User.RequireUniqueEmail = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -76,8 +76,8 @@ namespace AuthorizationServer
                 .AddDeveloperSigningCredential()
 #else
                 .AddSigningCredential(new System.Security.Cryptography.X509Certificates.X509Certificate2(
-                    Configuration["Dave:AuthorizationServer:SigningCredentialCertificatePath"],
-                    Configuration["Dave:AuthorizationServer:SigningCredentialCertificatePassword"]))
+                    Configuration["AuthorizationServer:SigningCredentialCertificatePath"],
+                    Configuration["AuthorizationServer:SigningCredentialCertificatePassword"]))
 #endif
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
@@ -102,7 +102,7 @@ namespace AuthorizationServer
             {
                 options.AddPolicy(SalesApiSettings.CorsPolicyName, policy =>
                 {
-                    policy.WithOrigins(Configuration["Dave:SalesApi:ClientBase"])
+                    policy.WithOrigins(Configuration["SalesApi:ClientBase"])
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });

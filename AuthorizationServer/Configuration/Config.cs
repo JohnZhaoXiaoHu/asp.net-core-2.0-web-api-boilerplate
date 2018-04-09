@@ -31,9 +31,9 @@ namespace AuthorizationServer.Configuration
                     AllowAccessTokensViaBrowser = true,
                     AccessTokenLifetime = 60 * 10,
                     AllowOfflineAccess = true,
-                    RedirectUris =           { $"{Startup.Configuration["Dave:SalesApi:ClientBase"]}/login-callback", $"{Startup.Configuration["Dave:SalesApi:ClientBase"]}/silent-renew.html" },
-                    PostLogoutRedirectUris = { Startup.Configuration["Dave:SalesApi:ClientBase"] },
-                    AllowedCorsOrigins =     { Startup.Configuration["Dave:SalesApi:ClientBase"] },
+                    RedirectUris =           { $"{Startup.Configuration["SalesApi:ClientBase"]}/login-callback", $"{Startup.Configuration["SalesApi:ClientBase"]}/silent-renew.html" },
+                    PostLogoutRedirectUris = { Startup.Configuration["SalesApi:ClientBase"] },
+                    AllowedCorsOrigins =     { Startup.Configuration["SalesApi:ClientBase"] },
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowedScopes =
                     {

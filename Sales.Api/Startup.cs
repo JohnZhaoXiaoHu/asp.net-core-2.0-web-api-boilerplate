@@ -30,7 +30,7 @@ namespace Sales.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SalesContext>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("SalesConnection")));
+                   options.UseSqlServer(Configuration["SalesApi:DefaultConnection"]));
 
             services.AddMvc(options =>
             {
@@ -66,7 +66,7 @@ namespace Sales.Api
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = Configuration["Dave:AuthorizationServer:ServerBase"];
+                    options.Authority = Configuration["AuthorizationServer:ServerBase"];
                     options.RequireHttpsMetadata = false;
                     options.ApiName = SalesApiSettings.ApiName;
                 });
@@ -75,7 +75,7 @@ namespace Sales.Api
             {
                 options.AddPolicy(SalesApiSettings.CorsPolicyName, policy =>
                 {
-                    policy.WithOrigins(Configuration["Dave:SalesApi:ClientBase"])
+                    policy.WithOrigins(Configuration["SalesApi:ClientBase"])
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });

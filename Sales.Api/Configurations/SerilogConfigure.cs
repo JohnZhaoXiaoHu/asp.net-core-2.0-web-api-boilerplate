@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using System;
+using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 
@@ -14,7 +15,7 @@ namespace Sales.Api.Configurations
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.RollingFile(@"logs\log-{Date}.txt")
-                .WriteTo.MSSqlServer("SalesConnection", "Logs", columnOptions: new ColumnOptions())
+                .WriteTo.MSSqlServer(Environment.GetEnvironmentVariable("SalesApi:DefaultConnection"), "Logs", columnOptions: new ColumnOptions())
                 .CreateLogger();
         }
     }

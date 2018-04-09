@@ -37,7 +37,7 @@ namespace AuthorizationServer
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseIISIntegration()
-                .UseUrls(Environment.GetEnvironmentVariable("Dave:AuthorizationServer:ServerBase"))
+                .UseUrls(Environment.GetEnvironmentVariable("AuthorizationServer:ServerBase"))
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .Build();

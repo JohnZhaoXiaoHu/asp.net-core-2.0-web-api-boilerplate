@@ -30,7 +30,7 @@ namespace Sales.Api
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseIISIntegration()
-                .UseUrls(Environment.GetEnvironmentVariable("Dave:SalesApi:ServerBase"))
+                .UseUrls(Environment.GetEnvironmentVariable("SalesApi:ServerBase"))
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .Build();

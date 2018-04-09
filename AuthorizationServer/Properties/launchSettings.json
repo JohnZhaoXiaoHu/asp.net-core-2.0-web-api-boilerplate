@@ -6,11 +6,11 @@
       "launchUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "Dave:AuthorizationServer:ServerBase": "http://localhost:5000",
-        "Dave:AuthorizationServer:SigningCredentialCertificatePath": "D:\\Projects\\dotnet\\Boilerplate\\Certificates\\mlhsales.pfx",
-        "Dave:AuthorizationServer:SigningCredentialCertificatePassword": "Bx@steel",
-        "Dave:SalesApi:ServerBase": "http://localhost:5100",
-        "Dave:SalesApi:ClientBase": "http://localhost:4200"
+        "AuthorizationServer:ServerBase": "http://localhost:5000",
+        "AuthorizationServer:SigningCredentialCertificatePath": "D:\\Projects\\dotnet\\Boilerplate\\Certificates\\mlhsales.pfx",
+        "AuthorizationServer:SigningCredentialCertificatePassword": "Bx@steel",
+        "SalesApi:ServerBase": "http://localhost:5100",
+        "SalesApi:ClientBase": "http://localhost:4200"
       }
     }
   }

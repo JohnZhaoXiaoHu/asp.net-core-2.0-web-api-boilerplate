@@ -9,11 +9,13 @@ For AuthorizationServer Project, it needs a certificate, it locates in Certifica
 
 Both Projects need these environment variables, I set it up in launchSettings.json, you can set there in your system/user level.  
 **Environment variables:**   
-* **MLH:AuthorizationServer:ServerBase**, this is the authorization server base. such as http://localhost:5000.   
-* **MLH:AuthorizationServer:SigningCredentialCertificatePath**, this is the authorization server certificate path. such as "E:/xxx.pfx".  
-* **MLH:AuthorizationServer:SigningCredentialCertificatePassword**, this is the authorization server certificate password. such as "12345678"  
-* **MLH:SalesApi:ServerBase**, this is the sales api server base. such as http://localhost:5100.     
-* **MLH:SalesApi:ClientBase**, this is the sales client uri base. such as http://localhost:4200.  
+* **AuthorizationServer:ServerBase**, this is the authorization server base. such as http://localhost:5000.   
+* **AuthorizationServer:SigningCredentialCertificatePath**, this is the authorization server certificate path. such as "E:/xxx.pfx".  
+* **AuthorizationServer:SigningCredentialCertificatePassword**, this is the authorization server certificate password. such as "12345678"  
+* **AuthorizationServer:DefaultConnection**, this is the mssql server connection string for authorization server. such as "Server=localhost; Database=AuthorizationServer; User Id=sa; Password=Bx@steel; MultipleActiveResultSets=true".  
+* **SalesApi:ServerBase**, this is the sales api server base. such as http://localhost:5100.     
+* **SalesApi:ClientBase**, this is the sales client uri base. such as http://localhost:4200.  
+* **SalesApi:DefaultConnection**, this is the mssql server connection string. such as "Server=localhost; Database=SalesApi; User Id=sa; Password=Bx@steel; MultipleActiveResultSets=true".  
 
 ### Run  
 You can run Authorization Server through Visual Studio 2017 or through dotnet cli using "dotnet run" command.  
