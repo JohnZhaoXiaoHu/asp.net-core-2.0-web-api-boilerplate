@@ -35,9 +35,6 @@ namespace Sales.Api
             services.AddMvc(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
-                // the default formatter is the first one in the list.
-                options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
-
                 // set authorization on all controllers or routes
                 var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()

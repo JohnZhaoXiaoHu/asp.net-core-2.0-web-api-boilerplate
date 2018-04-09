@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
@@ -14,8 +15,8 @@ namespace Sales.Api.Configurations
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.RollingFile(@"logs\log-{Date}.txt")
-                .WriteTo.MSSqlServer(Environment.GetEnvironmentVariable("SalesApi:DefaultConnection"), "Logs", columnOptions: new ColumnOptions())
+                .WriteTo.RollingFile(Path.Combine("logs", @"log-{Date}.txt"))
+                .WriteTo.MSSqlServer("SalesApi:DefaultConnection", "Logs", columnOptions: new ColumnOptions())
                 .CreateLogger();
         }
     }
