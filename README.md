@@ -1,7 +1,5 @@
 # An asp.net core 2.0 web api boilerplate using identity server 4
-## Sales Api Structure:  
-![Sales Api Structure](https://images2018.cnblogs.com/blog/986268/201803/986268-20180326061113994-1904339898.png)  
-
+  
 ### Setup  
 You need to run both AuthorizationServer Project and SalesApi.Web Project.  
 
