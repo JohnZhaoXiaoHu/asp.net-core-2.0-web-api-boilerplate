@@ -1,6 +1,13 @@
-# An asp.net core 2.0 web api boilerplate using identity server 4
-  
-### Setup  
+# An asp.net core 2.0 web api boilerplate using identity server 4  
+
+### Current Status  
+The project is being actively developed.  
+Breaking changes and refactors still happens.  
+
+### Target
+This project will implement the only must-need feature for a web api project.  
+
+### Setup  
 You need to run both AuthorizationServer Project and SalesApi.Web Project.  
 
 For AuthorizationServer Project, it needs a certificate, it locates in Certificates folder, and the password for the certificate is in the launchSettings.json file.  
@@ -17,7 +24,7 @@ Both Projects need these environment variables, I set it up in launchSettings.js
 
 ### Run  
 You can run Authorization Server through Visual Studio 2017 or through dotnet cli using "dotnet run" command.  
-You can run SalesApi.Web through Visual Studio 2017 or through dotnet cli using "dotnet watch run" or "dotnet run" command.  
+You can run Sales.Api through Visual Studio 2017 or through dotnet cli using "dotnet watch run" or "dotnet run" command.  
 
 **For Entity Framework core:**  
 You can use migration commands both in Visual Studio 2017 or through "dotnet ef" command using dotnet cli.  
@@ -29,4 +36,7 @@ You can use migration commands both in Visual Studio 2017 or through "dotnet ef"
 * Swagger
 
 ## Features:
+* Unit of work + Repository Pattern applied.  
+* Basic CRUD Best Practice applied in Controllers and Repository.
+* Pagination is implemented in both repository and controller(for now, only ProductController).  
 * The VehicleController and CustomerController Implemented HATEOAS architecture style in different ways.
