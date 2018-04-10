@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Sales.Api.Services;
 using Sales.Api.ViewModels;
 using Sales.Core.DomainModels;
 using Sales.Core.DomainModels.Enums;
@@ -34,10 +36,12 @@ namespace Sales.Api.Controllers
         }
 
         [HttpGet("Paged")]
-        public async Task<IActionResult> GetPaged(PaginationBase parameters)
+        public async Task<IActionResult> GetPaged(QueryParameters parameters)
         {
-            var items = await _productRepository.GetPaginatedAsync(new PaginationParameters<Product>(parameters, x => x.Id));
-            var results = Mapper.Map<IEnumerable<ProductViewModel>>(items);
+            var pagedList = await _productRepository.GetPaginatedAsync<ProductPropertyMapping>(parameters);
+            var results = Mapper.Map<IEnumerable<ProductViewModel>>(pagedList);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagedList.PaginationBase));
+
             return Ok(results);
         }
 

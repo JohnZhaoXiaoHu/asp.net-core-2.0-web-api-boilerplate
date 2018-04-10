@@ -10,7 +10,7 @@ namespace Sales.Api.Configurations
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped(typeof(IEnhancedRepository<>), typeof(EfRepository<>));
+            services.AddScoped(typeof(IEnhancedRepository<>), typeof(EfEnhancedRepository<>));
         }
     }
 }

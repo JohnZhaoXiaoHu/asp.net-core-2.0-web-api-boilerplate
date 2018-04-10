@@ -8,13 +8,14 @@ namespace Sales.Infrastructure.Extensions
 {
     public static class QueryableExtensions
     {
-        public static IQueryable<T> ApplySort<T>(this IQueryable<T> source, string orderBy, Dictionary<string, PropertyMappingValue> mappingDictionary)
+        public static IQueryable<T> ApplySort<T>(this IQueryable<T> source, string orderBy, PropertyMapping propertyMapping)
         {
             if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
+            var mappingDictionary = propertyMapping.MappingDictionary;
             if (mappingDictionary == null)
             {
                 throw new ArgumentNullException(nameof(mappingDictionary));
@@ -54,9 +55,8 @@ namespace Sales.Infrastructure.Extensions
             return source;
         }
 
-        public static IQueryable<object> ToDynamicQueryable<TSource>(this IQueryable<TSource> source,
-            string fields,
-           Dictionary<string, PropertyMappingValue> mappingDictionary)
+        public static IQueryable<object> ToDynamicQueryable<TSource>
+            (this IQueryable<TSource> source, string fields, Dictionary<string, PropertyMappingValue> mappingDictionary)
         {
             if (source == null)
             {

@@ -5,13 +5,12 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Sales.Core.Bases;
+using Sales.Core.Interfaces;
 using Sales.Infrastructure.Data;
-using Sales.Infrastructure.Interfaces;
-using Sales.Infrastructure.UsefulModels.Pagination;
 
 namespace Sales.Infrastructure.Repositories
 {
-    public class EfRepository<T> : IEnhancedRepository<T> where T : EntityBase
+    public class EfRepository<T> : IRepository<T> where T : EntityBase
     {
         protected readonly SalesContext Context;
 
@@ -159,25 +158,6 @@ namespace Sales.Infrastructure.Repositories
         {
             Attach(entity);
             Update(entity);
-        }
-
-        public async Task<PaginatedItems<T>> GetPaginatedAsync(PaginationParameters<T> parameters)
-        {
-            var count = await CountAsync();
-            var items = await Context.Set<T>().OrderBy(parameters.OrderBy)
-                .Skip(parameters.PageIndex * parameters.PageSize).Take(parameters.PageSize).ToListAsync();
-            var result = new PaginatedItems<T>(parameters, count, items);
-            return result;
-        }
-
-        public Task<PaginatedItems<T>> GetPaginatedAsync(PaginationParameters<T> parameters, Expression<Func<T, bool>> criteria)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<PaginatedItems<T>> GetPaginatedAsync(PaginationParameters<T> parameters, Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] includes)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -7,10 +7,10 @@ using Sales.Infrastructure.UsefulModels.Pagination;
 
 namespace Sales.Infrastructure.Interfaces
 {
-    public interface IEnhancedRepository<T>: IRepository<T> where T: EntityBase
+    public interface IEnhancedRepository<T> : IRepository<T> where T : EntityBase
     {
-        Task<PaginatedItems<T>> GetPaginatedAsync(PaginationParameters<T> parameters);
-        Task<PaginatedItems<T>> GetPaginatedAsync(PaginationParameters<T> parameters, Expression<Func<T, bool>> criteria);
-        Task<PaginatedItems<T>> GetPaginatedAsync(PaginationParameters<T> parameters, Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] includes);
+        Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters) where TPropertyMapping : PropertyMapping, new();
+        Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters, Expression<Func<T, bool>> criteria) where TPropertyMapping : PropertyMapping, new();
+        Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters, Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] includes) where TPropertyMapping : PropertyMapping, new();
     }
 }

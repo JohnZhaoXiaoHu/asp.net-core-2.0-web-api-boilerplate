@@ -1,4 +1,5 @@
-﻿using Sales.Infrastructure.UsefulModels.Pagination;
+﻿using Sales.Infrastructure.Interfaces;
+using Sales.Infrastructure.UsefulModels.Pagination;
 
 namespace Sales.Api.ServiceInterfaces
 {
