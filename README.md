@@ -40,3 +40,9 @@ You can use migration commands both in Visual Studio 2017 or through "dotnet ef"
 * Basic CRUD Best Practice applied in Controllers and Repository.
 * Pagination is implemented in both repository and controller(for now, only ProductController).  
 * The VehicleController and CustomerController Implemented HATEOAS architecture style in different ways.
+
+## Roadmap for April, 2018
+* More Complex Entity Framework Core examples
+* Refactoring using Design Patterns and Best Practice Principles.
+* After Refactoring, Adding Some Unit Tests.
+* Add a Angular 5 client for api.
