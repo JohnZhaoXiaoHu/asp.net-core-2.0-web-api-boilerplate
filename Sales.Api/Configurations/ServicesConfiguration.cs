@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Sales.Core.Interfaces;
 using Sales.Infrastructure.Data;
+using Sales.Infrastructure.Interfaces;
 using Sales.Infrastructure.Services;
 
 namespace Sales.Api.Configurations
@@ -28,12 +29,8 @@ namespace Sales.Api.Configurations
             var compositeProvider = new CompositeFileProvider(physicalProvider, embeddedProvider);
             services.AddSingleton<IFileProvider>(compositeProvider);
 
-            services.AddScoped<IUnitOfWork, SalesContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(ICoreService<>), typeof(CoreService<>));
-
-            // services.AddScoped<IProductService, ProductService>();
-
-            // services.AddTransient<ICustomerPropertyMappingService, CustomerPropertyMappingService>();
         }
     }
 }

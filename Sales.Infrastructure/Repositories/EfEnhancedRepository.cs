@@ -17,26 +17,34 @@ namespace Sales.Infrastructure.Repositories
         {
         }
 
-        public async Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters) 
-            where TPropertyMapping : PropertyMapping, new()
+        public async Task<PaginatedList<T>> GetPaginatedAsync(PaginationBase parameters, PropertyMapping propertyMapping)
         {
-            var collectionBeforePaging = Context.Set<T>().ApplySort(parameters.OrderBy, new TPropertyMapping());
+            var collectionBeforePaging = Context.Set<T>().ApplySort(parameters.OrderBy, propertyMapping);
             parameters.Count = await collectionBeforePaging.CountAsync();
             var items = await collectionBeforePaging.Skip(parameters.PageIndex * parameters.PageSize).Take(parameters.PageSize).ToListAsync();
             var result = new PaginatedList<T>(parameters, items);
             return result;
         }
 
-        public Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters, Expression<Func<T, bool>> criteria) 
-            where TPropertyMapping : PropertyMapping, new()
+        public async Task<PaginatedList<T>> GetPaginatedAsync(PaginationBase parameters, PropertyMapping propertyMapping, Expression<Func<T, bool>> criteria) 
         {
-            throw new NotImplementedException();
+            var collectionBeforePaging = Context.Set<T>().Where(criteria).ApplySort(parameters.OrderBy, propertyMapping);
+            parameters.Count = await collectionBeforePaging.CountAsync();
+            var items = await collectionBeforePaging.Skip(parameters.PageIndex * parameters.PageSize).Take(parameters.PageSize).ToListAsync();
+            var result = new PaginatedList<T>(parameters, items);
+            return result;
         }
 
-        public Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters, Expression<Func<T, bool>> criteria, 
-            params Expression<Func<T, object>>[] includes) where TPropertyMapping : PropertyMapping, new()
+        public async Task<PaginatedList<T>> GetPaginatedAsync(PaginationBase parameters, PropertyMapping propertyMapping, Expression<Func<T, bool>> criteria, 
+            params Expression<Func<T, object>>[] includes)
         {
-            throw new NotImplementedException();
+            var collectionBeforePaging = includes
+                .Aggregate(Context.Set<T>().Where(criteria).ApplySort(parameters.OrderBy, propertyMapping),
+                    (current, include) => current.Include(include));
+            parameters.Count = await collectionBeforePaging.CountAsync();
+            var items = await collectionBeforePaging.Skip(parameters.PageIndex * parameters.PageSize).Take(parameters.PageSize).ToListAsync();
+            var result = new PaginatedList<T>(parameters, items);
+            return result;
         }
     }
 }

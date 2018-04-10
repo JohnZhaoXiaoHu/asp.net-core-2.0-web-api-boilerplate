@@ -36,7 +36,6 @@ namespace Sales.Infrastructure.UsefulModels.Pagination
                 }
             }
             return true;
-
         }
     }
 }

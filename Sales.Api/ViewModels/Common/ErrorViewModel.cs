@@ -1,4 +1,4 @@
-﻿namespace Sales.Api.ViewModels
+﻿namespace Sales.Api.ViewModels.Common
 {
     public class ErrorViewModel
     {

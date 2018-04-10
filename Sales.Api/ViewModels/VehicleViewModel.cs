@@ -1,4 +1,4 @@
-using Sales.Infrastructure.UsefulModels.Hateoas;
+using Sales.Api.ViewModels.Hateoas;
 
 namespace Sales.Api.ViewModels
 {

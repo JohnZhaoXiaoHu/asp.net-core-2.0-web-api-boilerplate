@@ -1,6 +1,7 @@
 ﻿using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sales.Api.ViewModels;
+using Sales.Api.ViewModels.Validators;
 
 namespace Sales.Api.Configurations
 {

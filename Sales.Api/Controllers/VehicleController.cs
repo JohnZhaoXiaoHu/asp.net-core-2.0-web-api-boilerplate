@@ -5,10 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Api.ViewModels;
+using Sales.Api.ViewModels.Hateoas;
 using Sales.Core.DomainModels;
 using Sales.Infrastructure.Interfaces;
-using Sales.Infrastructure.Services;
-using Sales.Infrastructure.UsefulModels.Hateoas;
 
 namespace Sales.Api.Controllers
 {

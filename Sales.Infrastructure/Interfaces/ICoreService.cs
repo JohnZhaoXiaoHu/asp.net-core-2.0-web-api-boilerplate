@@ -3,7 +3,7 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Sales.Core.Interfaces;
 
-namespace Sales.Infrastructure.Services
+namespace Sales.Infrastructure.Interfaces
 {
     public interface ICoreService<out T> : IDisposable
     {

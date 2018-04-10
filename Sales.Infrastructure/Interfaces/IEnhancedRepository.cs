@@ -9,8 +9,8 @@ namespace Sales.Infrastructure.Interfaces
 {
     public interface IEnhancedRepository<T> : IRepository<T> where T : EntityBase
     {
-        Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters) where TPropertyMapping : PropertyMapping, new();
-        Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters, Expression<Func<T, bool>> criteria) where TPropertyMapping : PropertyMapping, new();
-        Task<PaginatedList<T>> GetPaginatedAsync<TPropertyMapping>(PaginationBase parameters, Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] includes) where TPropertyMapping : PropertyMapping, new();
+        Task<PaginatedList<T>> GetPaginatedAsync(PaginationBase parameters, PropertyMapping propertyMapping);
+        Task<PaginatedList<T>> GetPaginatedAsync(PaginationBase parameters, PropertyMapping propertyMapping, Expression<Func<T, bool>> criteria);
+        Task<PaginatedList<T>> GetPaginatedAsync(PaginationBase parameters, PropertyMapping propertyMapping, Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] includes);
     }
 }

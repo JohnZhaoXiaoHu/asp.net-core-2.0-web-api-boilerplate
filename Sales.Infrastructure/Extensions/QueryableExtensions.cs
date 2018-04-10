@@ -42,7 +42,6 @@ namespace Sales.Infrastructure.Extensions
                 {
                     throw new ArgumentNullException(propertyName);
                 }
-
                 foreach (var destinationProperty in propertyMappingValue.DestinationProperties.Reverse())
                 {
                     if (propertyMappingValue.Revert)

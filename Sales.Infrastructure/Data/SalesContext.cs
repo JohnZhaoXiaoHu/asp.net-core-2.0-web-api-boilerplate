@@ -4,7 +4,7 @@ using Sales.Infrastructure.EntityConfigurations;
 
 namespace Sales.Infrastructure.Data
 {
-    public class SalesContext : DbContextBase
+    public class SalesContext : DbContext
     {
         public SalesContext(DbContextOptions<SalesContext> options)
             : base(options)

@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Sales.Api.Services;
 using Sales.Api.ViewModels;
+using Sales.Api.ViewModels.Common;
+using Sales.Api.ViewModels.PropertyMappings;
 using Sales.Core.DomainModels;
 using Sales.Core.DomainModels.Enums;
 using Sales.Infrastructure.Interfaces;
-using Sales.Infrastructure.Services;
 using Sales.Infrastructure.UsefulModels.Pagination;
 
 namespace Sales.Api.Controllers
@@ -36,12 +36,21 @@ namespace Sales.Api.Controllers
         }
 
         [HttpGet("Paged")]
-        public async Task<IActionResult> GetPaged(QueryParameters parameters)
+        public async Task<IActionResult> GetPaged(QueryViewModel parameters)
         {
-            var pagedList = await _productRepository.GetPaginatedAsync<ProductPropertyMapping>(parameters);
+            var propertyMapping = new ProductPropertyMapping();
+            PaginatedList<Product> pagedList;
+            if (string.IsNullOrEmpty(parameters.SearchTerm))
+            {
+                pagedList = await _productRepository.GetPaginatedAsync(parameters, propertyMapping);
+            }
+            else
+            {
+                pagedList = await _productRepository.GetPaginatedAsync(parameters, propertyMapping,
+                    x => x.Name.Contains(parameters.SearchTerm) || x.FullName.Contains(parameters.SearchTerm));
+            }
             var results = Mapper.Map<IEnumerable<ProductViewModel>>(pagedList);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagedList.PaginationBase));
-
             return Ok(results);
         }
 

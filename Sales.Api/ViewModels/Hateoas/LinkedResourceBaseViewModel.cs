@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Sales.Core.Bases;
 
-namespace Sales.Infrastructure.UsefulModels.Hateoas
+namespace Sales.Api.ViewModels.Hateoas
 {
     public abstract class LinkedResourceBaseViewModel: EntityBase
     {

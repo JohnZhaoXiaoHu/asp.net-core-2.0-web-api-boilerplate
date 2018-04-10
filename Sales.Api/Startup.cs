@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,9 +28,7 @@ namespace Sales.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SalesContext>(options =>
-                   options.UseSqlServer(Configuration["SalesApi:DefaultConnection"]));
-
+            services.AddDbContext<SalesContext>(options => options.UseSqlServer(Configuration["SalesApi:DefaultConnection"]));
             services.AddMvc(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
@@ -41,11 +38,11 @@ namespace Sales.Api
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             })
-            .AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            })
-            .AddFluetValidations();
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                })
+                .AddFluetValidations();
 
             services.AddAutoMapper();
             services.AddServices();

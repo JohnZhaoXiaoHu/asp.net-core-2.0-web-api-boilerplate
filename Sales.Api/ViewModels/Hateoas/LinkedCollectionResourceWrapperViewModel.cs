@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Sales.Infrastructure.UsefulModels.Hateoas
+namespace Sales.Api.ViewModels.Hateoas
 {
     public class LinkedCollectionResourceWrapperViewModel<T> : LinkedResourceBaseViewModel
         where T : LinkedResourceBaseViewModel

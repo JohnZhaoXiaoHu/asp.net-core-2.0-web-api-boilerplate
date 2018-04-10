@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Sales.Core.Interfaces;
+using Sales.Infrastructure.Interfaces;
 
 namespace Sales.Infrastructure.Services
 {

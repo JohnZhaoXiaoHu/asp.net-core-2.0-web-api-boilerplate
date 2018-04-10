@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Sales.Api.Helpers;
 using Sales.Core.Interfaces;
+using Sales.Infrastructure.Interfaces;
 using Sales.Infrastructure.Services;
 
 namespace Sales.Api.Controllers
