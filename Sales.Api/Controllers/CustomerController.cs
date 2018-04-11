@@ -7,10 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Sales.Api.ViewModels;
 using Sales.Api.ViewModels.Hateoas;
 using Sales.Core.DomainModels;
-using Sales.Core.Interfaces;
 using Sales.Infrastructure.Extensions;
 using Sales.Infrastructure.Interfaces;
-using Sales.Infrastructure.Services;
 
 namespace Sales.Api.Controllers
 {
@@ -69,7 +67,7 @@ namespace Sales.Api.Controllers
             return Ok(dynamicObject);
         }
 
-        [HttpPost(Name = "CreateCustomer")]
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody] CustomerViewModel customerVm)
         {
             if (customerVm == null)
@@ -183,52 +181,27 @@ namespace Sales.Api.Controllers
 
         private IEnumerable<LinkViewModel> CreateLinksForCustomer(int id, string fields = null)
         {
-            var links = new List<LinkViewModel>();
-            if (string.IsNullOrWhiteSpace(fields))
+            var links = new List<LinkViewModel>
             {
-                links.Add(
-                    new LinkViewModel(_urlHelper.Link("GetCustomer", new { id }),
-                    "self",
-                    "GET"));
-            }
-            else
-            {
-                links.Add(
-                    new LinkViewModel(_urlHelper.Link("GetCustomer", new { id, fields }),
-                    "self",
-                    "GET"));
-            }
-
-            links.Add(
-                new LinkViewModel(_urlHelper.Link("DeleteCustomer", new { id }),
-                "delete_customer",
-                "DELETE"));
-
-            links.Add(
-                new LinkViewModel(_urlHelper.Link("CreateCustomer", new { id }),
-                "create_customer",
-                "POST"));
+                string.IsNullOrWhiteSpace(fields)
+                    ? new LinkViewModel(_urlHelper.Link("GetCustomer", new {id}), "self", "GET")
+                    : new LinkViewModel(_urlHelper.Link("GetCustomer", new {id, fields}), "self", "GET"),
+                new LinkViewModel(_urlHelper.Link("UpdateCustomer", new {id}), "update_customer", "PUT"),
+                new LinkViewModel(_urlHelper.Link("PartiallyUpdateCustomer", new {id}), "partially_update_customer","PATCH"),
+                new LinkViewModel(_urlHelper.Link("DeleteCustomer", new {id}), "delete_customer", "DELETE")
+            };
 
             return links;
         }
 
         private IEnumerable<LinkViewModel> CreateLinksForCustomers(string fields = null)
         {
-            var links = new List<LinkViewModel>();
-            if (string.IsNullOrWhiteSpace(fields))
+            var links = new List<LinkViewModel>
             {
-                links.Add(
-                   new LinkViewModel(_urlHelper.Link("GetAllCustomers", new { fields }),
-                   "self",
-                   "GET"));
-            }
-            else
-            {
-                links.Add(
-                   new LinkViewModel(_urlHelper.Link("GetAllCustomers", new { }),
-                   "self",
-                   "GET"));
-            }
+                string.IsNullOrWhiteSpace(fields)
+                    ? new LinkViewModel(_urlHelper.Link("GetAllCustomers", new {fields}), "self", "GET")
+                    : new LinkViewModel(_urlHelper.Link("GetAllCustomers", new { }), "self", "GET")
+            };
             return links;
         }
     }

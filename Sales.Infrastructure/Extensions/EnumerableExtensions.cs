@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Reflection;
 
 namespace Sales.Infrastructure.Extensions
@@ -23,7 +24,11 @@ namespace Sales.Infrastructure.Extensions
             }
             else
             {
-                var fieldsAfterSplit = fields.Split(',');
+                var fieldsAfterSplit = fields.Split(',').ToList();
+                if (!fieldsAfterSplit.Contains("Id", StringComparer.InvariantCultureIgnoreCase))
+                {
+                    fieldsAfterSplit.Add("Id");
+                }
                 foreach (var field in fieldsAfterSplit)
                 {
                     var propertyName = field.Trim();

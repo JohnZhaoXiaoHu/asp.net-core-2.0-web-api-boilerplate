@@ -18,5 +18,17 @@ namespace Sales.Infrastructure.UsefulModels.Pagination
 
         public int MaxPageSize { get; set; } = 100;
         public int PageCount => Count / PageSize + (Count % PageSize > 0 ? 1 : 0);
+
+        public PaginationBase Clone()
+        {
+            return new PaginationBase
+            {
+                PageIndex = PageIndex,
+                PageSize = PageSize,
+                OrderBy = OrderBy,
+                Count = Count,
+                MaxPageSize = MaxPageSize
+            };
+        }
     }
 }

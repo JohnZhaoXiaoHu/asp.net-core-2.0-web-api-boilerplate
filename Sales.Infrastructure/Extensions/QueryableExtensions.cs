@@ -73,7 +73,11 @@ namespace Sales.Infrastructure.Extensions
             }
 
             fields = fields.ToLower();
-            var fieldsAfterSplit = fields.Split(',');
+            var fieldsAfterSplit = fields.Split(',').ToList();
+            if (!fieldsAfterSplit.Contains("id", StringComparer.InvariantCultureIgnoreCase))
+            {
+                fieldsAfterSplit.Add("id");
+            }
             var selectClause = "new (";
 
             foreach (var field in fieldsAfterSplit)

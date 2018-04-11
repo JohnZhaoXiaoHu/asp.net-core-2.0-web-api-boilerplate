@@ -13,6 +13,6 @@ namespace Sales.Infrastructure.UsefulModels.Pagination
         }
 
         public bool HasPrevious => PaginationBase.PageIndex > 0;
-        public bool HasNext => PaginationBase.PageIndex < PaginationBase.PageCount;
+        public bool HasNext => PaginationBase.PageIndex < PaginationBase.PageCount - 1;
     }
 }
