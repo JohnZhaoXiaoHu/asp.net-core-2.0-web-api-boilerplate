@@ -53,8 +53,8 @@ You can use migration commands both in Visual Studio 2017 or through "dotnet ef"
 ![HATEOAS](https://raw.githubusercontent.com/solenovex/asp.net-core-2.0-web-api-boilerplate/master/Screenshots/1.png)
 
 ## Roadmap for May, 2018
-* ** Complete the Angular 6 client for these APIs ** .
-  * ** Add Authorization and Authentication support for ng6-client **
+* **Complete the Angular 6 client for these APIs** .
+  * **Add Authorization and Authentication support for ng6-client**
 * More Complex Entity Framework Core examples
 * Refactoring using Design Patterns and Best Practice Principles.
 * After Refactoring, Adding Some Unit Tests.
