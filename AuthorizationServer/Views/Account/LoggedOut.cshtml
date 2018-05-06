@@ -8,15 +8,15 @@
 
 <div class="page-header logged-out">
     <h1>
-        登出
-        <small>您已经登出了系统</small>
+        Sign out
+        <small>You've signed out of the system</small>
     </h1>
 
     @if (Model.PostLogoutRedirectUri != null)
     {
         <div>
-            点击 <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">这里</a> 来返回到
-            <span>@Model.ClientName</span> 系统.
+            Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to go back to
+            <span>@Model.ClientName</span> system.
         </div>
     }
 

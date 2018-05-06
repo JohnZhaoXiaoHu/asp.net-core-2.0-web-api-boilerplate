@@ -2,7 +2,7 @@
 
 @model IEnumerable<UserViewModel>
 @{
-    ViewData["Title"] = "用户列表";
+    ViewData["Title"] = "User List";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -15,7 +15,7 @@
     <div class="alert alert-success" role="alert">@ViewData["SuccessfulMessage"]</div>
 }
 <p>
-    <a asp-action="AddUser"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加用户</a>
+    <a asp-action="AddUser"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add User</a>
 </p>
 <table class="table table-bordered table-hover table-condensed">
     <thead>
@@ -26,7 +26,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Alias)
         </th>
-        <th>操作</th>
+        <th>Operations</th>
     </tr>
     </thead>
     <tbody>
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Alias)
             </td>
             <td>
-                <button class="btn btn-link" onclick="deleteUser('@item.Id')" style="padding: 0;">删除</button>
+                <button class="btn btn-link" onclick="deleteUser('@item.Id')" style="padding: 0;">Delete</button>
             </td>
         </tr>
     }
@@ -48,7 +48,7 @@
 </table>
 <script>
     function deleteUser (id) {
-        if (confirm("确认删除?")) {
+        if (confirm("Are you sure to delete?")) {
             window.location.href = "/Account/DeleteUser?id=" + id;
         }
     }

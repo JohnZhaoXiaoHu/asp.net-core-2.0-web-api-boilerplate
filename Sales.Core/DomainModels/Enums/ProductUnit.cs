@@ -2,10 +2,9 @@
 {
     public enum ProductUnit
     {
-        袋 = 1,
-        杯 = 2,
-        碗 = 3,
-        盒 = 4,
-        箱 = 11
+        Bag = 1,
+        Cup = 2,
+        Bowl = 3,
+        Box = 4,
     }
 }

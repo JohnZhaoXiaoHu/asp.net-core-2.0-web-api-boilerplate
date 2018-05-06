@@ -4,10 +4,8 @@ namespace AuthorizationServer.Models.ManageViewModels
 {
     public class IndexViewModel
     {
-        [Display(Name = "用户名")]
         public string Username { get; set; }
 
-        [Display(Name = "别名")]
         public string Alias { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
@@ -17,7 +15,6 @@ namespace AuthorizationServer.Models.ManageViewModels
         public string Email { get; set; }
 
         [Phone]
-        [Display(Name = "电话号码")]
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }

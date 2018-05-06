@@ -58,7 +58,10 @@ namespace Sales.Api.Controllers
                     x => x.Name.Contains(parameters.SearchTerm) || x.FullName.Contains(parameters.SearchTerm));
             }
             var productVms = Mapper.Map<IEnumerable<ProductViewModel>>(pagedList);
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagedList.PaginationBase));
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagedList.PaginationBase, new JsonSerializerSettings
+            {
+                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+            }));
 
             var links = CreateLinksForProducts(parameters, pagedList.HasPrevious, pagedList.HasNext);
             var dynamicProducts = productVms.ToDynamicIEnumerable(parameters.Fields);
