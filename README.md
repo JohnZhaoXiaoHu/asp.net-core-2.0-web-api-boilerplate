@@ -3,6 +3,7 @@
 ### Current Status  
 The project is being actively developed.  
 Breaking changes and refactors still happens.  
+An Angular 6 client was added, but only implemented one example which contains a paginated query to ProductController.
 
 ### Target
 This project will implement the only must-need feature for a web api project.  
@@ -25,6 +26,10 @@ Both Projects need these environment variables, I set it up in launchSettings.js
 ### Run  
 You can run Authorization Server through Visual Studio 2017 or through dotnet cli using "dotnet run" command.  
 You can run Sales.Api through Visual Studio 2017 or through dotnet cli using "dotnet watch run" or "dotnet run" command.  
+You can run the ng6-client demo in these steps:  
+1. run ```cd ng6-client && npm install``` to install dependecies of the project.
+2. run ```npm install @angular-cli -g``` to install angular cli.
+3. run```ng s -o ``` to run the client project.
 
 **For Entity Framework core:**  
 You can use migration commands both in Visual Studio 2017 or through "dotnet ef" command using dotnet cli.  
@@ -38,11 +43,12 @@ You can use migration commands both in Visual Studio 2017 or through "dotnet ef"
 ## Features:
 * Unit of work + Repository Pattern applied.  
 * Basic CRUD Best Practice applied in Controllers and Repository.
-* Pagination is implemented in both repository and controller(for now, only ProductController).  
+* Pagination is implemented in both repository and controller(for now, only ProductController support paging).  
 * The VehicleController and CustomerController Implemented HATEOAS architecture style in different ways.
 
-## Roadmap for April, 2018
+## Roadmap for May, 2018
 * More Complex Entity Framework Core examples
 * Refactoring using Design Patterns and Best Practice Principles.
 * After Refactoring, Adding Some Unit Tests.
-* Add a Angular 5 client for api.
+* Complete the Angular 6 client for these APIs.
+* Add MongoDB support.
