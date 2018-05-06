@@ -4,6 +4,7 @@
 The project is being actively developed.  
 Breaking changes and refactors still happens.  
 An Angular 6 client was added, but only implemented one example which contains a paginated query to ProductController.
+![ng6-client](https://raw.githubusercontent.com/solenovex/asp.net-core-2.0-web-api-boilerplate/master/Screenshots/3.png)
 
 ### Target
 This project will implement the only must-need feature for a web api project.  
@@ -39,6 +40,7 @@ You can use migration commands both in Visual Studio 2017 or through "dotnet ef"
 * Serilog (Write to Console, RollingFile, MSSql Server)
 * Fluent Validation
 * Swagger
+![Swagger](https://raw.githubusercontent.com/solenovex/asp.net-core-2.0-web-api-boilerplate/master/Screenshots/2.png)
 
 ## Features:
 * Unit of work + Repository Pattern applied.  
