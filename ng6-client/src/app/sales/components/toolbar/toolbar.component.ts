@@ -8,7 +8,6 @@ import { MatDialog, MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-
   @Output() toggleSidenav = new EventEmitter<void>();
 
   constructor(

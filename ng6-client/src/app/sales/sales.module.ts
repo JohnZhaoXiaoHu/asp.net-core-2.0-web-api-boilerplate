@@ -5,7 +5,6 @@ import { SalesRoutingModule } from './sales-routing.module';
 import { SalesAppComponent } from './sales-app.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { MainContentComponent } from './components/main-content/main-content.component';
 import { MaterialModule } from '../shared/material.module';
 import { ProductComponent } from './components/product/product.component';
 import { ProductService } from './services/product.service';
@@ -21,7 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [SalesAppComponent, SidenavComponent, ToolbarComponent, MainContentComponent, ProductComponent],
+  declarations: [SalesAppComponent, SidenavComponent, ToolbarComponent, ProductComponent],
   providers: [
     ProductService
   ]

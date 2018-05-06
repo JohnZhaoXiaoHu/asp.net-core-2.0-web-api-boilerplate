@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SalesAppComponent } from './sales-app.component';
-import { MainContentComponent } from './components/main-content/main-content.component';
 import { ProductComponent } from './components/product/product.component';
 
 const routes: Routes = [
   {
     path: '', component: SalesAppComponent,
     children: [
-      { path: '', component: MainContentComponent },
       { path: 'product', component: ProductComponent },
       { path: '**', redirectTo: 'product' }
     ]
