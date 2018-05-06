@@ -42,9 +42,12 @@ You can use migration commands both in Visual Studio 2017 or through "dotnet ef"
 
 ## Features:
 * Unit of work + Repository Pattern applied.  
-* Basic CRUD Best Practice applied in Controllers and Repository.
-* Pagination is implemented in both repository and controller(for now, only ProductController support paging).  
-* The VehicleController and CustomerController Implemented HATEOAS architecture style in different ways.
+* HATEOAS support.
+* Paging, sorting and searching implemented in generic repository.
+* Basic CRUD Best Practice applied in Controllers and Repository. 
+* The VehicleController and CustomerController Implemented HATEOAS architecture style in different ways.  
+
+![HATEOAS](https://raw.githubusercontent.com/solenovex/asp.net-core-2.0-web-api-boilerplate/master/Screenshots/1.png)
 
 ## Roadmap for May, 2018
 * More Complex Entity Framework Core examples
